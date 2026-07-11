@@ -1,0 +1,20 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "title": "The Lantern Fox",
+  "genre": "fantasy adventure",
+  "synopsis": "At the autumn festival, shy Mira loses track of her little brother Kenji. A paper lantern she won at a stall unfolds into a fox spirit named Hoshi. Together they follow a trail of ember-lights through the sleeping town and find Kenji asleep under the shrine tree before dawn.",
+  "story_text": "Mira gripped the paper lantern with both hands... (full prose omitted in fixture; real productions carry the complete refined story here).",
+  "beats": [
+    { "beat_id": "B01", "summary": "Festival night; Mira wins a fox-faced paper lantern; Kenji vanishes in the crowd.", "emotional_note": "wonder tipping into worry", "est_seconds": 45 },
+    { "beat_id": "B02", "summary": "The lantern unfolds into Hoshi the fox spirit; it offers a bargain: follow, and do not let the flame go out.", "emotional_note": "awe and nervous trust", "est_seconds": 50 },
+    { "beat_id": "B03", "summary": "Ember-lights lead them to the shrine tree; Kenji is asleep beneath it; Hoshi returns to paper at dawn.", "emotional_note": "relief, warm goodbye", "est_seconds": 55 }
+  ],
+  "characters_mentioned": ["Mira", "Kenji", "Hoshi"],
+  "estimated_runtime_seconds": 150,
+  "revision": {
+    "round": 2,
+    "changed_by": "refiner",
+    "change_notes": "Added sensory festival detail in B01, fixed the flame-bargain logic, warmed the ending per genre."
+  }
+}

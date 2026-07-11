@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/generation_manifest",
+  "title": "Generation Manifest",
+  "description": "Produced by stage 9. Model routing + every clip generation call with full provenance.",
+  "type": "object",
+  "required": ["version", "project_id", "model_selection", "clips", "batch_policy"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "model_selection": {
+      "type": "object",
+      "required": ["model_id", "gateway", "reason"],
+      "properties": {
+        "model_id": { "type": "string", "minLength": 1, "description": "Project default model, chosen by the Director from config/model_capabilities.yaml." },
+        "gateway": { "type": "string" },
+        "reason": { "type": "string" },
+        "per_scene_overrides": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["scene_id", "model_id", "reason"],
+            "properties": {
+              "scene_id": { "type": "string", "pattern": "^S\\d{2,}$" },
+              "model_id": { "type": "string" },
+              "reason": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "clips": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["clip_id", "scene_id", "attempt", "model_id", "prompt", "references", "params", "status", "cost_usd"],
+        "properties": {
+          "clip_id": { "type": "string", "pattern": "^S\\d{2,}_C\\d{2,}$" },
+          "scene_id": { "type": "string", "pattern": "^S\\d{2,}$" },
+          "attempt": { "type": "integer", "minimum": 1 },
+          "model_id": { "type": "string", "minLength": 1 },
+          "prompt": { "type": "string", "minLength": 1, "description": "Assembled 5-aspect prompt; identity anchors verbatim; dialogue quoted." },
+          "references": {
+            "type": "object",
+            "properties": {
+              "images": { "type": "array", "maxItems": 9, "items": { "type": "string" }, "description": "Paths to LOCKED sheets/plates + selected frames." },
+              "audio": { "type": "array", "items": { "type": "string" }, "description": "Locked voice samples for every speaker in the clip." },
+              "videos": { "type": "array", "maxItems": 3, "items": { "type": "string" } }
+            },
+            "additionalProperties": false
+          },
+          "start_frame": { "type": ["string", "null"], "description": "Path to the selected start frame." },
+          "end_frame": { "type": ["string", "null"] },
+          "params": {
+            "type": "object",
+            "required": ["duration_s", "aspect"],
+            "properties": {
+              "duration_s": { "type": "number", "exclusiveMinimum": 0, "maximum": 15 },
+              "resolution": { "type": "string" },
+              "aspect": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
+              "generate_audio": { "type": "boolean" }
+            },
+            "additionalProperties": true
+          },
+          "output_path": { "type": ["string", "null"] },
+          "job_id": { "type": ["string", "null"] },
+          "seed": { "type": ["integer", "string", "null"] },
+          "status": { "type": "string", "enum": ["pending", "generated", "qc_failed", "approved"] },
+          "cost_usd": { "type": "number", "minimum": 0 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "batch_policy": {
+      "type": "object",
+      "required": ["batch_size"],
+      "properties": {
+        "batch_size": { "type": "integer", "minimum": 1, "description": "Clips per Director review batch (usually one scene batch)." },
+        "parallel": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "total_cost_usd": { "type": "number", "minimum": 0 },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

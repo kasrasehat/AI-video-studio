@@ -1,0 +1,44 @@
+# Delivery presets — read by stage 10 (integration) and scripts/assemble.py.
+# Every deliverable in edit_decisions.deliverables[] must reference a preset_id from here.
+
+version: 1
+
+presets:
+  master:
+    description: Archival master — maximum quality, no captions burned
+    resolution: [1920, 1080]
+    aspect: "16:9"
+    fps: 24
+    video_codec: libx264
+    crf: 16
+    pixel_format: yuv420p
+    audio_codec: aac
+    audio_bitrate: 320k
+    target_lufs: -14
+    captions: none
+
+  youtube_16x9:
+    description: YouTube upload
+    resolution: [1920, 1080]
+    aspect: "16:9"
+    fps: 24
+    video_codec: libx264
+    crf: 18
+    pixel_format: yuv420p
+    audio_codec: aac
+    audio_bitrate: 256k
+    target_lufs: -14
+    captions: srt        # sidecar .srt next to the file
+
+  tiktok_9x16:
+    description: TikTok / Reels / Shorts vertical
+    resolution: [1080, 1920]
+    aspect: "9:16"
+    fps: 24
+    video_codec: libx264
+    crf: 19
+    pixel_format: yuv420p
+    audio_codec: aac
+    audio_bitrate: 192k
+    target_lufs: -14
+    captions: burn       # burned-in, safe-area aware

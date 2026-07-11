@@ -1,0 +1,15 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "scenes": [
+    {
+      "scene_id": "S01",
+      "selected_frames": [
+        { "variant_id": "B", "frame_id": "S01_B_F01", "order": 1, "role": "start_frame" },
+        { "variant_id": "A", "frame_id": "S01_A_F02", "order": 2, "role": "end_frame" }
+      ],
+      "rationale": "Director: open on the wide from board B for scale, land on board A's close-up for the alarm beat — cherry-picked across variants."
+    }
+  ],
+  "approved": true
+}

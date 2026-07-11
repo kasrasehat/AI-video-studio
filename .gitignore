@@ -1,0 +1,16 @@
+# per-production state (large media, user-specific)
+projects/*
+!projects/.gitkeep
+
+# secrets
+.env
+
+# python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# os
+Thumbs.db
+desktop.ini

@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/qa_review",
+  "title": "QA Review",
+  "description": "Output of a qa-reviewer/qc-critic loop round (stages 2, 5, 6, 9, 10). Critical findings MUST carry a proposed fix.",
+  "type": "object",
+  "required": ["version", "project_id", "stage", "round", "reviewer", "findings", "verdict"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "stage": { "type": "string", "minLength": 1 },
+    "round": { "type": "integer", "minimum": 1 },
+    "reviewer": { "type": "string", "minLength": 1, "description": "Which agent performed the review, e.g. 'qa-reviewer', 'refiner', 'qc-critic'." },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["severity", "location", "finding"],
+        "properties": {
+          "severity": { "type": "string", "enum": ["critical", "suggestion", "nitpick", "investigation"] },
+          "location": { "type": "string", "minLength": 1, "description": "Concrete pointer: artifact field, scene_id, frame_id, timestamp." },
+          "finding": { "type": "string", "minLength": 1 },
+          "proposed_fix": { "type": "string" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "severity": { "const": "critical" } }, "required": ["severity"] },
+            "then": { "required": ["proposed_fix"] }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "verdict": { "type": "string", "enum": ["pass", "fix_and_rereview"] },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

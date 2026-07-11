@@ -1,0 +1,48 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "model_selection": {
+    "model_id": "seedance-2.0",
+    "gateway": "higgsfield",
+    "reason": "Dialogue-heavy scenes require native voice + quoted-dialogue lipsync + reference_audio (policy.dialogue_scene_requires).",
+    "per_scene_overrides": []
+  },
+  "clips": [
+    {
+      "clip_id": "S01_C01",
+      "scene_id": "S01",
+      "attempt": 2,
+      "model_id": "seedance-2.0",
+      "prompt": "Subject: a shy 10-year-old girl (straight black bob with blunt bangs, large dark-brown eyes, small mole under left eye, red-and-white yukata with goldfish pattern, fox-faced paper lantern in her left hand) and her 6-year-old brother (short spiky black hair, big ears, blue happi coat with white wave print, cheeky gap-toothed grin). Motion: the boy tugs free and darts frame-right into the crowd; the girl turns after him. Dialogue: the boy says \"Look, the drums! I want to see!\" excited and tugging away; the girl calls \"Kenji, wait -- stay close!\" worried. Scene: narrow festival street, strings of red paper lanterns overhead, wooden stalls with warm glow, banners with wave motifs, dense yukata crowd, indigo night sky. Spatial: girl center-left facing the stall, boy at her right hand exiting frame-right, 180-degree line along the stall front. Camera: slow dolly push-in 30cm toward the girl, ending close on her alarmed face. Warm lantern key light frame-right, cool night rim frame-left, painterly Ghibli-esque style, festival drums and crowd murmur swelling.",
+      "references": {
+        "images": [
+          "assets/characters/CH01_V1_front.png",
+          "assets/characters/CH01_V1_three_quarter.png",
+          "assets/environments/LOC01_V1.png",
+          "assets/storyboards/S01_B_F01.png",
+          "assets/storyboards/S01_A_F02.png"
+        ],
+        "audio": ["assets/voices/CH01_V1.mp3"],
+        "videos": []
+      },
+      "start_frame": "assets/storyboards/S01_B_F01.png",
+      "end_frame": "assets/storyboards/S01_A_F02.png",
+      "params": {
+        "duration_s": 14,
+        "resolution": "1080p",
+        "aspect": "16:9",
+        "generate_audio": true
+      },
+      "output_path": "assets/clips/S01_C01_a2.mp4",
+      "job_id": "hf-job-fixture-001",
+      "seed": 990131,
+      "status": "approved",
+      "cost_usd": 4.2
+    }
+  ],
+  "batch_policy": {
+    "batch_size": 2,
+    "parallel": 2
+  },
+  "total_cost_usd": 8.4
+}

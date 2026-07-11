@@ -1,0 +1,187 @@
+# full-ai-video-system — the film pipeline manifest.
+# SINGLE SOURCE OF TRUTH for stage order, artifacts, gates, QA loops and parallelism.
+# Gate values here are binding (see AGENT_GUIDE.md → Gate protocol).
+
+name: film
+version: "1.0"
+description: >
+  Story idea → 2–7 minute film with on-screen speaking characters, assembled from
+  ≤15-second AI clips. Ten stages, full Director gates, consistency enforced via
+  locked descriptors + reference assets threaded through every generation call.
+
+orchestration:
+  mode: executive-producer
+  skill: skills/stages/executive-producer.md
+  max_revisions_per_stage: 3
+  budget_gate_stages: [asset-generation, storyboard, video-generation]
+
+stages:
+  # ── Development ────────────────────────────────────────────────────────────
+  - name: intake
+    title: Conversational intake
+    skill: skills/stages/01-intake-director.md
+    produces: [brief]
+    required_artifacts_in: []
+    checkpoint_required: true
+    human_approval_default: true
+    review_focus:
+      - Story idea captured in the user's own words, not paraphrased away
+      - Audience, duration, language, style, tone, platform all explicitly asked (one at a time), never assumed
+      - Open questions listed rather than silently guessed
+    success_criteria:
+      - Schema-valid brief with all required fields
+      - Duration target within 120–420 seconds
+
+  - name: story
+    title: Story writing (writer → refiner)
+    skill: skills/stages/02-story-director.md
+    produces: [story]
+    required_artifacts_in: [brief]
+    checkpoint_required: true
+    human_approval_default: true
+    qa_loop: {agent: refiner, min_rounds: 1, max_rounds: 3, blocking: true}
+    review_focus:
+      - Refiner pass performed — detail added, broken logic fixed, genre-appropriate emotion present
+      - Beats sum to the brief's duration target (±10%)
+      - Tone and audience fit the brief
+    success_criteria:
+      - Schema-valid story with beats and per-beat duration estimates
+      - estimated_runtime_seconds within duration target ±10%
+
+  # ── Scene planning ─────────────────────────────────────────────────────────
+  - name: scene-division
+    title: Split story into ≤15s scene units
+    skill: skills/stages/03-scene-division-director.md
+    produces: [scene_list]
+    required_artifacts_in: [story, brief]
+    checkpoint_required: true
+    human_approval_default: false   # flows directly into scene-recheck; the Director gates there
+    review_focus:
+      - Every scene ≤ 15 seconds (Seedance clip unit); dialogue lines fit inside their scene
+      - Full story coverage — no beat dropped, no scene without a beat_ref
+      - Dialogue kept inside scenes (native lipsync), speakers listed in characters_present
+    success_criteria:
+      - Schema-valid scene_list; every est_duration_seconds ≤ 15
+      - total_est_seconds within duration target ±15%
+
+  - name: scene-recheck
+    title: Scene dedupe & continuity recheck
+    skill: skills/stages/04-scene-recheck-director.md
+    produces: [scene_list]
+    required_artifacts_in: [scene_list, story]
+    checkpoint_required: true
+    human_approval_default: true
+    review_focus:
+      - Fresh read against the FULL story — repeated/near-duplicate scenes merged or cut
+      - Continuity fields (time_of_day, location_ref, characters_present) consistent scene-to-scene
+      - recheck block filled — dedupe_report and fixed_issues honest, final=true
+    success_criteria:
+      - Schema-valid final scene_list with recheck.final == true
+
+  - name: directing
+    title: Per-scene direction
+    skill: skills/stages/05-directing-director.md
+    produces: [scene_direction, qa_review]
+    required_artifacts_in: [scene_list, brief]
+    checkpoint_required: true
+    human_approval_default: true
+    qa_loop: {agent: qa-reviewer, max_rounds: 3, blocking: true}
+    parallel: {claude_subagent: director, unit: scene, max_parallel: 4}
+    resume_unit: scene
+    review_focus:
+      - Camera movement executable by a 15s clip model (no impossible multi-move choreography)
+      - Palette stated as hexes + name; lighting and mood concrete, not vibes
+      - Blocking never contradicts scene_list continuity_notes or the 180° line
+    success_criteria:
+      - Schema-valid scene_direction covering every scene
+      - Blocking qa_review verdict == pass within 3 rounds
+
+  - name: lock-descriptors
+    title: Extract consistency lock descriptors
+    skill: skills/stages/06-lock-descriptors-director.md
+    produces: [lock_descriptors, qa_review]
+    required_artifacts_in: [scene_direction, scene_list, story]
+    checkpoint_required: true
+    human_approval_default: true
+    qa_loop: {agent: qa-reviewer, max_rounds: 3, blocking: true}
+    review_focus:
+      - Every character has 3–6 identity anchors usable VERBATIM in prompts, unambiguous and visual
+      - Face/body/age are static_features; clothing is dynamic (default + per-scene outfits)
+      - voice_spec matches the character's role and the story's style; every speaker covered
+      - Objects and locations that recur are captured with anchors and scene refs
+    success_criteria:
+      - Schema-valid lock_descriptors; every scene's characters_present resolvable to a char_id
+      - Blocking qa_review verdict == pass within 3 rounds
+
+  # ── Asset production ───────────────────────────────────────────────────────
+  - name: asset-generation
+    title: Generate & lock reference assets
+    skill: skills/stages/07-asset-generation-director.md
+    produces: [asset_manifest]
+    required_artifacts_in: [lock_descriptors]
+    checkpoint_required: true
+    human_approval_default: true   # the Director PICKS one variant per element → locked
+    resume_unit: element
+    review_focus:
+      - ~2 variants per character sheet (multi-view), environment plate and voice sample
+      - Each variant generated FROM the descriptors — anchors verbatim in prompts
+      - Gallery built so the Director compares variants side by side
+      - Voice samples audition the character's voice_spec on a neutral line + an emotional line
+    success_criteria:
+      - Schema-valid asset_manifest; every element has ≥2 variants with provenance (model, prompt, seed)
+      - After the gate — every element locked with a selected_variant_id
+
+  - name: storyboard
+    title: Storyboards (3 variants/scene, cherry-pick)
+    skill: skills/stages/08-storyboard-director.md
+    produces: [storyboard_set, shot_selection]
+    required_artifacts_in: [asset_manifest, scene_direction, lock_descriptors, scene_list]
+    checkpoint_required: true
+    human_approval_default: true   # the Director cherry-picks shots across variants
+    parallel: {claude_subagent: storyboard-artist, unit: scene_variant, max_parallel: 3}
+    resume_unit: scene_variant
+    review_focus:
+      - 3 genuinely different approaches per scene (framing/energy/coverage), not 3 rerolls
+      - Every frame conditioned on LOCKED assets only; refs_used recorded
+      - Start/end-frame candidates flagged; adjacent scenes remain chainable
+    success_criteria:
+      - Schema-valid storyboard_set (3 variants per scene) and shot_selection
+      - After the gate — every scene has selected frames incl. start_frame and end_frame roles
+
+  # ── Film production ────────────────────────────────────────────────────────
+  - name: video-generation
+    title: Generate scene clips
+    skill: skills/stages/09-video-generation-director.md
+    produces: [generation_manifest, clip_qc_report]
+    required_artifacts_in: [shot_selection, storyboard_set, lock_descriptors, asset_manifest, scene_list, scene_direction]
+    checkpoint_required: true
+    human_approval_default: true   # per scene batch
+    qa_loop: {agent: qc-critic, max_rounds: 3, blocking: true}
+    parallel: {claude_subagent: prompt-smith, unit: clip, max_parallel: 4}
+    resume_unit: clip
+    review_focus:
+      - Model chosen via config/model_capabilities.yaml; DIALOGUE SCENES ONLY on models satisfying policy.dialogue_scene_requires
+      - Every prompt embeds identity anchors verbatim, quoted dialogue lines, 200–400 words (Seedance)
+      - References threaded — locked sheets/plates (≤9 images), start/end frames, locked voice reference_audio for every speaker
+      - qc-critic checked identity, continuity and lipsync per clip; regen ≤3 attempts with fix_directive
+    success_criteria:
+      - Schema-valid generation_manifest + clip_qc_report
+      - Every clip status == approved (QC pass + Director batch approval)
+
+  - name: integration
+    title: Assembly, sound & delivery
+    skill: skills/stages/10-integration-director.md
+    produces: [edit_decisions, render_report]
+    required_artifacts_in: [generation_manifest, clip_qc_report, scene_direction, scene_list, brief]
+    checkpoint_required: true
+    human_approval_default: true   # approve final cut before rendering deliverables
+    qa_loop: {agent: qc-critic, max_rounds: 2, blocking: true}   # watch-through of assembled cut
+    resume_unit: preset
+    review_focus:
+      - Transitions follow scene_direction / transition_out_hint — not uniform crossfades
+      - Music + SFX generated to the brief's music_direction; dialogue never buried (ducking applied)
+      - Captions per brief language; every deliverable preset from config/delivery_presets.yaml
+      - Final watch-through QC ran on the assembled cut before the gate
+    success_criteria:
+      - Schema-valid edit_decisions + render_report; ffprobe_ok true for every output
+      - render_report.final_qc.verdict == pass

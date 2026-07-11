@@ -1,0 +1,41 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "global": {
+    "color_palette": {
+      "name": "Festival Ember",
+      "hexes": ["#D9432C", "#F2A33C", "#2B1E3F", "#F7E7C6"]
+    },
+    "grade": "warm highlights, deep indigo shadows, soft painterly grain",
+    "lensing": "35mm feel, gentle depth of field on faces, wide for lanes",
+    "movement_grammar": "slow push-ins on emotion; static frames for wonder; never handheld"
+  },
+  "scenes": [
+    {
+      "scene_id": "S01",
+      "shot_framing": "medium two-shot at child eye level, stall glow frame-right",
+      "camera_movement": "slow push-in 30cm toward Mira as Kenji slips away",
+      "lighting": "warm lantern key from the stall, cool night rim from frame-left",
+      "blocking": "Mira center-left facing the stall; Kenji at her right hand, exits frame-right into crowd; 180 line along the stall front",
+      "mood": "festive warmth curdling into alarm",
+      "sound_direction": "festival drums and crowd murmur; drums swell as Kenji runs",
+      "negative_notes": "no modern signage, no cars, crowd never menacing",
+      "transition_out": "cut"
+    },
+    {
+      "scene_id": "S02",
+      "shot_framing": "wide single, Mira small in the empty lane, lantern glow center",
+      "camera_movement": "static frame; the transformation provides the motion",
+      "lighting": "single warm source from the lantern, indigo ambience, paper-glow bloom on unfold",
+      "blocking": "Mira center facing camera-left toward the floating lantern; Hoshi materializes at her eye level",
+      "mood": "held-breath wonder",
+      "sound_direction": "crowd fades to silence; paper rustle; single koto note on the bow",
+      "negative_notes": "transformation must feel gentle, not startling",
+      "transition_out": "match_cut"
+    }
+  ],
+  "qa": {
+    "rounds": 1,
+    "unresolved": []
+  }
+}

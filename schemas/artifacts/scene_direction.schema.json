@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/scene_direction",
+  "title": "Scene Direction",
+  "description": "Produced by stage 5 (directing). Per-scene cinematographic direction.",
+  "type": "object",
+  "required": ["version", "project_id", "global", "scenes", "qa"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "global": {
+      "type": "object",
+      "required": ["color_palette", "grade", "lensing", "movement_grammar"],
+      "properties": {
+        "color_palette": {
+          "type": "object",
+          "required": ["name", "hexes"],
+          "properties": {
+            "name": { "type": "string", "minLength": 1 },
+            "hexes": { "type": "array", "minItems": 2, "items": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" } }
+          },
+          "additionalProperties": false
+        },
+        "grade": { "type": "string", "minLength": 1, "description": "Overall grading intent, e.g. 'warm highlights, lifted blacks, soft film grain'." },
+        "lensing": { "type": "string", "minLength": 1, "description": "Lens language, e.g. '35mm feel, shallow DoF on dialogue'." },
+        "movement_grammar": { "type": "string", "minLength": 1, "description": "House rules for camera motion, e.g. 'slow push-ins on emotion, static on tension'." }
+      },
+      "additionalProperties": false
+    },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["scene_id", "shot_framing", "camera_movement", "lighting", "blocking", "mood"],
+        "properties": {
+          "scene_id": { "type": "string", "pattern": "^S\\d{2,}$" },
+          "shot_framing": { "type": "string", "minLength": 1, "description": "e.g. 'medium close-up, eye level, subject frame-left'." },
+          "camera_movement": { "type": "string", "minLength": 1, "description": "ONE executable move per 15s clip, e.g. 'slow dolly-in 20cm'." },
+          "lighting": { "type": "string", "minLength": 1 },
+          "blocking": { "type": "string", "minLength": 1, "description": "Who is where, facing which way; respect the 180-degree line." },
+          "mood": { "type": "string", "minLength": 1 },
+          "sound_direction": { "type": "string", "description": "Diegetic sound / ambience intent for this scene." },
+          "palette_override": { "type": "string", "description": "Only if this scene deviates from the global palette — say why." },
+          "negative_notes": { "type": "string", "description": "What must NOT happen visually in this scene." },
+          "transition_out": { "type": "string", "enum": ["cut", "xfade", "dip_black", "wipe", "match_cut"], "description": "Directed transition into the next scene — consumed by stage 10." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "qa": {
+      "type": "object",
+      "required": ["rounds"],
+      "properties": {
+        "rounds": { "type": "integer", "minimum": 0 },
+        "unresolved": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

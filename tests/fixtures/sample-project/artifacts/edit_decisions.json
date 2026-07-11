@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "timeline": [
+    {
+      "entry_id": "T01",
+      "clip_ref": "S01_C01",
+      "in_s": 0,
+      "out_s": 14,
+      "order": 1,
+      "transition_out": {
+        "type": "cut",
+        "duration_s": 0,
+        "source": "scene_direction S01 transition_out=cut (quick cut on alarmed face)"
+      }
+    }
+  ],
+  "audio": {
+    "music": [
+      { "path": "assets/music/festival_theme.mp3", "in_s": 0, "out_s": 14, "gain_db": -18, "duck": true }
+    ],
+    "sfx": [
+      { "path": "assets/sfx/crowd_murmur.mp3", "at_s": 0, "gain_db": -22 }
+    ],
+    "mix": {
+      "target_lufs": -14,
+      "ducking": { "threshold_db": -28, "ratio": 6 }
+    }
+  },
+  "captions": {
+    "mode": "srt",
+    "language": "en",
+    "style": "clean sans, bottom-center, festival-safe area"
+  },
+  "deliverables": [
+    { "preset_id": "youtube_16x9", "out_path": "renders/lantern_fox_youtube.mp4" },
+    { "preset_id": "tiktok_9x16", "out_path": "renders/lantern_fox_tiktok.mp4" }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/pipeline_manifest",
+  "title": "Pipeline Manifest",
+  "description": "Validates pipeline.yaml — stage order, artifacts, gates, QA loops, parallelism.",
+  "type": "object",
+  "required": ["name", "version", "description", "orchestration", "stages"],
+  "properties": {
+    "name": { "type": "string", "minLength": 1 },
+    "version": { "type": "string" },
+    "description": { "type": "string" },
+    "orchestration": {
+      "type": "object",
+      "required": ["mode", "skill", "max_revisions_per_stage"],
+      "properties": {
+        "mode": { "type": "string", "const": "executive-producer" },
+        "skill": { "type": "string" },
+        "max_revisions_per_stage": { "type": "integer", "minimum": 1 },
+        "budget_gate_stages": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "stages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "title", "skill", "produces", "required_artifacts_in", "checkpoint_required", "human_approval_default", "review_focus", "success_criteria"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "title": { "type": "string" },
+          "skill": { "type": "string", "pattern": "^skills/stages/.+\\.md$" },
+          "produces": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z_]+$" } },
+          "required_artifacts_in": { "type": "array", "items": { "type": "string", "pattern": "^[a-z_]+$" } },
+          "optional_artifacts_in": { "type": "array", "items": { "type": "string", "pattern": "^[a-z_]+$" } },
+          "checkpoint_required": { "type": "boolean" },
+          "human_approval_default": { "type": "boolean" },
+          "qa_loop": {
+            "type": "object",
+            "required": ["agent", "max_rounds", "blocking"],
+            "properties": {
+              "agent": { "type": "string" },
+              "min_rounds": { "type": "integer", "minimum": 0 },
+              "max_rounds": { "type": "integer", "minimum": 1 },
+              "blocking": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "parallel": {
+            "type": "object",
+            "required": ["claude_subagent", "unit", "max_parallel"],
+            "properties": {
+              "claude_subagent": { "type": "string" },
+              "unit": { "type": "string" },
+              "max_parallel": { "type": "integer", "minimum": 1 }
+            },
+            "additionalProperties": false
+          },
+          "resume_unit": { "type": "string" },
+          "review_focus": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "success_criteria": { "type": "array", "minItems": 1, "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

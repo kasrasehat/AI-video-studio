@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "outputs": [
+    {
+      "preset_id": "youtube_16x9",
+      "path": "renders/lantern_fox_youtube.mp4",
+      "duration_s": 14.02,
+      "resolution": "1920x1080",
+      "fps": 24,
+      "size_bytes": 18234567,
+      "ffprobe_ok": true,
+      "lufs_measured": -14.2
+    },
+    {
+      "preset_id": "tiktok_9x16",
+      "path": "renders/lantern_fox_tiktok.mp4",
+      "duration_s": 14.02,
+      "resolution": "1080x1920",
+      "fps": 24,
+      "size_bytes": 15234567,
+      "ffprobe_ok": true,
+      "lufs_measured": -14.1
+    }
+  ],
+  "final_qc": {
+    "watch_through_findings": ["9:16 crop keeps both characters in safe area throughout"],
+    "verdict": "pass"
+  },
+  "total_cost_usd": 9.1,
+  "completed_at": "2026-07-11T12:00:00Z"
+}

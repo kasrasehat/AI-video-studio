@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/lock_descriptors",
+  "title": "Lock Descriptors",
+  "description": "Produced by stage 6. THE consistency backbone: every element that must stay identical across all clips, described precisely enough to prompt from verbatim.",
+  "type": "object",
+  "required": ["version", "project_id", "characters", "locations"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["char_id", "name", "role", "static_features", "identity_anchors", "dynamic_features", "voice_spec"],
+        "properties": {
+          "char_id": { "type": "string", "pattern": "^CH\\d{2,}$" },
+          "name": { "type": "string", "minLength": 1 },
+          "role": { "type": "string", "minLength": 1, "description": "Narrative role, e.g. 'protagonist — anxious young inventor'." },
+          "static_features": {
+            "type": "object",
+            "required": ["face", "body", "age"],
+            "properties": {
+              "face": { "type": "string", "minLength": 1, "description": "Immutable facial description — shape, eyes, hair, skin." },
+              "body": { "type": "string", "minLength": 1 },
+              "age": { "type": "string", "minLength": 1 },
+              "marks": { "type": "string", "description": "Scars, freckles, tattoos — distinctive immutables." }
+            },
+            "additionalProperties": false
+          },
+          "identity_anchors": {
+            "type": "array",
+            "minItems": 3,
+            "maxItems": 6,
+            "items": { "type": "string", "minLength": 3 },
+            "description": "Short visual attributes embedded VERBATIM in every prompt featuring this character."
+          },
+          "dynamic_features": {
+            "type": "object",
+            "required": ["default_outfit"],
+            "properties": {
+              "default_outfit": { "type": "string", "minLength": 1 },
+              "outfit_by_scene": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["scene_id", "outfit"],
+                  "properties": {
+                    "scene_id": { "type": "string", "pattern": "^S\\d{2,}$" },
+                    "outfit": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          },
+          "voice_spec": {
+            "type": "object",
+            "required": ["gender", "age_sound", "timbre", "pace", "style_notes"],
+            "properties": {
+              "gender": { "type": "string" },
+              "age_sound": { "type": "string", "description": "How old the voice SOUNDS." },
+              "accent": { "type": "string" },
+              "timbre": { "type": "string", "description": "e.g. 'warm, slightly raspy, mid-low'." },
+              "pace": { "type": "string" },
+              "style_notes": { "type": "string", "description": "Performance personality tied to the role." }
+            },
+            "additionalProperties": false
+          },
+          "forbidden_drift": { "type": "array", "items": { "type": "string" }, "description": "Known failure modes to negative-prompt / QC against, e.g. 'hair turning blond'." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["object_id", "description", "identity_anchors", "scenes"],
+        "properties": {
+          "object_id": { "type": "string", "pattern": "^OBJ\\d{2,}$" },
+          "name": { "type": "string" },
+          "description": { "type": "string", "minLength": 1 },
+          "identity_anchors": { "type": "array", "minItems": 1, "maxItems": 6, "items": { "type": "string" } },
+          "scenes": { "type": "array", "items": { "type": "string", "pattern": "^S\\d{2,}$" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "locations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["loc_id", "name", "description", "identity_anchors", "lighting_baseline", "scenes"],
+        "properties": {
+          "loc_id": { "type": "string", "pattern": "^LOC\\d{2,}$" },
+          "name": { "type": "string", "minLength": 1 },
+          "description": { "type": "string", "minLength": 1 },
+          "identity_anchors": { "type": "array", "minItems": 2, "maxItems": 6, "items": { "type": "string" } },
+          "lighting_baseline": { "type": "string", "minLength": 1 },
+          "scenes": { "type": "array", "items": { "type": "string", "pattern": "^S\\d{2,}$" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/shot_selection",
+  "title": "Shot Selection",
+  "description": "Produced by stage 8's gate. The Director's cherry-pick of frames across storyboard variants — cross-variant selection is first-class.",
+  "type": "object",
+  "required": ["version", "project_id", "scenes", "approved"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["scene_id", "selected_frames"],
+        "properties": {
+          "scene_id": { "type": "string", "pattern": "^S\\d{2,}$" },
+          "selected_frames": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": ["variant_id", "frame_id", "order", "role"],
+              "properties": {
+                "variant_id": { "type": "string", "enum": ["A", "B", "C"] },
+                "frame_id": { "type": "string", "pattern": "^S\\d{2,}_[ABC]_F\\d{2,}$" },
+                "order": { "type": "integer", "minimum": 1 },
+                "role": { "type": "string", "enum": ["start_frame", "end_frame", "mid_reference"] }
+              },
+              "additionalProperties": false
+            }
+          },
+          "rationale": { "type": "string", "description": "The Director's reasoning, in their words where possible." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "approved": { "type": "boolean" },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

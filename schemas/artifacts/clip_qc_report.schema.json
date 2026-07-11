@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/clip_qc_report",
+  "title": "Clip QC Report",
+  "description": "Produced by the qc-critic during stage 9. Per-clip, per-attempt verdicts driving the regen loop.",
+  "type": "object",
+  "required": ["version", "project_id", "clips", "summary"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "clips": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["clip_id", "attempt", "checks", "verdict"],
+        "properties": {
+          "clip_id": { "type": "string", "pattern": "^S\\d{2,}_C\\d{2,}$" },
+          "attempt": { "type": "integer", "minimum": 1 },
+          "checks": {
+            "type": "object",
+            "required": ["identity_match", "continuity", "lipsync", "prompt_adherence"],
+            "properties": {
+              "identity_match": {
+                "type": "object",
+                "required": ["score"],
+                "properties": {
+                  "score": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "per_character": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "required": ["char_id", "score"],
+                      "properties": {
+                        "char_id": { "type": "string", "pattern": "^CH\\d{2,}$" },
+                        "score": { "type": "number", "minimum": 0, "maximum": 1 },
+                        "notes": { "type": "string" }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "notes": { "type": "string" }
+                },
+                "additionalProperties": false
+              },
+              "continuity": {
+                "type": "object",
+                "required": ["score"],
+                "properties": {
+                  "score": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "notes": { "type": "string" }
+                },
+                "additionalProperties": false
+              },
+              "lipsync": {
+                "type": "object",
+                "required": ["applicable"],
+                "properties": {
+                  "applicable": { "type": "boolean", "description": "False for scenes without dialogue." },
+                  "score": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "notes": { "type": "string" }
+                },
+                "additionalProperties": false
+              },
+              "prompt_adherence": {
+                "type": "object",
+                "required": ["score"],
+                "properties": {
+                  "score": { "type": "number", "minimum": 0, "maximum": 1 },
+                  "notes": { "type": "string" }
+                },
+                "additionalProperties": false
+              },
+              "artifacts_detected": { "type": "array", "items": { "type": "string" }, "description": "Visible defects: morphing, extra fingers, garbled text…" }
+            },
+            "additionalProperties": false
+          },
+          "verdict": { "type": "string", "enum": ["pass", "regen", "escalate"] },
+          "fix_directive": { "type": "string", "description": "REQUIRED for regen: what to change in the next attempt's prompt/refs." }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "verdict": { "const": "regen" } }, "required": ["verdict"] },
+            "then": { "required": ["fix_directive"] }
+          }
+        ],
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "object",
+      "required": ["pass_rate", "regen_count"],
+      "properties": {
+        "pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "regen_count": { "type": "integer", "minimum": 0 },
+        "escalated": { "type": "array", "items": { "type": "string" } },
+        "total_cost_usd": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

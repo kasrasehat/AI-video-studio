@@ -1,0 +1,122 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "characters": [
+    {
+      "char_id": "CH01",
+      "name": "Mira",
+      "role": "protagonist — shy 10-year-old who must act despite fear",
+      "static_features": {
+        "face": "round face, large dark-brown eyes, straight black bob with blunt bangs",
+        "body": "small and slight, tends to hunch shoulders when nervous",
+        "age": "10 years old",
+        "marks": "small mole under left eye"
+      },
+      "identity_anchors": [
+        "straight black bob with blunt bangs",
+        "large dark-brown eyes",
+        "small mole under left eye",
+        "red-and-white yukata with goldfish pattern",
+        "fox-faced paper lantern in her left hand"
+      ],
+      "dynamic_features": {
+        "default_outfit": "red-and-white yukata with goldfish pattern, straw sandals",
+        "outfit_by_scene": []
+      },
+      "voice_spec": {
+        "gender": "female",
+        "age_sound": "child, around 10",
+        "accent": "neutral",
+        "timbre": "soft, breathy, brightens when brave",
+        "pace": "hesitant, quickens under stress",
+        "style_notes": "shy sincerity; never whiny"
+      },
+      "forbidden_drift": ["hair turning brown or long", "yukata changing color", "aging up"]
+    },
+    {
+      "char_id": "CH02",
+      "name": "Kenji",
+      "role": "little brother — the runaway spark of the plot",
+      "static_features": {
+        "face": "cheeky grin, short spiky black hair, big ears",
+        "body": "small 6-year-old, always mid-motion",
+        "age": "6 years old"
+      },
+      "identity_anchors": [
+        "short spiky black hair",
+        "big ears",
+        "blue happi coat with white wave print",
+        "cheeky gap-toothed grin"
+      ],
+      "dynamic_features": {
+        "default_outfit": "blue happi coat with white wave print, red sash",
+        "outfit_by_scene": []
+      },
+      "voice_spec": {
+        "gender": "male",
+        "age_sound": "young child, around 6",
+        "accent": "neutral",
+        "timbre": "bright, piping",
+        "pace": "fast, tumbling words",
+        "style_notes": "pure excitement; no malice"
+      },
+      "forbidden_drift": ["appearing older than Mira"]
+    },
+    {
+      "char_id": "CH03",
+      "name": "Hoshi",
+      "role": "lantern-fox spirit — playful guide with rules",
+      "static_features": {
+        "face": "fox face with paper-lantern texture, ember-orange eye markings",
+        "body": "cat-sized fox of folded glowing paper, tail tip flickers like a flame",
+        "age": "ageless spirit"
+      },
+      "identity_anchors": [
+        "cat-sized fox made of folded glowing paper",
+        "ember-orange eye markings",
+        "tail tip flickering like a candle flame",
+        "soft inner glow like a lit lantern"
+      ],
+      "dynamic_features": {
+        "default_outfit": "none — body is the folded-paper form itself",
+        "outfit_by_scene": []
+      },
+      "voice_spec": {
+        "gender": "ambiguous",
+        "age_sound": "young adult",
+        "accent": "neutral with a theatrical lilt",
+        "timbre": "warm, slightly echoing, amused",
+        "pace": "measured, teasing pauses",
+        "style_notes": "playful trickster warmth; never sinister"
+      },
+      "forbidden_drift": ["becoming a realistic fox", "losing the paper texture", "glow turning blue"]
+    }
+  ],
+  "objects": [
+    {
+      "object_id": "OBJ01",
+      "name": "fox-faced paper lantern",
+      "description": "round paper lantern painted with a stylized fox face, bamboo handle, warm inner flame",
+      "identity_anchors": ["stylized fox face painted in red and gold", "round white paper body", "short bamboo handle"],
+      "scenes": ["S01", "S02"]
+    }
+  ],
+  "locations": [
+    {
+      "loc_id": "LOC01",
+      "name": "Festival street",
+      "description": "narrow street of food and game stalls under strings of red paper lanterns, dense yukata crowd",
+      "identity_anchors": ["strings of red paper lanterns overhead", "wooden stalls with warm glow", "banners with wave motifs"],
+      "lighting_baseline": "red-gold lantern light, cool night sky above",
+      "scenes": ["S01"]
+    },
+    {
+      "loc_id": "LOC02",
+      "name": "Quiet lane",
+      "description": "empty stone lane behind the festival, single distant lantern, indigo night",
+      "identity_anchors": ["worn stone paving", "single distant street lantern", "indigo night haze"],
+      "lighting_baseline": "single warm pool of light in indigo darkness",
+      "scenes": ["S02"]
+    }
+  ]
+}

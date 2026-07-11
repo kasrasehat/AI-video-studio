@@ -1,0 +1,34 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "decisions": [
+    {
+      "decision_id": "d-001",
+      "stage": "video-generation",
+      "category": "model_selection",
+      "subject": "Project default video model",
+      "options_considered": [
+        { "option_id": "opt-1", "label": "seedance-2.0", "reason": "Only model satisfying dialogue policy (native voice + lipsync + reference_audio)", "score": 0.95 },
+        { "option_id": "opt-2", "label": "kling-2.5", "reason": "Strong motion but no voice — would strand both dialogue scenes", "score": 0.4 }
+      ],
+      "selected": "seedance-2.0",
+      "reason": "Both fixture scenes carry dialogue; policy requires native-voice capability.",
+      "decided_by": "user",
+      "timestamp": "2026-07-11T10:00:00Z"
+    },
+    {
+      "decision_id": "d-002",
+      "stage": "asset-generation",
+      "category": "variant_selection",
+      "subject": "CH01 character sheet",
+      "options_considered": [
+        { "option_id": "V1", "label": "V1 crisp features", "reason": "Closer to descriptor anchors" },
+        { "option_id": "V2", "label": "V2 softer look", "reason": "Warmer but drifts from the mole/bangs anchors" }
+      ],
+      "selected": "V1",
+      "reason": "Director picked V1 in the gallery — anchor fidelity over softness.",
+      "decided_by": "user",
+      "timestamp": "2026-07-11T10:30:00Z"
+    }
+  ]
+}

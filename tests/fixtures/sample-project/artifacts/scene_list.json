@@ -1,0 +1,46 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "scenes": [
+    {
+      "scene_id": "S01",
+      "beat_refs": ["B01"],
+      "summary": "Mira wins the fox lantern at a festival stall; Kenji tugs free of her hand and disappears into the crowd.",
+      "action": "Lantern stall glows. Mira receives the fox-faced lantern, smiling. Kenji's hand slips from hers; he darts between yukata-clad festival-goers and is gone.",
+      "dialogue": [
+        { "character": "Kenji", "line": "Look, the drums! I want to see!", "delivery": "excited, tugging away" },
+        { "character": "Mira", "line": "Kenji, wait -- stay close!", "delivery": "worried, calling after him" }
+      ],
+      "location_ref": "LOC01",
+      "characters_present": ["CH01", "CH02"],
+      "time_of_day": "night",
+      "est_duration_seconds": 14,
+      "scene_type": "dialogue",
+      "continuity_notes": "Mira holds the fox lantern in her LEFT hand from here on. Festival crowd background, red-gold light.",
+      "transition_out_hint": "quick cut on Mira's alarmed face"
+    },
+    {
+      "scene_id": "S02",
+      "beat_refs": ["B02"],
+      "summary": "Alone in a quiet lane, the lantern unfolds into Hoshi the fox spirit.",
+      "action": "Mira stands in an empty lantern-lit lane. Her paper lantern trembles, unfolds mid-air into a small glowing fox. It bows.",
+      "dialogue": [
+        { "character": "Hoshi", "line": "You kept my flame lit. So I will light your way.", "delivery": "playful, slightly echoing" }
+      ],
+      "location_ref": "LOC02",
+      "characters_present": ["CH01", "CH03"],
+      "time_of_day": "night",
+      "est_duration_seconds": 15,
+      "scene_type": "dialogue",
+      "continuity_notes": "Same left-hand lantern until it transforms; after this scene Mira carries no lantern.",
+      "transition_out_hint": "match cut from Hoshi's glow to ember-lights"
+    }
+  ],
+  "total_est_seconds": 29,
+  "recheck": {
+    "performed": true,
+    "dedupe_report": "No duplicates in the 2-scene fixture; durations rebalanced 15->14s on S01.",
+    "fixed_issues": ["S01 duration trimmed to keep the alarmed-face beat inside the clip"],
+    "final": true
+  }
+}

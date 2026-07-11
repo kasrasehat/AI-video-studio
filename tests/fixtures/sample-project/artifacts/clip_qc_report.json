@@ -1,0 +1,50 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "clips": [
+    {
+      "clip_id": "S01_C01",
+      "attempt": 1,
+      "checks": {
+        "identity_match": {
+          "score": 0.62,
+          "per_character": [
+            { "char_id": "CH01", "score": 0.55, "notes": "Hair rendered long instead of bob in frames 40-90." },
+            { "char_id": "CH02", "score": 0.85 }
+          ],
+          "notes": "Mira drifts from the locked sheet mid-clip."
+        },
+        "continuity": { "score": 0.9, "notes": "Lantern correctly in left hand." },
+        "lipsync": { "applicable": true, "score": 0.8, "notes": "Kenji's line syncs; Mira's call slightly late." },
+        "prompt_adherence": { "score": 0.7 },
+        "artifacts_detected": ["hair morphing around frame 60"]
+      },
+      "verdict": "regen",
+      "fix_directive": "Re-emphasize 'straight black bob with blunt bangs' at prompt start AND in camera section; add CH01 profile view to reference images; negative: long hair."
+    },
+    {
+      "clip_id": "S01_C01",
+      "attempt": 2,
+      "checks": {
+        "identity_match": {
+          "score": 0.93,
+          "per_character": [
+            { "char_id": "CH01", "score": 0.92 },
+            { "char_id": "CH02", "score": 0.94 }
+          ]
+        },
+        "continuity": { "score": 0.92 },
+        "lipsync": { "applicable": true, "score": 0.9, "notes": "Both lines land on the mouth movements." },
+        "prompt_adherence": { "score": 0.88 },
+        "artifacts_detected": []
+      },
+      "verdict": "pass"
+    }
+  ],
+  "summary": {
+    "pass_rate": 1.0,
+    "regen_count": 1,
+    "escalated": [],
+    "total_cost_usd": 8.4
+  }
+}

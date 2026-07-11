@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/decision_log",
+  "title": "Decision Log",
+  "description": "Append-only audit trail of every meaningful choice. The latest entry per (category, subject) pair is the current decision.",
+  "type": "object",
+  "required": ["version", "project_id", "decisions"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["decision_id", "stage", "category", "subject", "selected", "reason", "timestamp"],
+        "properties": {
+          "decision_id": { "type": "string", "pattern": "^d-\\d{3,}$" },
+          "stage": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "model_selection", "variant_selection", "shot_selection", "voice_selection",
+              "concept_selection", "style_selection", "gate_approval", "regen_policy",
+              "budget_tradeoff", "transition_choice", "caption_policy", "other"
+            ]
+          },
+          "subject": { "type": "string", "minLength": 1 },
+          "options_considered": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "reason"],
+              "properties": {
+                "option_id": { "type": "string" },
+                "label": { "type": "string" },
+                "reason": { "type": "string" },
+                "score": { "type": "number" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "selected": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 },
+          "decided_by": { "type": "string", "enum": ["user", "agent"], "description": "Director choices vs agent judgment calls." },
+          "timestamp": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

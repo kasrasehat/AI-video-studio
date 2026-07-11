@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/scene_list",
+  "title": "Scene List",
+  "description": "Produced by stage 3, finalized by stage 4 (recheck). Scenes are <=15s clip units.",
+  "type": "object",
+  "required": ["version", "project_id", "scenes", "total_est_seconds", "recheck"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "scenes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["scene_id", "beat_refs", "summary", "action", "location_ref", "characters_present", "time_of_day", "est_duration_seconds", "scene_type"],
+        "properties": {
+          "scene_id": { "type": "string", "pattern": "^S\\d{2,}$" },
+          "beat_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^B\\d{2,}$" } },
+          "summary": { "type": "string", "minLength": 1 },
+          "action": { "type": "string", "minLength": 1, "description": "What visibly happens, present tense." },
+          "dialogue": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["character", "line"],
+              "properties": {
+                "character": { "type": "string", "minLength": 1 },
+                "line": { "type": "string", "minLength": 1 },
+                "delivery": { "type": "string", "description": "Performance note: tone, pace, emotion." }
+              },
+              "additionalProperties": false
+            }
+          },
+          "location_ref": { "type": "string", "minLength": 1 },
+          "characters_present": { "type": "array", "items": { "type": "string" } },
+          "time_of_day": { "type": "string", "enum": ["dawn", "morning", "midday", "afternoon", "golden_hour", "dusk", "night", "interior_ambiguous"] },
+          "est_duration_seconds": { "type": "number", "exclusiveMinimum": 0, "maximum": 15 },
+          "scene_type": { "type": "string", "enum": ["dialogue", "action", "establishing", "montage", "emotional_beat"] },
+          "continuity_notes": { "type": "string", "description": "Props/wardrobe/screen-direction facts that must hold." },
+          "transition_out_hint": { "type": "string", "description": "Suggested transition into the next scene." }
+        },
+        "additionalProperties": false
+      }
+    },
+    "total_est_seconds": { "type": "number", "exclusiveMinimum": 0 },
+    "recheck": {
+      "type": "object",
+      "required": ["performed", "final"],
+      "properties": {
+        "performed": { "type": "boolean" },
+        "dedupe_report": { "type": "string", "description": "What was merged/cut and why." },
+        "fixed_issues": { "type": "array", "items": { "type": "string" } },
+        "final": { "type": "boolean", "description": "True only after stage 4 completes." }
+      },
+      "additionalProperties": false
+    },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

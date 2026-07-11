@@ -1,0 +1,22 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "story_idea": "A shy girl finds a paper lantern that turns into a fox spirit at night, and it helps her find her lost brother.",
+  "logline": "When her brother goes missing at the autumn festival, a shy girl must trust a mischievous lantern-fox spirit to find him before dawn.",
+  "audience": {
+    "description": "Families with children",
+    "age_range": "7-12",
+    "notes": "Gentle suspense only; warm resolution."
+  },
+  "duration_target_seconds": { "min": 120, "max": 180 },
+  "language": "en",
+  "style": "Ghibli-esque painterly 2D, warm lantern light",
+  "tone": "wondrous, gently suspenseful, heartwarming",
+  "genre": "fantasy adventure",
+  "platform": ["youtube"],
+  "aspect_ratio_primary": "16:9",
+  "content_boundaries": ["no real danger or violence", "no scary imagery beyond mild shadow"],
+  "music_direction": "soft koto and strings, festival percussion in act one",
+  "references": ["Spirited Away lantern scenes"],
+  "open_questions": []
+}

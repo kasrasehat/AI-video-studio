@@ -1,0 +1,102 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "elements": [
+    {
+      "element_id": "CH01_sheet",
+      "element_type": "character_sheet",
+      "source_descriptor_ref": "CH01",
+      "variants": [
+        {
+          "variant_id": "V1",
+          "files": [
+            { "path": "assets/characters/CH01_V1_front.png", "view": "front" },
+            { "path": "assets/characters/CH01_V1_three_quarter.png", "view": "three_quarter" },
+            { "path": "assets/characters/CH01_V1_profile.png", "view": "profile" }
+          ],
+          "generator": {
+            "gateway": "google",
+            "model": "nano-banana",
+            "prompt": "character sheet, front view: 10-year-old girl, straight black bob with blunt bangs, large dark-brown eyes, small mole under left eye, red-and-white yukata with goldfish pattern... painterly Ghibli-esque style",
+            "seed": 411223,
+            "params": { "aspect": "1:1" }
+          },
+          "cost_usd": 0.12
+        },
+        {
+          "variant_id": "V2",
+          "files": [
+            { "path": "assets/characters/CH01_V2_front.png", "view": "front" },
+            { "path": "assets/characters/CH01_V2_three_quarter.png", "view": "three_quarter" },
+            { "path": "assets/characters/CH01_V2_profile.png", "view": "profile" }
+          ],
+          "generator": {
+            "gateway": "google",
+            "model": "nano-banana",
+            "prompt": "character sheet, front view: 10-year-old girl, straight black bob with blunt bangs, large dark-brown eyes, small mole under left eye, red-and-white yukata with goldfish pattern... softer rounder features, warmer palette",
+            "seed": 411224,
+            "params": { "aspect": "1:1" }
+          },
+          "cost_usd": 0.12
+        }
+      ],
+      "selected_variant_id": "V1",
+      "locked": true
+    },
+    {
+      "element_id": "CH01_voice",
+      "element_type": "voice_sample",
+      "source_descriptor_ref": "CH01",
+      "variants": [
+        {
+          "variant_id": "V1",
+          "files": [{ "path": "assets/voices/CH01_V1.mp3", "view": "na" }],
+          "generator": {
+            "gateway": "elevenlabs",
+            "model": "voice-design",
+            "prompt": "soft breathy 10-year-old girl, hesitant pace, brightens when brave; neutral accent",
+            "seed": null,
+            "params": { "lines": ["Kenji, wait -- stay close!", "I am not afraid. Not tonight."] }
+          },
+          "cost_usd": 0.05
+        },
+        {
+          "variant_id": "V2",
+          "files": [{ "path": "assets/voices/CH01_V2.mp3", "view": "na" }],
+          "generator": {
+            "gateway": "elevenlabs",
+            "model": "voice-design",
+            "prompt": "slightly older-sounding shy girl, warmer timbre, gentle rasp",
+            "seed": null,
+            "params": { "lines": ["Kenji, wait -- stay close!", "I am not afraid. Not tonight."] }
+          },
+          "cost_usd": 0.05
+        }
+      ],
+      "selected_variant_id": "V1",
+      "locked": true
+    },
+    {
+      "element_id": "LOC01_plate",
+      "element_type": "environment_plate",
+      "source_descriptor_ref": "LOC01",
+      "variants": [
+        {
+          "variant_id": "V1",
+          "files": [{ "path": "assets/environments/LOC01_V1.png", "view": "na" }],
+          "generator": {
+            "gateway": "higgsfield",
+            "model": "higgsfield-image",
+            "prompt": "festival street: strings of red paper lanterns overhead, wooden stalls with warm glow, banners with wave motifs, dense yukata crowd, red-gold light, indigo sky, painterly",
+            "seed": 88121,
+            "params": { "aspect": "16:9" }
+          },
+          "cost_usd": 0.10
+        }
+      ],
+      "selected_variant_id": null,
+      "locked": false
+    }
+  ],
+  "total_cost_usd": 0.44
+}

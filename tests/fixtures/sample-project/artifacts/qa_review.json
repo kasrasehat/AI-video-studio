@@ -1,0 +1,28 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "stage": "directing",
+  "round": 1,
+  "reviewer": "qa-reviewer",
+  "findings": [
+    {
+      "severity": "critical",
+      "location": "scenes[S01].camera_movement",
+      "finding": "Original direction asked for a push-in PLUS a pan PLUS a tilt — three moves cannot execute cleanly in a 14s clip.",
+      "proposed_fix": "Reduce to the single slow push-in toward Mira; let Kenji's exit provide the secondary motion."
+    },
+    {
+      "severity": "suggestion",
+      "location": "global.color_palette",
+      "finding": "Palette lacked a cool counterpoint for night rims.",
+      "proposed_fix": "Added #2B1E3F indigo to the palette."
+    },
+    {
+      "severity": "nitpick",
+      "location": "scenes[S02].sound_direction",
+      "finding": "Consider a beat of full silence before the koto note."
+    }
+  ],
+  "verdict": "pass",
+  "metadata": { "note": "Round 1 criticals fixed in place; verdict reflects post-fix state." }
+}

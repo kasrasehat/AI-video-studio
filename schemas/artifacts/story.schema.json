@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/story",
+  "title": "Story",
+  "description": "Produced by stage 2 (writer -> refiner loop). The approved narrative.",
+  "type": "object",
+  "required": ["version", "project_id", "title", "genre", "synopsis", "story_text", "beats", "estimated_runtime_seconds", "revision"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string", "minLength": 1 },
+    "genre": { "type": "string", "minLength": 1 },
+    "synopsis": { "type": "string", "minLength": 1, "description": "3–6 sentence summary." },
+    "story_text": { "type": "string", "minLength": 1, "description": "The full prose story, post-refiner." },
+    "beats": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["beat_id", "summary", "emotional_note", "est_seconds"],
+        "properties": {
+          "beat_id": { "type": "string", "pattern": "^B\\d{2,}$" },
+          "summary": { "type": "string", "minLength": 1 },
+          "emotional_note": { "type": "string", "minLength": 1, "description": "What the audience should FEEL here." },
+          "est_seconds": { "type": "number", "exclusiveMinimum": 0 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "characters_mentioned": { "type": "array", "items": { "type": "string" } },
+    "estimated_runtime_seconds": { "type": "number", "exclusiveMinimum": 0 },
+    "revision": {
+      "type": "object",
+      "required": ["round", "changed_by", "change_notes"],
+      "properties": {
+        "round": { "type": "integer", "minimum": 1 },
+        "changed_by": { "type": "string", "enum": ["writer", "refiner", "user"] },
+        "change_notes": { "type": "string", "description": "What this revision changed and why." }
+      },
+      "additionalProperties": false
+    },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

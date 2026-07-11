@@ -1,0 +1,59 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "scenes": [
+    {
+      "scene_id": "S01",
+      "variants": [
+        {
+          "variant_id": "A",
+          "approach_note": "Coverage-first: two-shot then insert of the slipping hand.",
+          "frames": [
+            {
+              "frame_id": "S01_A_F01",
+              "shot_no": 1,
+              "image_path": "assets/storyboards/S01_A_F01.png",
+              "shot_framing": "medium two-shot at child eye level, stall glow frame-right",
+              "camera_hint": "start frame of the push-in",
+              "is_start_frame_candidate": true,
+              "is_end_frame_candidate": false,
+              "refs_used": ["CH01_sheet", "LOC01_plate"],
+              "prompt": "medium two-shot: 10-year-old girl (straight black bob with blunt bangs, large dark-brown eyes, small mole under left eye, red-and-white yukata with goldfish pattern, fox-faced paper lantern in her left hand) and her 6-year-old brother (short spiky black hair, big ears, blue happi coat with white wave print) at a glowing festival stall...",
+              "cost_usd": 0.1
+            },
+            {
+              "frame_id": "S01_A_F02",
+              "shot_no": 2,
+              "image_path": "assets/storyboards/S01_A_F02.png",
+              "shot_framing": "close on Mira's alarmed face, crowd bokeh behind",
+              "camera_hint": "end of push-in",
+              "is_start_frame_candidate": false,
+              "is_end_frame_candidate": true,
+              "refs_used": ["CH01_sheet"],
+              "prompt": "close-up: 10-year-old girl, straight black bob with blunt bangs, large dark-brown eyes, small mole under left eye, alarmed expression, red-gold festival bokeh...",
+              "cost_usd": 0.1
+            }
+          ]
+        },
+        {
+          "variant_id": "B",
+          "approach_note": "Energy-first: low wide shot, Kenji bolts through frame, lantern strings lead the eye.",
+          "frames": [
+            {
+              "frame_id": "S01_B_F01",
+              "shot_no": 1,
+              "image_path": "assets/storyboards/S01_B_F01.png",
+              "shot_framing": "low wide, lantern strings converging overhead",
+              "camera_hint": "static, motion inside frame",
+              "is_start_frame_candidate": true,
+              "is_end_frame_candidate": true,
+              "refs_used": ["CH01_sheet", "LOC01_plate"],
+              "prompt": "low wide festival street, strings of red paper lanterns overhead converging, girl in red-and-white goldfish yukata center-left holding fox-faced paper lantern in her left hand, small boy in blue happi coat running frame-right...",
+              "cost_usd": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/edit_decisions",
+  "title": "Edit Decisions",
+  "description": "Produced by stage 10. The cut: timeline, transitions (from director spec), audio mix, captions, deliverables. Consumed by scripts/assemble.py.",
+  "type": "object",
+  "required": ["version", "project_id", "timeline", "audio", "captions", "deliverables"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "timeline": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["entry_id", "clip_ref", "order", "transition_out"],
+        "properties": {
+          "entry_id": { "type": "string", "minLength": 1 },
+          "clip_ref": { "type": "string", "pattern": "^S\\d{2,}_C\\d{2,}$" },
+          "in_s": { "type": "number", "minimum": 0, "description": "Trim-in within the clip (default 0)." },
+          "out_s": { "type": "number", "exclusiveMinimum": 0, "description": "Trim-out within the clip (default clip end)." },
+          "order": { "type": "integer", "minimum": 1 },
+          "transition_out": {
+            "type": "object",
+            "required": ["type"],
+            "properties": {
+              "type": { "type": "string", "enum": ["cut", "xfade", "dip_black", "wipe", "match_cut"] },
+              "duration_s": { "type": "number", "minimum": 0 },
+              "source": { "type": "string", "description": "scene_direction ref justifying this transition." }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "audio": {
+      "type": "object",
+      "required": ["mix"],
+      "properties": {
+        "music": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "in_s", "gain_db", "duck"],
+            "properties": {
+              "path": { "type": "string" },
+              "in_s": { "type": "number", "minimum": 0 },
+              "out_s": { "type": "number" },
+              "gain_db": { "type": "number" },
+              "duck": { "type": "boolean", "description": "Sidechain-duck under dialogue." }
+            },
+            "additionalProperties": false
+          }
+        },
+        "sfx": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "at_s", "gain_db"],
+            "properties": {
+              "path": { "type": "string" },
+              "at_s": { "type": "number", "minimum": 0 },
+              "gain_db": { "type": "number" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "mix": {
+          "type": "object",
+          "required": ["target_lufs"],
+          "properties": {
+            "target_lufs": { "type": "number" },
+            "ducking": {
+              "type": "object",
+              "properties": {
+                "threshold_db": { "type": "number" },
+                "ratio": { "type": "number", "minimum": 1 }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "captions": {
+      "type": "object",
+      "required": ["mode", "language"],
+      "properties": {
+        "mode": { "type": "string", "enum": ["burn", "srt", "none"] },
+        "language": { "type": "string" },
+        "style": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "deliverables": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["preset_id", "out_path"],
+        "properties": {
+          "preset_id": { "type": "string", "minLength": 1, "description": "Must exist in config/delivery_presets.yaml." },
+          "out_path": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}
