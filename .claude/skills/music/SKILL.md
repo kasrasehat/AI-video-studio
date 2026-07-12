@@ -1,0 +1,98 @@
+---
+name: music
+description: "Generate music using the ElevenLabs Music API — instrumental tracks, songs with lyrics, jingles, and score cues. Use when: generating the film score or any background music, building a composition plan for granular control over sections/styles, or debugging music-generation errors."
+---
+
+# ElevenLabs Music Generation
+
+> **In this pipeline:** Used in stage 10 to generate the score — one or more cues per `brief.music_direction`, typically instrumental, timed to scene durations from the edit.
+
+Generate music from text prompts — supports instrumental tracks, songs with lyrics, and fine-grained control via composition plans. Requires `ELEVENLABS_API_KEY` in `.env`. Length range: 10 seconds to 5 minutes (`music_length_ms` 10000-300000).
+
+## Quick Start
+
+### Python
+
+```python
+from elevenlabs import ElevenLabs
+
+client = ElevenLabs()
+
+audio = client.music.compose(
+    prompt="A chill lo-fi hip hop beat with jazzy piano chords",
+    music_length_ms=30000
+)
+
+with open("output.mp3", "wb") as f:
+    for chunk in audio:
+        f.write(chunk)
+```
+
+### cURL
+
+```bash
+curl -X POST "https://api.elevenlabs.io/v1/music" \
+  -H "xi-api-key: $ELEVENLABS_API_KEY" -H "Content-Type: application/json" \
+  -d '{"prompt": "A chill lo-fi beat", "music_length_ms": 30000}' --output output.mp3
+```
+
+Force background-score behavior with `force_instrumental=True` (or write "no vocals" into the prompt).
+
+## Methods
+
+| Method | Description |
+|--------|-------------|
+| `music.compose` | Generate audio from a prompt or composition plan |
+| `music.composition_plan.create` | Generate a structured plan for fine-grained control |
+| `music.compose_detailed` | Generate audio + composition plan + metadata |
+| `music.upload` | Upload audio for later inpainting workflows (enterprise-only feature) |
+
+Provide either `prompt` or `composition_plan` — not both.
+
+## Composition Plans
+
+For granular control, generate a composition plan first, modify it, then compose:
+
+```python
+plan = client.music.composition_plan.create(
+    prompt="An epic orchestral piece building to a climax",
+    music_length_ms=60000
+)
+
+# Inspect/modify styles and sections
+print(plan.positiveGlobalStyles)  # e.g. ["orchestral", "epic", "cinematic"]
+
+audio = client.music.compose(
+    composition_plan=plan,
+    music_length_ms=60000
+)
+```
+
+## Prompting
+
+Structure prompts as: genre/style, mood, instruments, tempo/energy, use case.
+
+- Genre/Style: "indie rock", "lo-fi hip hop", "orchestral"
+- Mood: "uplifting", "melancholic", "tense"
+- Instruments: "acoustic guitar", "synth pads", "strings"
+- Tempo/Energy: "slow", "upbeat", "driving"
+- Context: "underscore for a quiet farewell scene"
+
+## Content Restrictions
+
+- Cannot reference specific artists, bands, or copyrighted lyrics
+- `bad_prompt` errors include a `prompt_suggestion` with alternative phrasing
+- `bad_composition_plan` errors include a `composition_plan_suggestion`
+
+## Error Handling
+
+```python
+try:
+    audio = client.music.compose(prompt="...", music_length_ms=30000)
+except Exception as e:
+    print(f"API error: {e}")
+```
+
+Common errors: 401 (invalid key), 422 (invalid params), 429 (rate limit).
+
+<!-- adapted from OpenMontage (.agents/skills/music/SKILL.md) -->

@@ -36,6 +36,7 @@
                       "frame_id": { "type": "string", "pattern": "^S\\d{2,}_[ABC]_F\\d{2,}$" },
                       "shot_no": { "type": "integer", "minimum": 1 },
                       "image_path": { "type": "string", "minLength": 1 },
+                      "media_id": { "type": ["string", "null"], "description": "Higgsfield media/job id for passing this frame as start/end/reference (medias[].value)." },
                       "shot_framing": { "type": "string", "minLength": 1 },
                       "camera_hint": { "type": "string" },
                       "is_start_frame_candidate": { "type": "boolean" },

@@ -8,10 +8,10 @@
       "category": "model_selection",
       "subject": "Project default video model",
       "options_considered": [
-        { "option_id": "opt-1", "label": "seedance-2.0", "reason": "Only model satisfying dialogue policy (native voice + lipsync + reference_audio)", "score": 0.95 },
-        { "option_id": "opt-2", "label": "kling-2.5", "reason": "Strong motion but no voice — would strand both dialogue scenes", "score": 0.4 }
+        { "option_id": "opt-1", "label": "seedance_2_0", "reason": "Only model satisfying dialogue policy (native voice + lipsync + reference_audio)", "score": 0.95 },
+        { "option_id": "opt-2", "label": "kling3_0", "reason": "Strong motion but no reference audio — would strand both dialogue scenes", "score": 0.4 }
       ],
-      "selected": "seedance-2.0",
+      "selected": "seedance_2_0",
       "reason": "Both fixture scenes carry dialogue; policy requires native-voice capability.",
       "decided_by": "user",
       "timestamp": "2026-07-11T10:00:00Z"

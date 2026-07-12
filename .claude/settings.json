@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/Scripts/python scripts/*)",
+      "Bash(.venv/Scripts/python -m pytest*)",
+      "Bash(python scripts/*)",
+      "Bash(python -m pytest*)",
+      "Bash(ffmpeg *)",
+      "Bash(ffprobe *)"
+    ]
+  }
+}

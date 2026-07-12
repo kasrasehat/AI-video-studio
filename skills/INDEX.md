@@ -27,6 +27,19 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `consistency-guard.md` | Identity anchors, ref threading, drift checklist — BINDING once ready | stub (M3) |
 | `taste-direction.md` | Taste profile carried brief → directing → grade | stub (M3) |
 
-## Tech (`skills/tech/`) — arrive at M2 (copied/adapted from OpenMontage + new)
+## Tech (`skills/tech/` — canonical; mirrored to `.claude/skills/` by `scripts/sync_skills.py`)
 
-higgsfield-mcp · seedance-prompting · character-sheets · storyboard-design · elevenlabs · music · sound-effects · ffmpeg · video-edit · video-understand · ai-video-gen · flux-bfl
+| Skill | Purpose | Status |
+|---|---|---|
+| `higgsfield-mcp/SKILL.md` | The generation gateway: tools, media-id flow, cost preflight, verified model quick-ref | **ready** (audited 2026-07-11) |
+| `seedance-prompting/SKILL.md` | Seedance 2.0 prompt contract, identity+voice lock, anti-drift ladder | **ready** |
+| `character-sheets/SKILL.md` | 3-view chained character sheets, variants, self-QC | **ready** |
+| `storyboard-design/SKILL.md` | Static-snapshot frames, variation taxonomy, 3-variant discipline | **ready** |
+| `elevenlabs/SKILL.md` | TTS + voice design for character voice samples (voice-design API: pull live docs at M4) | **ready** |
+| `music/SKILL.md` | Score generation (stage 10) | **ready** |
+| `sound-effects/SKILL.md` | SFX generation (stage 10) | **ready** |
+| `ffmpeg/SKILL.md` | Probing, conversion, concat, fades | **ready** |
+| `video-edit/SKILL.md` | Trim/concat/resize/overlay recipes | **ready** |
+| `video-understand/SKILL.md` | Frame sampling + local transcription (qc-critic's eyes) | **ready** |
+| `ai-video-gen/SKILL.md` | Cross-model prompting deltas (Kling/Veo/Wan/…) | **ready** |
+| `flux-bfl/SKILL.md` | FLUX prompting + BFL API (optional) | **ready** |

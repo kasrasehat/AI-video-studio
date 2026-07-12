@@ -1,0 +1,12 @@
+---
+description: full-ai-video-system agent contract
+globs:
+alwaysApply: true
+---
+
+MANDATORY before responding to any message in this repo: read `AGENT_GUIDE.md` — the complete operating contract (pipeline stages, Director gates, checkpoint CLI, consistency rules).
+
+Cursor-specific (from the harness matrix in AGENT_GUIDE.md):
+- Claude Code subagents are NOT available here. The role files in `.claude/agents/*.md` are still the role definitions — read the relevant one and perform it yourself, sequentially (e.g. the three storyboard variants one after another).
+- Gates are identical: when a stage checkpoint is `awaiting_human`, present the summary and STOP — never proceed past a gate in the same response.
+- Always use the repo venv interpreter: `.venv/Scripts/python scripts/checkpoint.py …`.

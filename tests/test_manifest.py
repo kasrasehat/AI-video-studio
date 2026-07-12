@@ -70,10 +70,12 @@ def test_model_capabilities_config():
     satisfying = [name for name, m in caps["video_models"].items()
                   if all(m.get(cap) is True for cap in required)]
     assert satisfying, "no video model satisfies the dialogue policy"
-    assert "seedance-2.0" in satisfying
-    # Every video model within the 15s scene unit contract declares its max clip length.
+    assert "seedance_2_0" in satisfying
+    # Every video model must fit the <=15s scene unit contract.
     for name, m in caps["video_models"].items():
-        assert 0 < m["max_clip_seconds"] <= 15, f"{name} max_clip_seconds out of contract"
+        dur = m["duration_seconds"]
+        max_s = dur["max"] if "max" in dur else max(dur["options"])
+        assert 0 < max_s <= 15, f"{name} duration exceeds the 15s scene unit"
 
 
 def test_delivery_presets_config():
@@ -92,11 +94,9 @@ def test_delivery_presets_config():
 def test_skill_index_references_exist():
     """Every path-like reference in skills/INDEX.md tables must exist on disk."""
     index = (lib.ROOT / "skills" / "INDEX.md").read_text(encoding="utf-8")
+    bases = [lib.ROOT / "skills" / "stages", lib.ROOT / "skills" / "meta", lib.ROOT / "skills" / "tech"]
     for line in index.splitlines():
         if line.startswith("| `") and ".md" in line:
             rel = line.split("`")[1]
-            for base in [lib.ROOT / "skills" / "stages", lib.ROOT / "skills" / "meta"]:
-                if (base / rel).exists():
-                    break
-            else:
+            if not any((base / rel).exists() for base in bases):
                 raise AssertionError(f"INDEX.md references missing skill file: {rel}")

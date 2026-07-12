@@ -34,7 +34,8 @@
                     "required": ["path"],
                     "properties": {
                       "path": { "type": "string", "minLength": 1 },
-                      "view": { "type": "string", "enum": ["front", "three_quarter", "profile", "back", "full_body", "na"] }
+                      "view": { "type": "string", "enum": ["front", "three_quarter", "profile", "back", "full_body", "na"] },
+                      "media_id": { "type": ["string", "null"], "description": "Higgsfield media/job id for passing this file as a generation reference (medias[].value)." }
                     },
                     "additionalProperties": false
                   }
