@@ -141,12 +141,22 @@ video_models:
     use_for: [facial_emotion_silent, natural_physics]
 
 image_models:
+  gpt_image_2:                       # DEFAULT for character/location sheets (Director decision 2026-07-17)
+    gateway: higgsfield
+    multi_image_refs: true           # i2i via medias role image
+    resolutions: [1k, 2k, 4k]
+    params: {quality: [low, medium, high]}
+    aspects: ["1:1", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3"]
+    strengths: [layout_control, text_rendering, typography, detail_fidelity]
+    skill: character-sheets
+    use_for: [character_sheets, location_sheets]
+
   nano_banana_pro:
     gateway: higgsfield
     multi_image_refs: true
     strengths: [4k, text_rendering, diagrams, character_refs]
     skill: character-sheets
-    use_for: [character_sheets, consistency_edits, storyboard_frames]
+    use_for: [consistency_edits, storyboard_frames, sheet_fallback]
 
   soul_2:
     gateway: higgsfield

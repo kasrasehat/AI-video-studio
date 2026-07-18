@@ -5,6 +5,9 @@ projects/*
 # secrets
 .env
 
+# generated test output
+tests/fixtures/sample-project/gallery/
+
 # python
 .venv/
 __pycache__/
