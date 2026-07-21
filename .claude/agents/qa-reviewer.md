@@ -21,7 +21,7 @@ A `qa_review` JSON (schema `schemas/artifacts/qa_review.schema.json`): stage, ro
 
 ## Stage-specific hunting grounds
 - **story (as refiner backup):** logic holes, length math, genre-emotion mismatches.
-- **directing:** compound camera moves; framing without positions; 180° violations across same-location scenes; palette drift without stated reason; transitions that fight the scene rhythm.
+- **directing:** compound camera moves; framing without positions; 180° violations across same-location scenes; palette drift without stated reason; transitions that fight the scene rhythm. **PLUS the mandatory trajectory audit (d-084): draw each scene's stage from its blocking text — positions on the axis, every motion as source → path → target in screen space. CRITICAL: a trajectory whose endpoints contradict its stated direction; an entering object/effect with no established or justified source; an exit/entry vector mismatch with the neighboring scene. Do not review motion prose without drawing the diagram — that is how the S14 contradiction shipped (d-082).**
 - **lock-descriptors:** anchors that are not verbatim-promptable ("kind eyes" — unpromptable; "large dark-brown eyes" — promptable); static/dynamic misfiling (clothing in static_features is a classic); characters_present in any scene that resolve to no char_id; speakers without voice_spec; missing forbidden_drift for known model failure modes (long hair, palette flips).
 
 ## Discipline

@@ -17,7 +17,16 @@ How the mandatory QA loops (stages 2, 5, 6, 9, 10 per `pipeline.yaml`) actually 
 | **investigation** | Real concern, not yet pinpointed — says where to look | Shown at the gate honestly |
 | **nitpick** | Taste | Never blocks, never argued about |
 
-Calibration anchors: an ambiguous identity anchor is CRITICAL (it multiplies into clip regens); a flat lighting choice at the emotional peak is a SUGGESTION; "S07 pacing feels off but I can't say why" is an INVESTIGATION.
+Calibration anchors: an ambiguous identity anchor is CRITICAL (it multiplies into clip regens); a geometrically impossible trajectory or a sourceless entering object is CRITICAL (it forces downstream agents to silently violate half the direction — the S14 class, d-082); a flat lighting choice at the emotional peak is a SUGGESTION; "S07 pacing feels off but I can't say why" is an INVESTIGATION.
+
+## Trajectory audit (binding — added d-084)
+
+For any artifact containing blocking or motion (scene_direction above all): RECONSTRUCT each scene's spatial diagram from its text — every named element placed on the location's relative-position map, every motion traced source → path → target in screen space. Flag as CRITICAL:
+1. A trajectory whose endpoints contradict its stated screen direction (a "left-to-right sail across the room" that starts and ends frame-left).
+2. An entering object/effect/character with no established source and no stated dramatic reason for hiding it.
+3. An exit/entry vector mismatch across consecutive scenes wherever the transition implies continuity.
+
+The S14 contradiction (sneeze source hidden without justification AND source + target both frame-left of a stated crossing path) shipped through this review because no reviewer drew the diagram. Drawing it is now mandatory, not optional — reading the prose and nodding is exactly how it slipped through.
 
 ## Running the loop (executive producer)
 

@@ -147,16 +147,16 @@ image_models:
     resolutions: [1k, 2k, 4k]
     params: {quality: [low, medium, high]}
     aspects: ["1:1", "4:3", "3:4", "16:9", "9:16", "3:2", "2:3"]
-    strengths: [layout_control, text_rendering, typography, detail_fidelity]
+    strengths: [layout_control, text_rendering, typography, detail_fidelity, instruction_edits]
     skill: character-sheets
-    use_for: [character_sheets, location_sheets]
+    use_for: [character_sheets, location_sheets, image_edits]   # DEFAULT edit model (Director d-054); edit protocol in skills/tech/image-editor
 
   nano_banana_pro:
     gateway: higgsfield
     multi_image_refs: true
     strengths: [4k, text_rendering, diagrams, character_refs]
-    skill: character-sheets
-    use_for: [consistency_edits, storyboard_frames, sheet_fallback]
+    skill: image-editor          # spot-edit ALTERNATIVE on explicit Director request only (d-054); never on rendered text (d-023)
+    use_for: [storyboard_frames, sheet_fallback, spot_edits_on_request]
 
   soul_2:
     gateway: higgsfield

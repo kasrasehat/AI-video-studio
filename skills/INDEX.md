@@ -35,6 +35,8 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `seedance-prompting/SKILL.md` | Seedance 2.0 prompt contract, identity+voice lock, anti-drift ladder | **ready** |
 | `character-sheets/SKILL.md` | 3-view chained character sheets, variants, self-QC | **ready** |
 | `storyboard-design/SKILL.md` | Static-snapshot frames, variation taxonomy, 3-variant discipline | **ready** |
+| `image-editor/SKILL.md` | Interactive image editing: elicit-first protocol, nano_banana_pro default, text-safety boundary | **ready** |
+| `storyboard-qc/SKILL.md` | Mechanical stage-8 self-QC: panel-split + camera-lock diff tooling, defect taxonomy, exact MCP call shapes | **ready** |
 | `elevenlabs/SKILL.md` | TTS + voice design for character voice samples (voice-design API: pull live docs at M4) | **ready** |
 | `music/SKILL.md` | Score generation (stage 10) | **ready** |
 | `sound-effects/SKILL.md` | SFX generation (stage 10) | **ready** |

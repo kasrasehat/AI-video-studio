@@ -132,20 +132,20 @@ stages:
       - After the gate — every element locked with a selected_variant_id
 
   - name: storyboard
-    title: Storyboards (3 variants/scene, cherry-pick)
+    title: Storyboards (2 grid pages/scene, cherry-pick)
     skill: skills/stages/08-storyboard-director.md
     produces: [storyboard_set, shot_selection]
     required_artifacts_in: [asset_manifest, scene_direction, lock_descriptors, scene_list]
     checkpoint_required: true
     human_approval_default: true   # the Director cherry-picks shots across variants
-    parallel: {claude_subagent: storyboard-artist, unit: scene_variant, max_parallel: 3}
+    parallel: {claude_subagent: storyboard-artist, unit: scene_variant, max_parallel: 2}
     resume_unit: scene_variant
     review_focus:
-      - 3 genuinely different approaches per scene (framing/energy/coverage), not 3 rerolls
+      - 2 genuinely different approaches per scene (coverage-first vs energy-first), not rerolls
       - Every frame conditioned on LOCKED assets only; refs_used recorded
       - Start/end-frame candidates flagged; adjacent scenes remain chainable
     success_criteria:
-      - Schema-valid storyboard_set (3 variants per scene) and shot_selection
+      - Schema-valid storyboard_set (2 grid-page variants per scene, Director rule d-043/d-044) and shot_selection
       - After the gate — every scene has selected frames incl. start_frame and end_frame roles
 
   # ── Film production ────────────────────────────────────────────────────────

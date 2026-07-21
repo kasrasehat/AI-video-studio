@@ -11,17 +11,19 @@ A storyboard frame here is not a sketch — it is a **generated still that may b
 
 The #1 failure mode (independently discovered by two reference systems): frames described with motion. "He is about to stand up" is forbidden; "He sits, leaning slightly forward, hands braced on the table" is required. If you can't freeze it, it's not a frame — it's motion, and motion belongs to the clip prompt.
 
-## Per scene: how many frames, which roles
+## Per scene: grid pages (Director method 2026-07-18, d-043/d-044 — supersedes per-frame counts)
 
-Decide by how much the composition changes across the scene (the variation taxonomy):
+A scene×variant is ONE generated image: a numbered GRID of sequential frames (uniform cells, thin gutters, small frame number per gutter corner, no other text). **TWO variant pages per scene** (A coverage-first, B energy-first). Grid size by BEAT COUNT — the number of distinct storyboard-able instants in the scene_direction blocking; duration alone never decides (a 14s held tableau with 4 beats is still 2×2):
 
-| Scene's visual change | Frames | Roles |
+| Beats in the scene | Grid | Frames on the page |
 |---|---|---|
-| **small** — expression/pose/walk change, moderate camera move | 1–2 | one start_frame candidate; i2v carries the rest |
-| **medium** — a character enters, someone turns from back to front | 2–3 | start + end candidates |
-| **large** — composition/framing changes dramatically (wide→close) | 3–4 | start + end + a mid_reference |
+| **≤ 4** — one held idea, a handful of moments (~2–3.5s/panel) | 2×2 | 4 |
+| **5–9** — entrances, reveals, multi-stage blocking | 3×3 | 9 |
+| **10+** — continuous-motion set pieces where in-betweens matter (~0.6–1s/panel) | 4×4 | 16 |
 
-The END frame must be the logical result of the start frame + the directed motion — check this explicitly. First scene at a location: the widest framing that scene allows (establishes geography for every later scene there).
+**Panel durations (Director rule 2026-07-18):** every panel gets `duration_seconds` allocated from the scene_direction's rhythm (protected silences keep their full length); a scene's panel durations sum to its `est_duration_seconds`. Durations live in `storyboard_set.json` and gallery captions ONLY — never printed on the page image (pages are passed to the video model as references; text would poison conditioning).
+
+**No end frames:** panel 1 is the scene's start-frame candidate; the LAST panel *describes* the ending (it must be the logical result of panel 1 + the directed motion) but is never promoted or pinned as an `end_image` in this pass — end-frame pinning is reserved for the post-project edit phase. First scene at a location: panel 1 is the widest framing the scene allows. After the cherry-pick, ONLY the start panel is PROMOTED: re-rendered full-frame (panel + locked refs as conditioning) — the promoted start frame carries the media_id stage 9 uses.
 
 ## Frame prompt template
 
@@ -33,9 +35,10 @@ The END frame must be the logical result of the start frame + the directed motio
 
 ## Camera economy & continuity across frames
 
+- **State-transition rule (Director rule 2026-07-19):** when a prop or wardrobe item is introduced, removed, or changed MID-SCENE (per `outfit_by_scene` / the object's scenes list), panel 1 must show the BEFORE state — identical to the previous scene's end state — and the change itself must happen in a visible panel. An item may never pop into existence between scenes or between panels. Before boarding any scene, diff its entry state against scene N−1's exit state (wardrobe, props, wet/dry, goggles) and board every difference as an on-screen beat.
 - Reuse camera setups: within a scene, frames should come from as few camera positions as possible; a new angle needs a reason (the direction's move, a reveal).
 - Respect the 180° axis established by scene_direction blocking; left/right positions must NOT flip between frames — a flipped axis in the storyboard becomes a flipped axis in the film.
-- **Chaining rule:** where the direction implies continuity into the next scene (match_cut, continuous action), design this scene's end frame and the next scene's start frame as a pair (same axis, compatible composition).
+- **Chain-by-reference (Director rule 2026-07-18):** at CHAINED boundaries (same location or continuous action per `transition_out_hint`), scene N's page generation passes scene N−1's PICKED page as an extra `image` reference with the prompt clause "PANEL 1 CONTINUES from the final panel of the reference storyboard page: same axis, same character state, compatible composition" — this requires generating scenes in order, each after the previous pick. At promotion, a chained scene's start frame is re-rendered conditioned on N−1's picked final panel + locked refs, so the cut lands seamlessly. At HARD HINGES (location changes) frame-chaining is impossible — carry state (wet/dry, goggles, bracelet) and motion direction (exit right → enter left) in the prompt instead.
 
 ## The 3-variant discipline (stage 8)
 

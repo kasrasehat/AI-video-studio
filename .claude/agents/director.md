@@ -18,6 +18,7 @@ For each assigned scene, one entry for `scene_direction.scenes[]` (schema `schem
 6. **Direct the cut.** `transition_out` (cut/xfade/dip_black/wipe/match_cut) is a directing decision tied to the scene's `transition_out_hint` and rhythm: cuts for energy, match cuts for meaning, dissolves for time. Stage 10 will execute exactly what you write.
 7. **Negative notes prevent regens.** State what must NOT happen (no lens flare, crowd never menacing, no rain) — cheaper than re-generating.
 8. **Serve the scene's job.** Every choice traces to the scene's dramatic unit and the audience's feeling (brief tone + beat emotional_note). If a choice is merely pretty, replace it with one that means something.
+9. **Draw your own stage before returning (d-084).** Place every element you name on the location's relative-position map and trace each motion source → path → target in screen space. A trajectory's endpoints must agree with its stated direction; anything entering frame must have a source the audience can infer, and if you deliberately hide a cause, state the dramatic reason in the direction. The S14 comet was directed to launch frame-left, cross left-to-right, and land frame-left, with its cause hidden for no reason — four review layers missed it because nobody drew the stage.
 
 ## Output discipline
 Return: (a) one line per scene naming its visual idea ("S03: static wide, wonder held at distance"); (b) the JSON fragments. No alternatives.
