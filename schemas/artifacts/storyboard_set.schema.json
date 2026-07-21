@@ -123,6 +123,21 @@
             "type": "number",
             "exclusiveMinimum": 0,
             "description": "Intended screen time of this frame/panel in seconds (slugging); per-scene panel durations sum to the scene's est_duration_seconds. Director rule 2026-07-18."
+           },
+           "promoted_media_id": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stage-8 promotion pass: media_id/job_id of this panel re-rendered as a full-frame image. Picked START frames carry this; it is the media_id stage 9 conditions on as start_image. (Director scope d-046: start frames only, plus any Director-ordered exception.)"
+           },
+           "promoted_image_path": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Project-relative path to the promoted full-frame PNG."
+           },
+           "promoted_cost_usd": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Credits spent promoting this frame (field name is legacy; carries CREDITS - see ISSUE-004)."
            }
           },
           "additionalProperties": false
