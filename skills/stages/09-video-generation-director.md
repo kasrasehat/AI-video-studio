@@ -1,11 +1,48 @@
 # Video Generation Director — stage 9
 
-> STATUS: stub — full version lands at M6.
+Turn each scene's picked storyboard into a real ≤15s clip. This stage is the pipeline's most expensive per-unit spend by far (10–140 credits/clip vs 7–14 for a storyboard page) — cost discipline and the regen budget matter more here than anywhere upstream.
 
-## IO contract (from pipeline.yaml)
-- Consumes: `shot_selection`, `storyboard_set`, `lock_descriptors`, `asset_manifest`, `scene_list`, `scene_direction`.
-- Produces: `artifacts/generation_manifest.json` + `artifacts/clip_qc_report.json`.
-- QA loop: `qc-critic` per clip (identity/continuity/lipsync), regen ≤3 attempts with fix_directive. Gate: Director approves per scene batch. Resume unit: clip.
+**Consumes:** `shot_selection`, `storyboard_set`, `lock_descriptors`, `asset_manifest`, `scene_list`, `scene_direction`.
+**Produces:** `artifacts/generation_manifest.json` + `artifacts/clip_qc_report.json`.
+**Gate:** the Director approves per scene batch. **Resume unit:** `clip` (`clip_id` = `S{nn}_C{nn}`, attempt tracked separately in `generation_manifest`).
 
-## Shape of the full skill (M6)
-Director picks the project model from `config/model_capabilities.yaml` (log model_selection). HARD RULE: dialogue scenes only on models satisfying `policy.dialogue_scene_requires`. Per clip (`prompt-smith` subagent): 5-aspect prompt (Subject/Motion/Scene/Spatial/Camera), 200–400 words for Seedance, identity anchors VERBATIM, dialogue as quoted lines, references threaded (locked sheets/plates ≤9 images, the promoted START frame from shot_selection as `start_image`, the scene's picked storyboard PAGE as an `image_references` entry guiding the beat sequence, locked voice `reference_audio` for every speaker). **Conditioning rule (Director 2026-07-18): `end_image` stays an available capability but is intentionally UNUSED in this pass** — the page's final panel + motion text carry the ending; end-frame pinning is reserved for the post-project EDIT phase. At chained boundaries the start frame was promoted from the previous scene's final panel, so cuts land seamlessly. Generate via higgsfield MCP → `qc-critic` scores → regen with fix_directive or pass → batch gate per scene.
+## Before anything
+
+Read `skills/tech/seedance-prompting/SKILL.md` (or the equivalent tech skill for the chosen model), `skills/tech/higgsfield-mcp` (media flow, cost preflight), `skills/meta/consistency-guard.md`. Read `ISSUES.md` ISSUE-008 before generating the first clip of any new scene pair — it tracks the open question of how cross-scene continuity (visual + audio) should be conditioned, and records what has and hasn't been tested yet.
+
+## Model selection (binding — log as `model_selection`)
+
+1. Pick the project default from `config/model_capabilities.yaml`. **HARD RULE: dialogue scenes only on models satisfying `policy.dialogue_scene_requires`** (verify per model entry, not by assumption — `reference_audio: true` + `quoted_dialogue_lipsync: true` at minimum).
+2. **Cost is resolution- and duration-dependent, not fixed** — always preflight with `get_cost:true` using the ACTUAL params you intend (model, duration, resolution, aspect) before trusting any number from a skill file, a memory, or a prior session. Confirmed 2026-07-21: `seedance_2_0` 15s/1080p = 135cr; `seedance_2_0_mini` 15s/720p = 37.5cr. Announce the batch total before generating.
+3. Per-scene override is allowed (`model_selection.per_scene_overrides`) with a stated reason — e.g. a non-dialogue establishing shot on a cheaper model.
+4. **Budget check before scaling up:** sum the batch's estimated cost (scene durations × model's per-second rate, from a fresh preflight) against remaining balance (`show_plans_and_credits`) BEFORE committing to more than a few scenes at a time. Never silently downgrade quality to fit budget, never silently overspend — surface the arithmetic to the Director and let them choose (see decision d-095/d-096 for the pattern).
+
+## Per-clip assembly (`prompt-smith` subagent, parallel per clip)
+
+Each clip's generation call is built from six inputs, looked up per scene — **never invented, never approximated**:
+
+1. **`start_image`** — the picked frame's **`promoted_media_id`** from `storyboard_set` (NOT the raw panel crop, NOT the page). Look up: `shot_selection[scene].selected_frames` → the entry with `role: start_frame` → its `frame_id` → find that frame in `storyboard_set[scene].variants[picked variant].frames` → read `promoted_media_id`. If a picked start frame has no `promoted_media_id`, STOP — the promotion pass is incomplete for that scene; do not fall back to the raw panel.
+2. **`image_references`** (≤9 total, prioritize in this order): the scene's present characters' locked sheets (2–3 views each if budget allows) → the locked location plate → the scene's picked storyboard **PAGE** media_id (from `storyboard_set[scene].variants[picked].frames[0].media_id` — same value on every frame of that variant) → any locked object sheets referenced in the scene.
+3. **`audio_references`** — the locked voice sample media_id for EVERY speaking character in the scene (from `asset_manifest`, the `*_voice` element's selected variant). Never omit, never substitute, never generate a new sample.
+4. **`end_image`** — **INTENTIONALLY UNUSED this pass (Director decision d-046).** Do not set it, even though `shot_selection` records an `end_frame` role for most scenes — that role is an audit record for the future edit phase only (see the reconciliation note in `shot_selection.metadata`), not a value to promote or pin now. The page's final panel + the prompt's motion text carry the ending.
+5. **`video_references`** — UNUSED by default this pass; only used inside the ISSUE-008 test or a Director-ordered method change. If used, log which decision authorized it.
+6. **Prompt text** — 5-aspect assembly per `prompt-smith.md`: Subject / Subject Motion (dialogue as quoted lines) / Scene / Spatial / Camera, within the model's `prompt_words` window, every present character's `identity_anchors` verbatim + this scene's `outfit_by_scene` state, negative content from `negative_notes` + `forbidden_drift`.
+
+**Chained-boundary continuity (current baseline, per ISSUE-008 method (a)):** no cross-scene image/video reference is passed at generation time. Continuity across a cut is currently carried only by (i) the storyboard stage's chain-by-reference (scene N's PAGE was generated conditioned on scene N−1's picked page) and (ii) the prompt's own motion/state text. **This is the method under test, not settled law** — do not assume it stays fixed once the Director's deferred A/B (ISSUE-008) runs after scene 4.
+
+## Generation, QC loop, gate
+
+1. Preflight (`get_cost:true`), announce, generate via the model's MCP call. Poll `job_display` to completion; download; record `job_id`, `output_path`, actual cost in `generation_manifest`.
+2. `qc-critic` scores the clip per `clip_qc_report` schema (identity/continuity/lipsync/prompt_adherence + artifacts_detected). Thresholds in `qc-critic.md`: identity ≥0.85, continuity ≥0.8, lipsync ≥0.8 (when applicable).
+3. `regen` verdicts carry a `fix_directive`; apply it as the FIRST priority in the next attempt, not an appended afterthought. **Max 3 attempts per clip** (`pipeline.yaml` qa_loop). `escalate` after 3 failures or a structural flaw (bad start frame, impossible direction) — name the suspect upstream artifact and stop; do not keep spending.
+4. `--unit-done S{nn}_C{nn}` after each clip reaches `approved`. Write `generation_manifest.json` incrementally (archive before rewrite, validate before checkpoint).
+5. Gate per scene batch (not per clip): checkpoint `awaiting_human`, present the scene's clip(s) + QC summary + cost so far. On approval, continue to the next scene batch; on feedback, revise within the regen loop (counts against `max_revisions_per_stage` only if it requires re-opening an already-approved batch).
+
+## Pitfalls
+
+- Passing the raw storyboard panel (or the wrong frame_id) as `start_image` instead of its `promoted_media_id` — silently reintroduces the low-resolution/soft-detail problem the promotion pass exists to solve.
+- Setting `end_image` from `shot_selection`'s `end_frame` role — that role is a future-phase audit record only (d-046); pinning it now risks the stiff "reaching for the pose" motion the Director explicitly ruled against.
+- Trusting a remembered or skill-documented credit cost instead of a fresh `get_cost:true` preflight — costs vary by resolution/duration/model and have changed materially between sessions.
+- Scaling to many scenes before confirming the batch cost against remaining balance — video generation costs 5–10x what storyboard generation did per unit.
+- Dialogue scene assigned to a model without verified `policy.dialogue_scene_requires` capabilities — silent quality failure, not a hard error, so it must be checked explicitly per model entry.
+- Treating the current no-cross-reference chaining method as settled — it is method (a) of five under ISSUE-008 evaluation, deferred to run after scene 4, not before.
