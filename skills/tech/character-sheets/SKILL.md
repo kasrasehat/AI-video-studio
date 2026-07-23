@@ -20,6 +20,18 @@ A sheet is ONE image that locks an identity: multiple views + detail callouts + 
 
 Layout instruction template: "Professional character model sheet, landscape: three full-body turnaround views (front, three-quarter left, left profile) of the same character evenly spaced; large face close-up inset top-right; small detail insets (X, Y); clean small text labels annotating features; white background, studio reference-sheet layout."
 
+### Scene-conditional accessories (BINDING — Director rule 2026-07-22, d-098)
+
+A picture always beats a text negative. If a character's sheet shows an accessory (a strapped-on bracelet, a held prop baked into the pose, a costume piece) and a downstream prompt says "this scene, no [accessory]", the model follows the reference image, not the negative clause — confirmed empirically (S01_C01 attempt 1: the locked sheet's bracelet close-up inset overrode an explicit "no recall bracelet yet" negative).
+
+**Before locking any sheet whose character gains, loses, or swaps a discrete accessory partway through the film:**
+
+1. **Count scenes.** From the character's `outfit_by_scene` (authored at stage 6), tally how many scenes show the accessory present vs absent.
+2. **Build the locked default sheet as the MAJORITY state.** The sheet stays the character's single locked reference for most scenes — this is deliberate, not an oversight; redesigning the default sheet to the minority state would mean building a derived asset for MORE scenes, not fewer.
+3. **Produce ONE derived reference for the minority-state scenes** — an edited copy of the locked sheet (via the `image-editor` skill, `gpt_image_2`) with the accessory removed/added across EVERY view that shows it, not just its dedicated inset (all full-body turnaround views typically carry it too — check each one). Save as a new file; NEVER overwrite the locked original. Use this derived reference only for the scenes whose `outfit_by_scene` state disagrees with the default sheet.
+4. **If the minority/majority split is closer to even** (roughly 40/60 or beyond), skip step 2's asymmetric approach — generate two full peer sheets from the start (with-accessory / without-accessory) and pick the scene's reference by state, no derived-asset step needed.
+5. This applies to discrete ADD/REMOVE accessories (bracelet, held prop, hat). Full-body MATERIAL/texture states across many scenes (soaked vs dry) are a different, likely more disruptive class — if a similar reference-vs-text conflict shows up there, treat it the same way (majority-state default sheet + a derived wet/dry variant for the minority) rather than fighting it with negatives alone.
+
 ## Location sheet — ONE image containing:
 
 1. **Main establishing view** from the location's declared camera axis (the largest panel).

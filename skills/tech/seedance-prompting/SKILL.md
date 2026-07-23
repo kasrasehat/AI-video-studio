@@ -20,9 +20,26 @@ Seedance rewards structured density: 200–400 words, every one earning its plac
 7. **Camera** — the direction's ONE move with speed and end state. Name primitives precisely (dolly/truck/pedestal = translation; pan/tilt/roll = rotation; zoom/rack focus = lens; static = strictly nothing). **State what the camera is NOT doing**: `no cuts, no zoom` on continuous shots — ambiguity is Seedance's main misfire.
 8. **Style + Audio** — grade/era/grain per scene_direction global look; audio kept textural (`festival drums two streets over, crowd murmur`; diegetic foley like `sandals on stone`). Never request full music scores — scoring belongs to stage 10.
 
+## Negative prompts are unreliable (BINDING — d-099, confirmed empirically)
+
+Seedance does not reliably honor "no X" / "zero X" / "without X" clauses — a negative is a much weaker signal to the model than a positive, concrete description of the desired state. Confirmed on S01_C01: "zero smoke, zero haze, zero ember, nothing lingering in the air" was added explicitly after attempt 1 showed a smoke wisp, and attempt 2 rendered MORE smoke, not less, despite the strengthened negative.
+
+**Write every constraint as what SHOULD be on screen, not what must be absent:**
+- Bad: `no smoke, no haze, no scorch marks`
+- Better: `the beam ends in a single bright flash; the instant it fades, the apple sits pea-sized in perfectly clear, still air`
+- Bad: `no camera movement, no pan, no zoom, no shake`
+- Good (keep this one — camera primitives are a documented exception, see component 7 above): naming what the camera is NOT doing works for CAMERA MOVEMENT specifically, because Seedance treats camera primitives as a distinct instruction channel from scene content. Negatives about physical scene content (smoke, props, wardrobe, weather) are the unreliable case.
+- Reference-image conflicts are a SEPARATE failure mode from this one and need a different fix: if a locked reference image itself shows the thing being negated (e.g. a character sheet depicting an accessory the scene says is absent), no amount of prompt wording — positive or negative — reliably overrides it. See `skills/tech/character-sheets/SKILL.md`'s scene-conditional-accessories rule (d-098): fix the reference, not the words, when the conflict is visual.
+- On a `qc-critic` regen for a physical-content violation (smoke, debris, wrong prop, wrong material state): the `fix_directive` should propose a positive rewrite first, and only fall back to a stronger negative if no positive phrasing captures the constraint. If the defect persists after a positive rewrite, treat it as a possible model limitation for that effect and escalate rather than iterating on negative wording indefinitely.
+
 ## Identity lock (BINDING — this is the consistency mechanism)
 
-- Reference images: locked character sheet views (2–3 per present character, view matched to facing direction) + locked environment plate + selected storyboard frames. ≤9 total — prioritize present-character sheets first. Tag roles in the prompt: `[reference_image 1: Mira — character sheet, front view]`.
+- Reference images: locked character sheet views (2–3 per present character, view matched to facing direction) + locked environment plate + selected storyboard frames. ≤9 total — prioritize present-character sheets first.
+- **@-mention every reference in the prompt body (BINDING — Director order 2026-07-22, d-100).** Attaching an image without naming it in the text leaves the model to guess what each picture is for — confirmed on S03_C01 attempts 1–3, where the picked storyboard page rode along unlabeled among five images and the model ignored its staging entirely while following the prompt's prose instead. The fix: open the prompt with a references block that maps every attached image by its position in the medias array, then @-mention them inline wherever the element they depict is described:
+  - `References: @reference_image_1 is this shot's start frame — begin on exactly this image. @reference_image_2 is the storyboard page for this scene — its numbered panels are the authoritative staging, composition and object scale for every beat. @reference_image_3 is Gramps' character sheet. …`
+  - Inline: `GRAMPS (@reference_image_3): white walrus mustache…`, `the garage of @reference_image_5, staged exactly as drawn in @reference_image_2`.
+  - Numbering = the order images are passed in `medias` (start_image first, then image_references in order). A mismatch between the block and the array silently mislabels every reference — verify the mapping against the actual call before submitting.
+  - The storyboard page's @-mention must state its authority explicitly ("authoritative staging/composition/scale — match it"), not merely name it.
 - Open the character block with an identity-lock block and stack the proven anti-drift phrases (redundancy measurably helps):
   `[identity_lock] The same character — straight black bob with blunt bangs, large dark-brown eyes, small mole under left eye — consistent across all shots, maintain exact appearance from reference image, no deformation, no face morph. Do not alter clothing category or primary color.`
 - Add each character's `forbidden_drift` entries as explicit negatives.
