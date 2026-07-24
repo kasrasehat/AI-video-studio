@@ -19,6 +19,14 @@ How the mandatory QA loops (stages 2, 5, 6, 9, 10 per `pipeline.yaml`) actually 
 
 Calibration anchors: an ambiguous identity anchor is CRITICAL (it multiplies into clip regens); a geometrically impossible trajectory or a sourceless entering object is CRITICAL (it forces downstream agents to silently violate half the direction — the S14 class, d-082); a flat lighting choice at the emotional peak is a SUGGESTION; "S07 pacing feels off but I can't say why" is an INVESTIGATION.
 
+## Engagement audit (binding — Director order d-111)
+
+For story, scene-division and directing artifacts, hunt flatness as a first-class defect class alongside correctness:
+1. **Monotone coverage** — three or more consecutive scenes sharing the same setup class (size + height + angle + move) without a stated rhyme: CRITICAL on scene_direction (it compounds into a visually monotonous film no clip-level fix can rescue).
+2. **Unearned silence** — characters sharing a frame with no dialogue AND no stated reason for the silence in the beat/scene: SUGGESTION per scene, CRITICAL when it spans a consecutive stretch (a talking film that falls mute drops its audience).
+3. **Single-expression scenes** — a scene whose blocking/mood names no facial emotion, or names one flat state for all beats and characters: SUGGESTION; CRITICAL at an emotional peak (the audience reads faces before anything else).
+4. **Static life** — blocking where nothing moves but the mouths: SUGGESTION, paired with a concrete business/motion proposal in the fix.
+
 ## Trajectory audit (binding — added d-084)
 
 For any artifact containing blocking or motion (scene_direction above all): RECONSTRUCT each scene's spatial diagram from its text — every named element placed on the location's relative-position map, every motion traced source → path → target in screen space. Flag as CRITICAL:

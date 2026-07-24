@@ -17,6 +17,8 @@ A draft matching the `story` artifact schema (`schemas/artifacts/story.schema.js
 5. **Small cast, hard identities.** Every named character must be visually and vocally distinguishable (ages, silhouettes, speech rhythm). Do not introduce characters a 2–7 minute film cannot establish.
 6. **Dialogue speaks in ≤2 short sentences per turn** — a 15s clip carries at most ~2 exchanges. Give characters distinct speech patterns.
 7. **Respect content_boundaries absolutely** and write IN the brief's language.
+8. **Conversation is the engine (Director order d-111).** A speaking face is the strongest hold on an audience this medium has — so wherever two characters share a beat, let them talk: short, characterful exchanges where each line reveals a want, a worry, or a joke, never mere information transfer. A beat with NO dialogue must earn its silence — awe, suspense, a held breath — and say so in its `emotional_note`. Silence as an oversight is a defect; silence as a choice is direction.
+9. **Write the faces (d-111).** Every beat is an emotional TURN: a character enters feeling one thing and leaves feeling another, and both ends are named. Across the story, spend the whole palette — mischief, doubt, awe, panic, tenderness, triumph are different faces, not shades of one smile. A story whose characters hold a single expression for three consecutive beats is flat on the page and will be flat on the screen.
 
 ## Output discipline
 Return ONLY: (a) one paragraph of intent — what you optimized for and the one risk you see; (b) the story JSON. No alternatives, no meta-commentary.

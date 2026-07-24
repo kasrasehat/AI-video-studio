@@ -44,11 +44,16 @@ A scene×variant is ONE generated image: a numbered GRID of sequential frames (u
 
 Variants A/B/C must be different INTERPRETATIONS, not rerolls — assign each a strategy before generating: e.g. A coverage-first (classical shot/reverse), B energy-first (one dynamic composition), C intimacy-first (close and held). Same direction, same locked refs, different visual thinking. The Director cherry-picks frames ACROSS variants, so every frame must stand alone: any variant's end frame may follow any variant's start frame — keep axis and palette compatible across variants of the same scene.
 
+## Performance across panels (BINDING — Director order d-111)
+
+A page is a performance, not a pose repeated N times. Each panel's prompt names what every visible character FEELS in that instant, taken from the direction's per-beat emotions — and those faces must CHANGE across the page as the scene's beats turn. Two adjacent panels showing a speaking character with the same expression is a boarding failure unless the direction explicitly holds that emotion. Board the listener's reactions as deliberately as the speaker's delivery: on dialogue beats, the panel's interest is often the face that ISN'T talking. Static composition stays law (a frozen panel can still hold a mid-laugh, a widening eye, a faltering grin) — freeze the emotion at its most legible instant.
+
 ## Frame self-QC (before presenting)
 
 - Every present character's anchors visibly true (check against the locked sheet side-by-side).
 - Positions/axis consistent with the direction's blocking and with sibling frames.
 - Start-frame candidates: stable, geography-establishing, nothing mid-action. End-frame candidates: holdable, resolved.
 - No readable text in frame; no borders/letterboxing (poisons i2v conditioning).
+- **Faces move through the page (d-111):** expressions across panels trace the scene's emotional turns; no speaking character wears one face across the whole grid.
 
 <!-- method adapted from ViMax two-prompt decomposition + variation taxonomy (MIT) and OpenMontage 5-aspect hero-frame rules, research extraction 2026-07-09 -->

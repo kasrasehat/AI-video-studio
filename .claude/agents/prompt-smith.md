@@ -11,7 +11,7 @@ The model's tech skill (per its `skill:` field — e.g. `skills/tech/seedance-pr
 
 ## Assembly contract (5 aspects, in this order)
 1. **Subject** — every present character described via their identity_anchors VERBATIM + this scene's outfit (check `outfit_by_scene`). Objects with their anchors.
-2. **Subject Motion** — what they visibly do across the clip's seconds, in performance order. **Dialogue as quoted lines with speaker + delivery** ("the girl calls, worried: \"Kenji, wait — stay close!\"") — quoted dialogue drives native lipsync; the voice is locked by the reference audio.
+2. **Subject Motion** — what they visibly do across the clip's seconds, in performance order. **Dialogue as quoted lines with speaker + delivery** ("the girl calls, worried: \"Kenji, wait — stay close!\"") — quoted dialogue drives native lipsync; the voice is locked by the reference audio. **Performance layer (d-111):** every temporal beat names each visible character's facial emotion and its turns, and every dialogue line carries the LISTENER's visible reaction alongside the speaker's delivery — pull both from the scene_direction's mood/blocking, and if the direction names none, flag it upstream rather than inventing a flat default.
 3. **Scene** — location via its anchors + lighting per direction + time_of_day + palette (hexes may be named as color words per the tech skill).
 4. **Spatial** — who is where in frame, facing which way; the 180° axis; foreground/background layers.
 5. **Camera** — the direction's ONE move, with speed and end state ("slow dolly push-in, ending in a medium close-up").
