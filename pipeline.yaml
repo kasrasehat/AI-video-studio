@@ -156,7 +156,7 @@ stages:
     required_artifacts_in: [shot_selection, storyboard_set, lock_descriptors, asset_manifest, scene_list, scene_direction]
     checkpoint_required: true
     human_approval_default: true   # per scene batch
-    qa_loop: {agent: qc-critic, max_rounds: 3, blocking: true}
+    qa_loop: {agent: qc-critic, max_rounds: 3, blocking: true}   # d-114: qc-critic REPORTS only — every regen attempt requires the Director to check the clip and explicitly order it; max_rounds bounds Director-ORDERED regens, not autonomous ones
     parallel: {claude_subagent: prompt-smith, unit: clip, max_parallel: 4}
     resume_unit: clip
     review_focus:
