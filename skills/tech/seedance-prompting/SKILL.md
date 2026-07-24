@@ -32,6 +32,10 @@ Seedance does not reliably honor "no X" / "zero X" / "without X" clauses — a n
 - Reference-image conflicts are a SEPARATE failure mode from this one and need a different fix: if a locked reference image itself shows the thing being negated (e.g. a character sheet depicting an accessory the scene says is absent), no amount of prompt wording — positive or negative — reliably overrides it. See `skills/tech/character-sheets/SKILL.md`'s scene-conditional-accessories rule (d-098): fix the reference, not the words, when the conflict is visual.
 - On a `qc-critic` regen for a physical-content violation (smoke, debris, wrong prop, wrong material state): the `fix_directive` should propose a positive rewrite first, and only fall back to a stronger negative if no positive phrasing captures the constraint. If the defect persists after a positive rewrite, treat it as a possible model limitation for that effect and escalate rather than iterating on negative wording indefinitely.
 
+## Similes and metaphors literalize (BINDING — confirmed twice)
+
+Seedance renders comparisons as literal objects. "Dust motes drift overhead **like slow planets**" produced a banded Jupiter floating in the garage (S03); "inside the glass is a liquid amber **cathedral**" produced an actual gothic church interior with arched windows submerged in the lemonade (S05). Scene-direction prose is written for humans and full of these figures — NEVER carry them verbatim into a generation prompt. Translate every simile/metaphor into direct visual description before it ships: "sun refracting through the lemonade in tall shafts, bubbles as drifting gold sparks" renders the intended image; naming the thing it resembles renders the thing itself.
+
 ## Identity lock (BINDING — this is the consistency mechanism)
 
 - Reference images: locked character sheet views (2–3 per present character, view matched to facing direction) + locked environment plate + selected storyboard frames. ≤9 total — prioritize present-character sheets first.
