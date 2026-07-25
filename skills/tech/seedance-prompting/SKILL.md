@@ -90,6 +90,7 @@ For montage-type scenes, explicit blocks: `Shot 1 (wide establishing, slow push-
 | genre | optional cinematic hint (auto/action/horror/comedy/noir/drama/epic) — set from the brief's genre when it maps |
 | bitrate_mode | `high` for the final pick of a scene, `standard` otherwise |
 | medias[] roles | `start_image`, `end_image`, `image_references` (≤9 images total), `video_references` (≤3), `audio_references` = locked voice samples |
+| `end_image` caveat | **Steers, doesn't lock (confirmed S05B):** the clip arrived at the target's CONTENT (same location, same event, same palette) but not its framing — the final frame was a closer composition than the pinned image. Treat `end_image` as a strong destination hint; if a frame-exact join matters, plan to trim the tail or cut on action instead. `start_image` remains pixel-exact. |
 | get_cost | preflight `get_cost: true` before every batch and announce credits |
 
 `mode: fast` / the mini variant trade camera-motion fidelity for cost — never use them for slow-mo, multi-shot, or dolly-heavy prompts; they are for blockout drafts and QC retries. Record every job_id (and seed, where returned) in `generation_manifest`.
