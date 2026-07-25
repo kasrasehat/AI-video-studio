@@ -16,7 +16,7 @@
         "required": ["entry_id", "clip_ref", "order", "transition_out"],
         "properties": {
           "entry_id": { "type": "string", "minLength": 1 },
-          "clip_ref": { "type": "string", "pattern": "^S\\d{2,}_C\\d{2,}$" },
+          "clip_ref": { "type": "string", "pattern": "^S\\d{2,}[A-Z]?_C\\d{2,}$" },
           "in_s": { "type": "number", "minimum": 0, "description": "Trim-in within the clip (default 0)." },
           "out_s": { "type": "number", "exclusiveMinimum": 0, "description": "Trim-out within the clip (default clip end)." },
           "order": { "type": "integer", "minimum": 1 },

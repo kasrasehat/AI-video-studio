@@ -30,7 +30,7 @@
     "properties": {
      "scene_id": {
       "type": "string",
-      "pattern": "^S\\d{2,}$"
+      "pattern": "^S\\d{2,}[A-Z]?$"
      },
      "variants": {
       "type": "array",
@@ -74,7 +74,7 @@
           "properties": {
            "frame_id": {
             "type": "string",
-            "pattern": "^S\\d{2,}_[ABC]_F\\d{2,}$"
+            "pattern": "^S\\d{2,}[A-Z]?_[ABC]_F\\d{2,}$"
            },
            "shot_no": {
             "type": "integer",

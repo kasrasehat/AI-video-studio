@@ -14,7 +14,7 @@
         "type": "object",
         "required": ["clip_id", "attempt", "checks", "verdict"],
         "properties": {
-          "clip_id": { "type": "string", "pattern": "^S\\d{2,}_C\\d{2,}$" },
+          "clip_id": { "type": "string", "pattern": "^S\\d{2,}[A-Z]?_C\\d{2,}$" },
           "attempt": { "type": "integer", "minimum": 1 },
           "checks": {
             "type": "object",

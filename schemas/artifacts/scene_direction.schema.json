@@ -34,7 +34,7 @@
         "type": "object",
         "required": ["scene_id", "shot_framing", "camera_movement", "lighting", "blocking", "mood"],
         "properties": {
-          "scene_id": { "type": "string", "pattern": "^S\\d{2,}$" },
+          "scene_id": { "type": "string", "pattern": "^S\\d{2,}[A-Z]?$" },
           "shot_framing": { "type": "string", "minLength": 1, "description": "e.g. 'medium close-up, eye level, subject frame-left'." },
           "camera_movement": { "type": "string", "minLength": 1, "description": "ONE executable move per 15s clip, e.g. 'slow dolly-in 20cm'." },
           "lighting": { "type": "string", "minLength": 1 },
