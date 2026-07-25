@@ -33,6 +33,31 @@ Seedance does not reliably honor "no X" / "zero X" / "without X" clauses — a n
 - Reference-image conflicts are a SEPARATE failure mode from this one and need a different fix: if a locked reference image itself shows the thing being negated (e.g. a character sheet depicting an accessory the scene says is absent), no amount of prompt wording — positive or negative — reliably overrides it. See `skills/tech/character-sheets/SKILL.md`'s scene-conditional-accessories rule (d-098): fix the reference, not the words, when the conflict is visual.
 - On a `qc-critic` regen for a physical-content violation (smoke, debris, wrong prop, wrong material state): the `fix_directive` should propose a positive rewrite first, and only fall back to a stronger negative if no positive phrasing captures the constraint. If the defect persists after a positive rewrite, treat it as a possible model limitation for that effect and escalate rather than iterating on negative wording indefinitely.
 
+## Impact moves — the special-effects vocabulary (Director order d-120)
+
+Seedance executes in-camera effects well when they're directed as ONE named event, and they hit hardest when they're rare. The proven vocabulary:
+- **Speed ramp** — real-time ramping smoothly into super slow motion for one held close-up, then snapping back HARD and instantly (the S05A bubble beat; the reference-prompt butterfly). Always: one ramp, a named subject for the slow beat, an instant (never gradual) return.
+- **Freeze-and-orbit** — time stops entirely mid-action; the camera sweeps a smooth arc around the suspended subjects while particles (droplets, crumbs, sparks) hang crisp and individually readable; then time snaps back (the S05B frozen fall). Direct the frozen expressions explicitly — they're locked for the whole orbit.
+- **Masked reframe** — a whiteout/flash/occlusion fills the frame and hides a full camera repositioning inside one continuous clip (the S03 shrink hinge, the boarded S15 FOOM).
+- **Motivated emotional drift** — the d-118 push-in: the camera eases closer as an emotional beat lands (the S06 whisper).
+- **Rear chase lock** — the camera rides the subject's tail through an action sequence, world rushing past (the S05A ride, from the Director's reference).
+
+**The budget rule (BINDING): impact moves are spent, not sprinkled.** At most ONE per scene, reserved for the scene's peak moment, and neighboring scenes should not repeat the same move — a film that freezes time twice in three minutes has taught the audience the trick and lost it. The director role picks the moment; the prompt names exactly one effect and states its boundaries (what starts it, what ends it, what must stay crisp).
+
+## Named @asset handles (Director order d-120 — extends the d-106 @-mention rule)
+
+Asset names start with @ — that's the hook that pulls them straight into a prompt later. Beyond positional `@reference_image_N` tags, define memorable HANDLES for the production's recurring assets and bind each handle to its reference once in the references block, then use the handle everywhere:
+
+```
+ACTIVE REFERENCES
+@gramps: reference image 2 — his character sheet; 100% match, identical design every frame.
+@milo: reference image 3 — his character sheet; 100% match, same boy throughout.
+@cookie-sled: the bitten cookie chunk they ride; keeps its shape every frame.
+@stomach-cavern: reference image 4 — the location plate; the room must match it.
+```
+
+Then inline: `@gramps kneels at the rear, @milo up front`, `the camera orbits @milo and @gramps`, `the reveal matches @stomach-cavern`. Handles make long prompts readable, keep every mention consistently bound to its reference, and let a scene's cast be swapped by editing one block. Production handles are stable across scenes — reuse the same handle names film-wide so prompts can be assembled from parts.
+
 ## Similes and metaphors literalize (BINDING — confirmed twice)
 
 Seedance renders comparisons as literal objects. "Dust motes drift overhead **like slow planets**" produced a banded Jupiter floating in the garage (S03); "inside the glass is a liquid amber **cathedral**" produced an actual gothic church interior with arched windows submerged in the lemonade (S05). Scene-direction prose is written for humans and full of these figures — NEVER carry them verbatim into a generation prompt. Translate every simile/metaphor into direct visual description before it ships: "sun refracting through the lemonade in tall shafts, bubbles as drifting gold sparks" renders the intended image; naming the thing it resembles renders the thing itself.
