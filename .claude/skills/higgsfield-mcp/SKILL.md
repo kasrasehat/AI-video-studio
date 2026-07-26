@@ -46,6 +46,7 @@ Higgsfield Cloud is our generation gateway. Account: Ultimate plan, credits-base
 4. **Async jobs:** poll via `job_display`; record job_id + params + prompt in the producing artifact. A call that isn't recorded didn't happen.
 5. **Dry-run projects never touch this MCP.**
 6. **Failures:** transient → retry once; content-policy rejection → rephrase per model skill + decision-log it; `recovery_tool` in a response → call it immediately; repeated failure → surface to the Director. Never silently swap models.
+   - **Daily generation cap (confirmed 2026-07-26): `403 grace_daily_limit_reached`** — the Seedance backend enforces a per-day generation limit SEPARATE from the credit balance (hit with 2,699cr available after ~6 video generations that day). No job is created and no credits are spent. Not fixable by retrying immediately or by preflighting (`get_cost` still succeeds); it resets on the provider's daily boundary. Surface it to the Director, keep the assembled call intact, and retry later — do not silently swap to another model to dodge the cap (model choice is a Director decision).
 7. Prefer `count: 2` on image generations where the stage wants 2 variants (one call, two candidates).
 
 ## Verified model quick-reference (details in config/model_capabilities.yaml)
