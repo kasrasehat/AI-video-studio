@@ -35,6 +35,14 @@ Each clip's generation call is built from six inputs, looked up per scene — **
 - Consequence to respect: chained scenes must now be generated IN ORDER, each after its predecessor's clip is APPROVED (the chain input doesn't exist until then) — parallel clip generation only across hard-hinge groups.
 - Consequence to accept: the boarded panel-1 composition of a chained scene is advisory once the real last frame exists — the storyboard PAGE still rides along as an image_reference for beat staging, but the actual pixels of the cut come from the previous clip. If a predecessor's ending drifted from its board, the successor inherits the drift; catch it at the predecessor's QC, not the successor's.
 
+**Director-inserted scenes (mid-production; precedents S05A/S05B d-117/d-120, S09A d-130):** the Director may insert new scenes between existing ones at any point during stage 9. Scene ids take a letter suffix (`S09A` — the `[A-Z]?` schema extension covers this in all artifact schemas). The insertion protocol, in order:
+1. **Amend `scene_list.json` AND `scene_direction.json`** — archive both to `history/`, insert the full scene + direction entries at the correct position, bump `total_est_seconds`, validate both against their schemas. The inserted entries are written to the same field-completeness standard as original scenes (dialogue with delivery, continuity_notes, negative_notes, transition hints) — they are canon from that moment.
+2. **Log the insertion** as its own decision id (`--decided-by` the Director) before generating anything.
+3. **No storyboard page exists** for an inserted scene — it skips stage 8. The references block is built per d-127 from what IS attached (chain frame, character sheets, location plate); do not fabricate a page reference or borrow another scene's.
+4. **Chain/hinge decision is explicit:** prefer chaining from the neighbor's approved last frame when the location and moment continue (S05B, S09A); use a generated/derived start frame or run frame-free only when the inserted scene breaks location. State the choice in the gate message.
+5. The neighboring scenes' `transition_out_hint`/entry expectations may need touching — check the scene AFTER the insertion still cuts correctly from the new clip's ending, and flag any mismatch to the Director rather than silently regenerating.
+6. Everything else is unchanged: cost preflight + announcement, per-clip Director gate (d-114), manifest recording, effects budget (max one impact move, never repeating a neighbor's).
+
 ## Generation, QC loop, gate
 
 1. Preflight (`get_cost:true`), announce, generate via the model's MCP call. Poll `job_display` to completion; download; record `job_id`, `output_path`, actual cost in `generation_manifest`.
