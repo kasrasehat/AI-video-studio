@@ -43,6 +43,20 @@ Each clip's generation call is built from six inputs, looked up per scene — **
 5. The neighboring scenes' `transition_out_hint`/entry expectations may need touching — check the scene AFTER the insertion still cuts correctly from the new clip's ending, and flag any mismatch to the Director rather than silently regenerating.
 6. Everything else is unchanged: cost preflight + announcement, per-clip Director gate (d-114), manifest recording, effects budget (max one impact move, never repeating a neighbor's).
 
+## Orchestration decomposition (Director order d-137 — the four-part split)
+
+Stage 9 runs as a main agent + up to three subagents. The split exists for token economy and role clarity; every rule above and below binds ALL parts.
+
+**Part 1 — Main agent (executive producer).** Reads THIS skill, `pipeline.yaml`, and checkpoint state — and nothing else: NOT the project artifacts, NOT the tech skills (the producer's domain). Duties: resume via `checkpoint.py next`; sequence scenes using the previous producer report's NEXT SCENE RECOMMENDATION (chain vs hinge); announce the estimated cost and obtain the Director's go BEFORE invoking the producer; invoke `clip-producer` with the clip brief; forward the producer's report to the Director at the gate and END TURN (d-114); on the verdict: log the gate decision (`log-decision`, category `gate_approval`), flip the manifest status pending→generated→approved is the producer's/its own split (producer writes through `generated`; main flips to `approved`/`qc_failed` on the Director's word), checkpoint `--unit-done`; invoke the optional parts ONLY when the Director asks.
+
+**Part 2 — `clip-producer` subagent (one invocation = one attempt).** End-to-end generation per `.claude/agents/clip-producer.md`: reads the tech skills + per-scene artifact SLICES itself, builds the d-127 reference map, assembles the prompt, uploads/collects references, preflights against the authorized cost, generates (preset-decline retry, daily-cap stop), records the manifest entry, downloads, extracts last frame + stills, verifies frame-0 chain, returns the structured report. Never regenerates, never gates, never checkpoints.
+
+**Part 3 — `clip-evaluator` subagent (OPTIONAL — skipped unless the Director asks).** Deep QC per `.claude/agents/clip-evaluator.md`: receives the clip path + the producer's LAWS block IN THE BRIEF (reads no scene artifacts), verifies at native resolution, writes `clip_qc_report`, returns a recommendation-only verdict (d-114). When skipped, the producer's stills + the Director's own viewing ARE the QC — same as the pre-d-137 flow.
+
+**Part 4 — `virality-checker` subagent (OPTIONAL — skipped unless the Director asks).** Per `.claude/agents/virality-checker.md`: informational virality score on a completed job_id, cost-delta verified, never gates anything. Virality is explicitly OUT of the standard pipeline (Director ruling 2026-07-27).
+
+**Token-economy contract (binding):** each document has ONE reader. Main: stage-9 skill + pipeline + checkpoints + reports. Producer: tech skills + prompt-smith + per-scene slices + capabilities yaml. Evaluator: qc-critic.md + the brief. Nobody reads whole artifact JSONs into context — per-scene python slices only. Data flows forward in briefs and reports, never by a second reader re-opening the source. Subagents are stateless: each spawn re-reads its instruction files (there is no cross-invocation cache — keep those files tight); within one spawn, nothing is read twice.
+
 ## Generation, QC loop, gate
 
 1. Preflight (`get_cost:true`), announce, generate via the model's MCP call. Poll `job_display` to completion; download; record `job_id`, `output_path`, actual cost in `generation_manifest`.
