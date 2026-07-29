@@ -156,14 +156,15 @@ stages:
     required_artifacts_in: [shot_selection, storyboard_set, lock_descriptors, asset_manifest, scene_list, scene_direction]
     checkpoint_required: true
     human_approval_default: true   # per scene batch
-    qa_loop: {agent: qc-critic, max_rounds: 3, blocking: true}   # d-114: qc-critic REPORTS only — every regen attempt requires the Director to check the clip and explicitly order it; max_rounds bounds Director-ORDERED regens, not autonomous ones
-    parallel: {claude_subagent: prompt-smith, unit: clip, max_parallel: 4}
+    qa_loop: {agent: clip-evaluator, max_rounds: 3, blocking: false, optional: true}   # d-137: evaluator runs ONLY on Director request; d-114: findings REPORT only — every regen attempt requires the Director to check the clip and explicitly order it; max_rounds bounds Director-ORDERED regens, not autonomous ones
+    parallel: {claude_subagent: clip-producer, unit: clip, max_parallel: 1}   # d-137: producer is end-to-end per clip (folds prompt-smith); d-112 chaining forces sequential generation within a chain group — parallelism only across hard-hinge groups, and each clip still gates before the next (d-114)
+    optional_subagents: [clip-evaluator, virality-checker]   # d-137 parts 3-4, skipped unless the Director asks; virality is out-of-pipeline (Director ruling 2026-07-27)
     resume_unit: clip
     review_focus:
       - Model chosen via config/model_capabilities.yaml; DIALOGUE SCENES ONLY on models satisfying policy.dialogue_scene_requires
       - Every prompt embeds identity anchors verbatim, quoted dialogue lines, 200–400 words (Seedance)
-      - References threaded — locked sheets/plates (≤9 images), start/end frames, locked voice reference_audio for every speaker
-      - qc-critic checked identity, continuity and lipsync per clip; regen ≤3 attempts with fix_directive
+      - References threaded — locked sheets/plates (≤9 images), start frame @-named per d-124/d-127, locked voice reference_audio for every speaker
+      - Every generated clip presented at the per-clip Director gate with the producer report; evaluator (when requested) checked identity/continuity/lipsync with native-res verification
     success_criteria:
       - Schema-valid generation_manifest + clip_qc_report
       - Every clip status == approved (QC pass + Director batch approval)

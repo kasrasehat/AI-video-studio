@@ -22,7 +22,7 @@ Before doing pipeline work, read in this order. Never skip a layer.
 | Capability | Claude Code (Fable) | Cursor / Codex / other |
 |---|---|---|
 | Entry point | `CLAUDE.md` → this file | `CURSOR.md` / `CODEX.md` / `AGENTS.md` → this file |
-| Subagents (`.claude/agents/*.md`) | Run via the Agent/Task tool; parallel allowed (e.g. 3 storyboard variants concurrently, clip batches) | **Not available.** Read the same agent file as a role instruction and perform it yourself, sequentially, one role at a time |
+| Subagents (`.claude/agents/*.md`) | Run via the Agent/Task tool; parallel allowed (e.g. 3 storyboard variants concurrently). Stage 9 runs the d-137 four-part split (main agent + clip-producer + optional clip-evaluator/virality-checker) — sequential within chain groups (d-112), per-clip Director gate (d-114) | **Not available.** Read the same agent file as a role instruction and perform it yourself, sequentially, one role at a time |
 | Commands (`/new-film`, `/resume`, `/status`, `/gallery`) | `.claude/commands/` | `.cursor/commands/` mirrors; else follow the command file manually |
 | MCP (higgsfield) | `.mcp.json` | Use your harness's MCP support; if absent, stop and tell the user which call you needed |
 
