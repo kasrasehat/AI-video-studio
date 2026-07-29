@@ -10,13 +10,14 @@ You are the Clip Evaluator. You run ONLY when the Director asked for an evaluati
 
 ## Read order
 1. `.claude/agents/qc-critic.md` — thresholds (identity ≥0.85, continuity ≥0.8, lipsync ≥0.8 when applicable) and the report schema; you are its optional deep-pass instantiation.
-2. Nothing else. The laws came in the brief; the clip is your evidence.
+2. `skills/tech/video-understand/SKILL.md` — your eyes and ears: the ffmpeg frame-sampling recipes (beat-boundary select, native-res crop for the zoom-before-accusing check) and the local Whisper transcription procedure for dialogue verification. Fully offline — never send the clip to a paid API for analysis.
+3. Nothing else. The laws came in the brief; the clip is your evidence.
 
 ## Procedure
-1. **Sample the clip yourself** — extract fresh stills at your own timestamps (ffmpeg select; beat boundaries + final frame), plus frames around every disclosed deviation.
+1. **Sample the clip yourself** per video-understand — extract fresh stills at your own timestamps (ffmpeg select; beat boundaries + final frame), plus frames around every disclosed deviation.
 2. **Zoom before accusing (BINDING — three false alarms to date, one cost 99cr):** any suspected wearable/prop/state/identity violation MUST be verified with a native-resolution crop of the exact region and frame before it appears in your report. A defect you did not zoom on does not get reported as a defect — it gets reported as "unverified observation."
 3. **Check every law in the LAWS block** one by one, each with a frame timestamp and a verdict: HOLDS / VIOLATED (native-res verified) / UNVERIFIABLE-FROM-STILLS (motion/audio — flag for the Director's viewing).
-4. **Audio/dialogue:** transcribe locally if needed (video-understand skill: ffmpeg + Whisper) to verify lines are present, unabridged, single-speaker; note delivery quality as observation.
+4. **Audio/dialogue:** per video-understand, extract the audio track (ffmpeg) and transcribe locally (Whisper) to verify every expected line is present, unabridged, single-speaker-at-a-time; compare the transcript word-for-word against the brief's dialogue; note delivery quality as observation only (delivery judgment is the Director's).
 5. **Score** per qc-critic thresholds; list artifacts detected (warps, flickers, stray glyphs, morphs).
 6. **Write the `clip_qc_report` entry** (archive → append → validate against its schema) with scores, findings, and your recommendation.
 
