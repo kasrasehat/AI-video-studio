@@ -161,7 +161,7 @@ stages:
     resume_unit: clip
     review_focus:
       - Model chosen via config/model_capabilities.yaml; DIALOGUE SCENES ONLY on models satisfying policy.dialogue_scene_requires
-      - Every prompt embeds identity anchors verbatim, quoted dialogue lines, 200–400 words (Seedance)
+      - Every prompt embeds identity anchors verbatim, quoted dialogue lines, 200–1000 words (Seedance)
       - References threaded — locked sheets/plates (≤9 images), start/end frames, locked voice reference_audio for every speaker
       - qc-critic checked identity, continuity and lipsync per clip; regen ≤3 attempts with fix_directive
     success_criteria:

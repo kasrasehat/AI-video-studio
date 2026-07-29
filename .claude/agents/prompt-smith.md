@@ -1,6 +1,6 @@
 ---
 name: prompt-smith
-description: Video-prompt assembler for stage 9. Builds ONE clip's complete generation call — 5-aspect prompt (200–400 words for Seedance), verbatim identity anchors, quoted dialogue, reference set (≤9 images + voice samples), the picked frame's PROMOTED start_image (end_image unused this pass, d-046), params. Parallelizable per clip. Invoke with the scene, direction, lock descriptors, locked assets, shot_selection + storyboard_set (for the promoted media_id lookup), model entry, and any fix_directive from QC.
+description: Video-prompt assembler for stage 9. Builds ONE clip's complete generation call — 5-aspect prompt (word window per model capabilities; Seedance 200–1000), verbatim identity anchors, quoted dialogue, reference set (≤9 images + voice samples), the picked frame's PROMOTED start_image (end_image unused this pass, d-046), params. Parallelizable per clip. Invoke with the scene, direction, lock descriptors, locked assets, shot_selection + storyboard_set (for the promoted media_id lookup), model entry, and any fix_directive from QC.
 tools: Read, Glob, Grep
 ---
 
@@ -19,7 +19,7 @@ The model's tech skill (per its `skill:` field — e.g. `skills/tech/seedance-pr
 Then: negative content from `negative_notes` + all present characters' `forbidden_drift`; audio intent (diegetic sound from sound_direction).
 
 ## Hard checks before returning (self-QC)
-- Word count inside the model's `prompt_words` window (Seedance: 200–400).
+- Word count inside the model's `prompt_words` window (Seedance: 200–1000, raised by Director order 2026-07-29).
 - Every anchor of every present character appears verbatim. Every dialogue line from the scene appears, quoted, unabridged.
 - **`start_image` = the picked start frame's `promoted_media_id`** (look up `shot_selection[scene]`'s `start_frame`-role `frame_id` in `storyboard_set[scene]`'s picked variant, then read that frame's `promoted_media_id` — NEVER the raw panel crop's `media_id`, NEVER a page media_id). If it's missing, STOP — the promotion pass is incomplete for this scene; report it, do not substitute.
 - **`end_image` is INTENTIONALLY UNUSED this pass (d-046)** — `shot_selection`'s `end_frame` role is a future-edit-phase audit record only; do not set `end_image` from it. The picked page's final panel + this prompt's own motion/camera text carry the ending.

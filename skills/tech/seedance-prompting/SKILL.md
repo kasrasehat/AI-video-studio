@@ -7,9 +7,9 @@ description: Prompt engineering for Seedance 2.0 — our primary video model (na
 
 Seedance 2.0 (ByteDance) is this pipeline's default video model: single-pass native synced audio (speech + SFX + ambience), lipsync from quoted dialogue, multi-shot inside one generation, director-level camera control, and reference conditioning of up to **9 images + 3 video clips + 3 audio clips**. Max clip 15s (our scene unit), 4–15s range, aspects 21:9/16:9/9:16/4:3/1:1. Access is via the Higgsfield MCP (`skills/tech/higgsfield-mcp`); routing/capabilities live in `config/model_capabilities.yaml`.
 
-## The prompt contract (200–400 words)
+## The prompt contract (200–1000 words — Director order 2026-07-29, raised from 200–400)
 
-Seedance rewards structured density: 200–400 words, every one earning its place. Assemble in this order — it is the 5-aspect formula with Seedance's 8 components folded in:
+Seedance rewards structured density: 200–1000 words, every one earning its place. The raised ceiling buys room for the reference blocks, per-beat state restatement and performance layers the binding rules require — it is NOT license for padding: stop when every law is stated once per beat. Assemble in this order — it is the 5-aspect formula with Seedance's 8 components folded in:
 
 1. **Format declaration (first line).** Declare the shot structure before any creative text: `Single continuous shot, medium close-up, slow dolly push-in, photorealistic, 35mm film grain.` — or for multi-beat scenes a shot-block plan (below). Never open with story prose.
 2. **Subject** — every present character via their `lock_descriptors.identity_anchors` VERBATIM + this scene's outfit. Key objects with their anchors.

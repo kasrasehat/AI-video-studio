@@ -28,7 +28,7 @@ video_models:
     resolutions: [480p, 720p, 1080p, 4k]   # 1080p/4k require mode std
     params: {mode: [std, fast], bitrate_mode: [standard, high], genre: [auto, action, horror, comedy, noir, drama, epic]}
     aspects: ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"]
-    prompt_words: [200, 400]
+    prompt_words: [200, 1000]
     skill: seedance-prompting
     use_for: [dialogue, action, establishing]
 
@@ -43,7 +43,7 @@ video_models:
     duration_seconds: {min: 4, max: 15}
     resolutions: [480p, 720p]
     aspects: ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"]
-    prompt_words: [200, 400]
+    prompt_words: [200, 1000]
     skill: seedance-prompting
     use_for: [drafts, qc_retries, storyboard_previews]
 
