@@ -56,4 +56,20 @@ A page is a performance, not a pose repeated N times. Each panel's prompt names 
 - No readable text in frame; no borders/letterboxing (poisons i2v conditioning).
 - **Faces move through the page (d-111):** expressions across panels trace the scene's emotional turns; no speaking character wears one face across the whole grid.
 
-<!-- method adapted from ViMax two-prompt decomposition + variation taxonomy (MIT) and OpenMontage 5-aspect hero-frame rules, research extraction 2026-07-09 -->
+## V2 additions (Director passage 2026-07-30 — apply from production V2 onward; V1 rules above stay binding for V1)
+
+Adopted from the Director's "AI Storyboard Prompt Builder" passage. These extend the V1 method; where the passage contradicted a V1 binding rule, the conflict is listed at the end for a joint Director decision, NOT silently applied.
+
+1. **Per-panel spec, extended.** Every panel's description in the page prompt carries seven fields: panel number · **time position** (its start second within the scene, from the duration allocation — stated in the JSON artifact and the page prompt text, still never printed ON the image) · camera angle · main action · character expressions · important environment details · **emotional focus** (the one feeling this panel must transmit). V1 had the first five implicitly; time-position and emotional-focus are now explicit slots.
+2. **Shot-type mixing, reconciled with camera economy.** Draw from the full menu — wide, medium, close-up, low angle, high angle, over-the-shoulder, dynamic action — and avoid repeating the same composition in consecutive panels **when the beat motivates a change**. The V1 economy rule still governs: a new angle needs a reason; the menu tells you what to reach for when the reason exists (a reveal, a reaction, a scale gag), not license to reroll angles per panel.
+3. **Whole-story pre-board (NEW V2 artifact, optional).** Before per-scene pages, one 3×5 (15-panel) single-image board of the ENTIRE film — introduction, inciting event, rising action, emotional moments, climax, ending — cinematic 16:9 panels, conditioned on the locked sheets. Used at the story/direction gates as a cheap whole-arc visualization; per-scene pages remain the video-conditioning authority.
+4. **One continuous page prompt + declared assumptions.** The page prompt is ONE polished continuous prompt (never per-panel fragments stitched loosely), and any assumption made about style or missing detail is stated to the Director alongside the generation — not silently embedded.
+5. **Story auto-expansion guard.** If a scene's direction under-specifies beats for its grid size, expand from the scene's dramatic function (never invent plot) and DECLARE the expansion at the gate.
+6. **Character-analysis preamble.** Before boarding, restate each present character's identity from the locked sheet in short form inside the page prompt (the passage's "short but detailed character descriptions") — V1 already does this via identity_anchors; V2 keeps anchors verbatim AND binds each to its reference image number.
+
+### V2 conflicts held for Director decision (do NOT apply until ruled)
+- **Text on pages:** the passage wants timeline indicators + small production notes printed on the storyboard sheet; V1 law (d-043/d-044) forbids all on-page text except frame numbers because pages condition the video model and text poisons it. Options: (a) keep V1 no-text law; (b) two renders per page — an annotated presentation copy for humans + a clean copy for conditioning.
+- **Default grid:** passage defaults 15 panels / 3×5 / 15s for a whole story; V1 sizes grids per scene by beat count (2×2 / 3×3 / 4×4). Adopted above as an OPTIONAL whole-film pre-board (item 3) rather than a replacement — confirm or override.
+- **Sheet annotations:** the turnaround passage wants NO text/labels on reference sheets; V1 character sheets carry small text annotations (and they've conditioned well). Options: (a) keep annotations; (b) V2 sheets clean + annotations in a separate human-only copy.
+
+<!-- method adapted from ViMax two-prompt decomposition + variation taxonomy (MIT) and OpenMontage 5-aspect hero-frame rules, research extraction 2026-07-09; V2 additions from the Director's Character Turnaround / Storyboard Prompt Builder passage, 2026-07-30 -->

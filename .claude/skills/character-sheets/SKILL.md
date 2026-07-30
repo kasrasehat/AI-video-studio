@@ -32,7 +32,18 @@ A picture always beats a text negative. If a character's sheet shows an accessor
 4. **If the minority/majority split is closer to even** (roughly 40/60 or beyond), skip step 2's asymmetric approach — generate two full peer sheets from the start (with-accessory / without-accessory) and pick the scene's reference by state, no derived-asset step needed.
 5. This applies to discrete ADD/REMOVE accessories (bracelet, held prop, hat). Full-body MATERIAL/texture states across many scenes (soaked vs dry) are a different, likely more disruptive class — if a similar reference-vs-text conflict shows up there, treat it the same way (majority-state default sheet + a derived wet/dry variant for the minority) rather than fighting it with negatives alone.
 
-## Location sheet — ONE image containing:
+## V2 additions (Director passage 2026-07-30 — apply from production V2 onward; V1 sheets stay locked as-is)
+
+**Turnaround view set (V2 default for character sheets).** The four canonical views, replacing V1's three-quarter-heavy trio:
+1. **Full Body Front** — slight three-quarter front, entire body head to toe.
+2. **Full Body Back** — straight rear view, full body. (NEW vs V1 — V1 sheets had no back view, which forced the video model to invent rear hair/outfit details whenever a character turned away. Board it in.)
+3. **Front Portrait** — detailed head-and-shoulders front: facial features, hair, textures, upper clothing.
+4. **Side Portrait** — head-and-shoulders left profile (true 90°), neck and upper shoulders included.
+Layout rules: same character identical across all views (face, proportions, hairstyle, outfit, colors, accessories); **neutral grey studio background** (V2 default over V1's white — grey conditions more neutrally and reads texture better); clean balanced studio lighting, soft shadows, realistic material textures; symmetrical layout, equal spacing; **no props, no extra characters, no logos/watermarks**.
+
+**Object/prop reference sheets (V2 — formalizes what V1 did ad hoc for the Minimizer/bracelet/cookie).** One image, four studio views on neutral grey: Front (main design), Rear, 90° Side (thickness/profile), and a **Close-Up Detail of the object's most identity-critical feature** (the dial face, the trigger, the bitten edge). Identical design/proportions/colors/materials across views; realistic textures and material-true reflections; no hands, packaging, or extra objects.
+
+
 
 1. **Main establishing view** from the location's declared camera axis (the largest panel).
 2. **2–3 alternate angles** (reverse angle, opposite end, or a high overview) so downstream stages know the geography from more than one side.
