@@ -41,6 +41,8 @@ A picture always beats a text negative. If a character's sheet shows an accessor
 4. **Side Portrait** — head-and-shoulders left profile (true 90°), neck and upper shoulders included.
 Layout rules: same character identical across all views (face, proportions, hairstyle, outfit, colors, accessories); **neutral grey studio background** (V2 default over V1's white — grey conditions more neutrally and reads texture better); clean balanced studio lighting, soft shadows, realistic material textures; symmetrical layout, equal spacing; **no props, no extra characters, no logos/watermarks**.
 
+**Annotations (Director ruling C, 2026-07-30 — d-143):** V2 sheets KEEP the V1 annotation style — small clean text labels calling out identity anchors and features. The source passage's "no text/labels" rule is not adopted for sheets.
+
 **Object/prop reference sheets (V2 — formalizes what V1 did ad hoc for the Minimizer/bracelet/cookie).** One image, four studio views on neutral grey: Front (main design), Rear, 90° Side (thickness/profile), and a **Close-Up Detail of the object's most identity-critical feature** (the dial face, the trigger, the bitten edge). Identical design/proportions/colors/materials across views; realistic textures and material-true reflections; no hands, packaging, or extra objects.
 
 
