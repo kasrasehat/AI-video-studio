@@ -1,0 +1,70 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "platform": "youtube",
+  "thumbnail": {
+    "concepts": [
+      {
+        "concept_id": "TH01",
+        "strategy": "Emotion close-up: Mira's face huge in frame at peak shock, rim-lit against a dark cool background.",
+        "curiosity_hook": "What did she just see that scared her this badly?",
+        "prompt": "YouTube thumbnail, 16:9, designed to read at small size. One idea: Mira's face fills the right two-thirds of frame, eyes wide, mouth open mid-gasp. Mira's appearance follows @reference_image_1 (locked character sheet: red curly hair, green rain jacket, freckles). Simplified deep-blue background with a faint market-lane silhouette. Strong warm key light from the left, bright rim light separating her from the background. Bold yellow block letters with black outline, upper left: \"SHE SAW IT\". Stylized 3D family-film look, contrast pushed 20% beyond the film grade. Camera: straight-on portrait, no motion blur.",
+        "on_image_text": "SHE SAW IT",
+        "refs_used": ["CH01", "b4b00000-0000-0000-0000-000000000001"],
+        "model": "gpt_image_2",
+        "params": { "quality": "high", "resolution": "2k", "aspect_ratio": "16:9" },
+        "media_id": "aaaa1111-2222-3333-4444-555566667777",
+        "image_path": "assets/publishing/TH01_thumbnail.png",
+        "cost_credits": 4.0,
+        "status": "approved",
+        "qc_notes": "Stamp test pass at 168x94; text spelled correctly; identity matches locked sheet."
+      },
+      {
+        "concept_id": "TH02",
+        "strategy": "Scale contrast: tiny Mira standing on a giant apple, stall keeper's hand reaching in from frame right.",
+        "curiosity_hook": "How did she end up three inches tall on someone's fruit stand?",
+        "prompt": "YouTube thumbnail, 16:9, designed to read at small size. One idea: a tiny girl stands on top of an enormous glossy red apple, dwarfed by it. Mira's appearance follows @reference_image_1 (locked character sheet: red curly hair, green rain jacket, freckles). A giant blurred hand enters from frame right. Simplified warm marketplace color field behind, no clutter. Bright rim light on Mira. No on-image text. Stylized 3D family-film look, high saturation, strong silhouette. Straight-on medium shot, no motion blur.",
+        "on_image_text": "",
+        "refs_used": ["CH01"],
+        "model": "gpt_image_2",
+        "params": { "quality": "high", "resolution": "2k", "aspect_ratio": "16:9" },
+        "status": "rejected",
+        "qc_notes": "Director preferred TH01's face-forward pull."
+      }
+    ],
+    "selected_concept_id": "TH01",
+    "delivery_path": "renders/thumbnail_1280x720.png"
+  },
+  "metadata": {
+    "title_options": [
+      {
+        "title": "She Shrunk at the Market — And No One Noticed",
+        "angle": "Curiosity gap: opens the how/why question without resolving it; front-loads the hook verb.",
+        "char_count": 44
+      },
+      {
+        "title": "A Tiny Girl's Big Day at the Market",
+        "angle": "Search-keyword angle: plain-language phrase families actually type; warmer, lower CTR ceiling.",
+        "char_count": 35
+      }
+    ],
+    "selected_title": "She Shrunk at the Market — And No One Noticed",
+    "description": {
+      "hook_first_125": "One ordinary market morning. One impossible shrink. Mira has until closing time to get big again — nobody believes her.",
+      "full_text": "One ordinary market morning. One impossible shrink. Mira has until closing time to get big again — and nobody believes a three-inch girl. A stylized 3D animated short film about courage at a very small scale, made for families. Watch Mira navigate towering fruit stalls, dodge shopping baskets, and find help in the least likely place. If you enjoyed this adventure, subscribe for the next short film. #animation #shortfilm #familymovie",
+      "chapters": [
+        { "timecode": "0:00", "label": "Market morning" },
+        { "timecode": "1:05", "label": "The shrink" },
+        { "timecode": "2:40", "label": "Closing time" }
+      ],
+      "cta": "Subscribe for the next short film adventure."
+    },
+    "hashtags": ["#animation", "#shortfilm", "#familymovie", "#pixarstyle", "#aifilm"],
+    "tags": ["animated short film", "family animation", "girl shrinks story", "3d animation short", "market adventure"],
+    "category": "Film & Animation",
+    "made_for_kids": false,
+    "pinned_comment": "If YOU were three inches tall for one day, where would you explore first?",
+    "end_screen_note": "Point end screen to the channel's previous short."
+  },
+  "notes": "Fixture sample for schema tests."
+}

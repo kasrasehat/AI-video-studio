@@ -13,6 +13,7 @@ AGENTS_DIR = lib.ROOT / ".claude" / "agents"
 EXPECTED_AGENTS = {
     "writer", "refiner", "scene-splitter", "director", "qa-reviewer",
     "descriptor-extractor", "storyboard-artist", "prompt-smith", "qc-critic",
+    "thumbnail-artist", "youtube-strategist",
 }
 EXPECTED_COMMANDS = {"new-film.md", "resume.md", "status.md"}
 

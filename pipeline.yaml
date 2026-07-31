@@ -6,7 +6,7 @@ name: film
 version: "1.0"
 description: >
   Story idea → 2–7 minute film with on-screen speaking characters, assembled from
-  ≤15-second AI clips. Ten stages, full Director gates, consistency enforced via
+  ≤15-second AI clips. Eleven stages, full Director gates, consistency enforced via
   locked descriptors + reference assets threaded through every generation call.
 
 orchestration:
@@ -185,3 +185,22 @@ stages:
     success_criteria:
       - Schema-valid edit_decisions + render_report; ffprobe_ok true for every output
       - render_report.final_qc.verdict == pass
+
+  # ── Publishing ─────────────────────────────────────────────────────────────
+  - name: publishing
+    title: Publishing kit (thumbnail + metadata)
+    skill: skills/stages/11-publishing-director.md
+    produces: [publishing_kit]
+    required_artifacts_in: [brief, story, scene_list, asset_manifest, render_report]
+    checkpoint_required: true
+    human_approval_default: true   # Director approves the thumbnail AND all copy; nothing is posted by Claude
+    parallel: {claude_subagent: thumbnail-artist, unit: concept, max_parallel: 2}
+    resume_unit: concept
+    review_focus:
+      - Thumbnail concepts follow skills/tech/thumbnail-design — one curiosity strategy each, prompts SAVED in the artifact BEFORE generation (d-114 gates every paid call)
+      - Characters in the thumbnail conditioned on LOCKED sheets (@-named references, anchors verbatim), never text alone
+      - Metadata per skills/tech/youtube-publishing — title options with distinct angles, standalone 125-char hook, ≤15 hashtags, title never echoing the on-image text
+      - made_for_kids and platform flags presented as explicit Director decisions, never defaulted
+    success_criteria:
+      - Schema-valid publishing_kit with selected_concept_id, selected_title, and an upload-ready delivery_path
+      - Every generated thumbnail passed the 168x94 stamp-legibility QC and identity check against locked sheets
