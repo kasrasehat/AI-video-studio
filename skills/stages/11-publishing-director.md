@@ -1,11 +1,11 @@
 # Publishing Director — stage 11
 
-Turn the finished film into a post that gets clicked: thumbnail + title + description + hashtags/tags + platform settings, packaged as `artifacts/publishing_kit.json`. Created by Director order 2026-07-31. Runs AFTER integration (the cut's runtime and chapters feed the metadata), though thumbnail concept work may be prepared earlier since it conditions on locked assets, not the render.
+Turn the finished film into a post that gets clicked: thumbnail + trailer + title + description + hashtags/tags + platform settings, packaged as `artifacts/publishing_kit.json`. Created by Director order 2026-07-31 (trailer added same day — the thumbnail-artist carries BOTH visual-marketing tasks). Runs AFTER integration (the cut's runtime and chapters feed the metadata), though thumbnail/trailer concept work may be prepared earlier since it conditions on locked assets and approved clips, not the final render.
 
 ## IO contract (from pipeline.yaml)
-- Consumes: `brief`, `story`, `scene_list`, `asset_manifest`, `render_report`.
+- Consumes: `brief`, `story`, `scene_list`, `asset_manifest`, `generation_manifest`, `render_report`.
 - Produces: `artifacts/publishing_kit.json`.
-- Gate: the Director approves the selected thumbnail AND the copy. Claude never uploads or posts anything — the kit is a hand-off.
+- Gate: the Director approves the selected thumbnail, the trailer, AND the copy. Claude never uploads or posts anything — the kit is a hand-off.
 
 ## Standing laws that bind here
 - **d-114 extends to every paid call:** thumbnail prompts are written and SAVED first; generation only on the Director's explicit go, one concept at a time if the Director so chooses.
@@ -18,6 +18,12 @@ Turn the finished film into a post that gets clicked: thumbnail + title + descri
 1. EP assigns 2–3 curiosity strategies from `skills/tech/thumbnail-design/SKILL.md` (e.g. emotion-close-up vs scale-contrast vs mid-action freeze) — one per artist instance, genuinely different ideas, variant discipline as everywhere.
 2. Each artist reads the film artifacts, finds its strategy's best moment, writes curiosity_hook + the COMPLETE gpt_image_2 prompt (on-image text allowed, ≤4 words, quoted verbatim — Director order 2026-07-31), returns a `concepts[]` entry with status `proposed`. **Prompts are saved into the artifact BEFORE any generation.**
 3. Present the concepts on paper (strategy, hook, prompt summary, text, cost preflight) → **Director picks which to generate** → generate → QC per the skill (168×94 stamp test, native-res zoom, text spelling, identity vs locked sheets) → present images → **Director approves one** → `selected_concept_id`, downscale/export the 1280×720 `delivery_path`.
+
+## Track R — Trailer (`thumbnail-artist` subagent, task "trailer")
+
+1. The artist reads story + scene_list + the approved clip ledger and designs the teaser per `skills/tech/trailer-design/SKILL.md`: spoiler law applied first (resolution beats named and excluded, recorded in `spoiler_check`), three-movement structure (cold-open hook / accelerating escalation / cliffhanger + title card), 15–30s, every beat working muted. The trailer opens the SAME curiosity question as the selected thumbnail — the two are one campaign.
+2. The plan lands in `publishing_kit.trailer` (beats cut-list, title_card method, music_note) with status `proposed` → **Director approves the plan on paper** (free until here).
+3. Assembly: ffmpeg re-edit of approved clips (zero credits — hard cuts only, loudness-normalized). A `generated_image` title card is the only possible spend: prompt saved first, cost preflighted, Director gates (d-114). Three-way QC (full / muted / first-3s) + spoiler re-check → present the cut → **Director approves** → status `approved`, output_path recorded; optional 9:16 vertical variant on Director request.
 
 ## Track M — Metadata (`youtube-strategist` subagent, after or alongside Track T)
 
@@ -35,3 +41,4 @@ Merge both tracks into `publishing_kit.json` (schema `publishing_kit`), validate
 - Title echoing the on-image text — the pair must add up, not repeat.
 - 16 hashtags (YouTube ignores ALL above 15), hook_first_125 that reads like a summary, chapters that drift from the real cut.
 - Treating the thumbnail as a pretty film still instead of a curiosity machine — the stamp-size test is the arbiter, not full-size beauty.
+- A trailer that resolves its own tension (spoiler law), uses crossfades (cuts only), or fails muted — most feed viewers never hear it.

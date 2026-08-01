@@ -35,6 +35,22 @@
     "selected_concept_id": "TH01",
     "delivery_path": "renders/thumbnail_1280x720.png"
   },
+  "trailer": {
+    "curiosity_hook": "How did she end up three inches tall — and can she get big again before closing time?",
+    "target_runtime_s": 20,
+    "beats": [
+      { "order": 1, "clip_ref": "S05_C01", "in_s": 2.0, "out_s": 4.5, "why": "Hook: the shrink instant, cold open." },
+      { "order": 2, "clip_ref": "S08_C01", "in_s": 1.0, "out_s": 3.0, "why": "Escalation: sprint between stall legs." },
+      { "order": 3, "clip_ref": "S11_C01", "in_s": 4.0, "out_s": 5.5, "why": "Escalation: the basket nearly lands on her." },
+      { "order": 4, "clip_ref": "S13_C01", "in_s": 0.5, "out_s": 1.5, "why": "Cliffhanger: mid-leap toward the scale, unresolved." }
+    ],
+    "spoiler_check": "Excluded S14-S15 resolution (the regrow and reunion); verified absent from cut-list.",
+    "title_card": { "text": "TINY MIRA — WATCH NOW", "method": "ffmpeg_drawtext" },
+    "music_note": "Shortened main theme once the audio backend is live.",
+    "status": "approved",
+    "output_path": "renders/trailer_16x9.mp4",
+    "qc_notes": "Three-way QC pass: works muted, first 3s hold, no resolution beat."
+  },
   "metadata": {
     "title_options": [
       {

@@ -188,10 +188,10 @@ stages:
 
   # ── Publishing ─────────────────────────────────────────────────────────────
   - name: publishing
-    title: Publishing kit (thumbnail + metadata)
+    title: Publishing kit (thumbnail + trailer + metadata)
     skill: skills/stages/11-publishing-director.md
     produces: [publishing_kit]
-    required_artifacts_in: [brief, story, scene_list, asset_manifest, render_report]
+    required_artifacts_in: [brief, story, scene_list, asset_manifest, generation_manifest, render_report]
     checkpoint_required: true
     human_approval_default: true   # Director approves the thumbnail AND all copy; nothing is posted by Claude
     parallel: {claude_subagent: thumbnail-artist, unit: concept, max_parallel: 2}
@@ -201,6 +201,8 @@ stages:
       - Characters in the thumbnail conditioned on LOCKED sheets (@-named references, anchors verbatim), never text alone
       - Metadata per skills/tech/youtube-publishing — title options with distinct angles, standalone 125-char hook, ≤15 hashtags, title never echoing the on-image text
       - made_for_kids and platform flags presented as explicit Director decisions, never defaulted
+      - Trailer per skills/tech/trailer-design — cut-list over APPROVED clips only, spoiler law applied (resolution beats excluded, spoiler_check recorded), 15–30s, works muted
     success_criteria:
       - Schema-valid publishing_kit with selected_concept_id, selected_title, and an upload-ready delivery_path
       - Every generated thumbnail passed the 168x94 stamp-legibility QC and identity check against locked sheets
+      - Trailer approved with status approved, output_path present, and no resolution beat in its cut-list
