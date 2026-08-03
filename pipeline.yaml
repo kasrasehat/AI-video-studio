@@ -171,7 +171,7 @@ stages:
   - name: integration
     title: Assembly, sound & delivery
     skill: skills/stages/10-integration-director.md
-    produces: [edit_decisions, render_report]
+    produces: [edit_decisions, audio_direction, render_report]
     required_artifacts_in: [generation_manifest, clip_qc_report, scene_direction, scene_list, brief]
     checkpoint_required: true
     human_approval_default: true   # approve final cut before rendering deliverables
@@ -179,6 +179,7 @@ stages:
     resume_unit: preset
     review_focus:
       - Transitions follow scene_direction / transition_out_hint — not uniform crossfades
+      - audio_direction authored and Director-approved ON PAPER before any cue is generated (score architecture, timecoded cue sheets citing sound_direction lines, protected silences, mix plan, main-theme audition)
       - Music + SFX generated to the brief's music_direction; dialogue never buried (ducking applied)
       - Captions per brief language; every deliverable preset from config/delivery_presets.yaml
       - Final watch-through QC ran on the assembled cut before the gate

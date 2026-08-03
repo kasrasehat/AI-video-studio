@@ -1,0 +1,84 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "score_architecture": {
+    "themes": [
+      {
+        "theme_id": "TM01",
+        "name": "Mira's Wonder",
+        "description": "The main theme — curiosity made melody; returns whenever Mira chooses courage over fear, fully stated at the finale.",
+        "instrumentation": "Warm strings, celesta, light woodwinds",
+        "tempo_feel": "Lilting 6/8, moderate",
+        "key_hint": "F major"
+      }
+    ],
+    "emotional_arc": [
+      { "scene_span": "S01-S04", "feel": "Ordinary-day warmth curdling into strangeness", "theme_ref": "TM01" },
+      { "scene_span": "S05-S13", "feel": "Peril and play at tiny scale, accelerating", "theme_ref": "TM01" }
+    ],
+    "protected_silences": [
+      { "scene_ref": "S05", "note": "The shrink lands in silence per scene_direction rhythm — first sound after is her own breath." }
+    ],
+    "continuity_notes": "All cues share F-major family; tempo steps up by ~8 bpm per act, never mid-cue."
+  },
+  "audition": {
+    "variants": [
+      {
+        "variant_id": "AV01",
+        "style_school": "Warm orchestral family-film language — strings and celesta, classic wonder register.",
+        "prompt": "Instrumental main theme for a stylized 3D family short film: warm strings and celesta carry a lilting 6/8 melody in F major, curious and brave, gentle build to a hopeful cadence. No vocals. Clean cinematic mix.",
+        "duration_ms": 30000,
+        "file_path": "assets/audio/audition_AV01.mp3",
+        "cost_usd": 0.5,
+        "status": "approved"
+      },
+      {
+        "variant_id": "AV02",
+        "style_school": "Playful chamber-quirk — pizzicato, clarinet and toy piano, comedy-forward.",
+        "prompt": "Instrumental main theme for a whimsical family short film: pizzicato strings, clarinet and toy piano in a playful 6/8, mischievous but warm, small comic stingers, hopeful ending. No vocals.",
+        "duration_ms": 30000,
+        "status": "rejected"
+      }
+    ],
+    "selected_variant_id": "AV01"
+  },
+  "music_cues": [
+    {
+      "cue_id": "MC01",
+      "theme_ref": "TM01",
+      "scene_span": "S01-S04",
+      "in_s": 0,
+      "out_s": 42.5,
+      "prompt": "Opening cue in the approved AV01 style: warm strings and celesta, lilting 6/8 in F major, ordinary-morning warmth that thins to uneasy sparseness in the final ten seconds. Instrumental, no vocals, clean cinematic mix, gentle tail for a dialogue entrance.",
+      "generator": "elevenlabs_music",
+      "file_path": "assets/audio/MC01.mp3",
+      "cost_usd": 0.5,
+      "gain_db": -6,
+      "duck": true,
+      "status": "approved",
+      "qc_notes": "Tail clears the S04 dialogue entrance."
+    }
+  ],
+  "sfx_cues": [
+    {
+      "cue_id": "FX01",
+      "scene_ref": "S05",
+      "source_line": "sound_direction: a glassy chime swallows the room as she shrinks",
+      "prompt": "A single glassy magical chime with a soft reverse-swell, swallowing room tone, 2 seconds",
+      "at_s": 44.0,
+      "duration_s": 2.0,
+      "generator": "elevenlabs_sfx",
+      "file_path": "assets/audio/FX01.mp3",
+      "cost_usd": 0.1,
+      "gain_db": -3,
+      "status": "approved"
+    }
+  ],
+  "mix_plan": {
+    "dialogue_law": "Clip dialogue is baked in by Seedance and is untouchable: no filter touches clip audio except loudness normalization; music and SFX yield via sidechain ducking.",
+    "target_lufs": -14,
+    "ducking": { "threshold_db": -30, "ratio": 8 },
+    "notes": "Master loudnorm two-pass on the final mix."
+  },
+  "notes": "Fixture sample for schema tests."
+}

@@ -1,0 +1,154 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/audio_direction",
+  "title": "Audio Direction",
+  "description": "Produced by stage 10 BEFORE any audio generation (Director order 2026-07-31: sound is designed like scenes are directed). Score architecture, timecoded cue sheets, mix plan, and the main-theme audition. Director-gated on paper before a single cue is generated.",
+  "type": "object",
+  "required": ["version", "project_id", "score_architecture", "music_cues", "sfx_cues", "mix_plan"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "score_architecture": {
+      "type": "object",
+      "required": ["themes", "emotional_arc"],
+      "properties": {
+        "themes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["theme_id", "name", "description", "instrumentation"],
+            "properties": {
+              "theme_id": { "type": "string", "pattern": "^TM\\d{2}$" },
+              "name": { "type": "string", "minLength": 2 },
+              "description": { "type": "string", "minLength": 10, "description": "What this theme means dramatically and when it returns." },
+              "instrumentation": { "type": "string", "minLength": 5 },
+              "tempo_feel": { "type": "string" },
+              "key_hint": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "emotional_arc": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["scene_span", "feel"],
+            "properties": {
+              "scene_span": { "type": "string", "description": "e.g. 'S01-S04' or 'S09A'." },
+              "feel": { "type": "string", "minLength": 5 },
+              "theme_ref": { "type": "string", "pattern": "^TM\\d{2}$" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "protected_silences": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["scene_ref", "note"],
+            "properties": {
+              "scene_ref": { "type": "string" },
+              "note": { "type": "string", "minLength": 5, "description": "Why this moment stays music-free (from scene_direction rhythm)." }
+            },
+            "additionalProperties": false
+          }
+        },
+        "continuity_notes": { "type": "string", "description": "Tempo/key handoffs across cue boundaries so cues don't clash at cuts." }
+      },
+      "additionalProperties": false
+    },
+    "audition": {
+      "type": "object",
+      "required": ["variants"],
+      "properties": {
+        "variants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["variant_id", "style_school", "prompt", "status"],
+            "properties": {
+              "variant_id": { "type": "string", "pattern": "^AV\\d{2}$" },
+              "style_school": { "type": "string", "minLength": 10, "description": "Genuinely distinct interpretation (variant discipline) — e.g. warm orchestral family-film vs playful chamber-quirk." },
+              "prompt": { "type": "string", "minLength": 50, "description": "The COMPLETE generation prompt, saved before generation." },
+              "duration_ms": { "type": "integer", "minimum": 10000 },
+              "file_path": { "type": "string" },
+              "cost_usd": { "type": "number", "minimum": 0 },
+              "status": { "type": "string", "enum": ["proposed", "generated", "approved", "rejected"] }
+            },
+            "additionalProperties": false
+          }
+        },
+        "selected_variant_id": { "type": "string", "pattern": "^AV\\d{2}$", "description": "The winner anchors every other cue's style language." }
+      },
+      "additionalProperties": false
+    },
+    "music_cues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cue_id", "theme_ref", "scene_span", "in_s", "out_s", "prompt", "status"],
+        "properties": {
+          "cue_id": { "type": "string", "pattern": "^MC\\d{2}$" },
+          "theme_ref": { "type": "string", "pattern": "^TM\\d{2}$" },
+          "scene_span": { "type": "string" },
+          "in_s": { "type": "number", "minimum": 0, "description": "Timeline in-point (assembled-cut seconds)." },
+          "out_s": { "type": "number", "exclusiveMinimum": 0 },
+          "prompt": { "type": "string", "minLength": 50, "description": "COMPLETE generation prompt, saved before generation; instrumental unless the Director rules otherwise." },
+          "generator": { "type": "string", "description": "e.g. elevenlabs_music" },
+          "file_path": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "gain_db": { "type": "number" },
+          "duck": { "type": "boolean" },
+          "status": { "type": "string", "enum": ["proposed", "generated", "approved", "rejected"] },
+          "qc_notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "sfx_cues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["cue_id", "scene_ref", "source_line", "prompt", "at_s", "status"],
+        "properties": {
+          "cue_id": { "type": "string", "pattern": "^FX\\d{2}$" },
+          "scene_ref": { "type": "string" },
+          "source_line": { "type": "string", "minLength": 5, "description": "The scene_direction.sound_direction line this cue implements — nothing invented." },
+          "prompt": { "type": "string", "minLength": 10 },
+          "at_s": { "type": "number", "minimum": 0, "description": "Timeline placement (assembled-cut seconds)." },
+          "duration_s": { "type": "number", "exclusiveMinimum": 0 },
+          "generator": { "type": "string" },
+          "file_path": { "type": "string" },
+          "cost_usd": { "type": "number", "minimum": 0 },
+          "gain_db": { "type": "number" },
+          "status": { "type": "string", "enum": ["proposed", "generated", "approved", "rejected"] },
+          "qc_notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "mix_plan": {
+      "type": "object",
+      "required": ["dialogue_law", "target_lufs"],
+      "properties": {
+        "dialogue_law": { "type": "string", "minLength": 10, "description": "Binding statement: clip dialogue (baked in by Seedance) is untouchable; everything else yields to it." },
+        "target_lufs": { "type": "number" },
+        "ducking": {
+          "type": "object",
+          "properties": {
+            "threshold_db": { "type": "number" },
+            "ratio": { "type": "number", "minimum": 1 }
+          },
+          "additionalProperties": false
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "notes": { "type": "string" }
+  },
+  "additionalProperties": false
+}
