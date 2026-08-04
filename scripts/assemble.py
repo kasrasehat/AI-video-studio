@@ -293,7 +293,9 @@ def render_deliverable(mixed: Path, preset: dict, out_path: Path, captions: dict
     mode = "none" if captions.get("mode") == "none" else preset_mode
     if mode == "burn" and srt_path and (srt_path.exists() or dry):
         srt_escaped = str(srt_path).replace("\\", "/").replace(":", "\\:")
-        style = "FontSize=14,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,MarginV=60"
+        # ASS units are relative to PlayResY=288: FontSize 8 ≈ 53px at 1920-tall output.
+        # MarginV 48 ≈ 320px up from the bottom — inside the blurred pad, BELOW the 16:9 film band.
+        style = "FontSize=8,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=1,Shadow=0,Alignment=2,MarginV=48"
         vf_parts.append(f"subtitles='{srt_escaped}':force_style='{style}'")
     vf = ",".join(vf_parts)  # the vertical chain is one linear filtergraph (split..overlay), ',' continues it
 
