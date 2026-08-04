@@ -287,9 +287,14 @@ def render_deliverable(mixed: Path, preset: dict, out_path: Path, captions: dict
     else:
         vf_parts.append(f"scale={w}:{h}:force_original_aspect_ratio=decrease,"
                         f"pad={w}:{h}:(ow-iw)/2:(oh-ih)/2")
-    if captions.get("mode") == "burn" and srt_path and (srt_path.exists() or dry):
+    # caption mode: the PRESET decides (master none / youtube srt / tiktok burn);
+    # ed.captions supplies language/style, and its mode 'none' disables captions globally.
+    preset_mode = preset.get("captions", "none")
+    mode = "none" if captions.get("mode") == "none" else preset_mode
+    if mode == "burn" and srt_path and (srt_path.exists() or dry):
         srt_escaped = str(srt_path).replace("\\", "/").replace(":", "\\:")
-        vf_parts.append(f"subtitles='{srt_escaped}'")
+        style = "FontSize=14,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,MarginV=60"
+        vf_parts.append(f"subtitles='{srt_escaped}':force_style='{style}'")
     vf = ",".join(vf_parts)  # the vertical chain is one linear filtergraph (split..overlay), ',' continues it
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
@@ -299,7 +304,7 @@ def render_deliverable(mixed: Path, preset: dict, out_path: Path, captions: dict
             "-pix_fmt", preset["pixel_format"], "-c:a", preset["audio_codec"],
             "-b:a", preset["audio_bitrate"], "-movflags", "+faststart", out_path]
     run(cmd, dry)
-    if captions.get("mode") == "srt" and srt_path and srt_path.exists():
+    if mode == "srt" and srt_path and srt_path.exists():
         shutil.copy2(srt_path, out_path.with_suffix(".srt"))
 
 
