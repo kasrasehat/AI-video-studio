@@ -161,6 +161,7 @@ def join_timeline(mezz: list[dict], work: Path, fps: int, dry: bool) -> Path:
 
     if closing:
         d = float(closing.get("duration_s") or 1.0)
+        hold = float(closing.get("hold_s") or 0.0)  # black tail after the close (audio button lives there)
         out = work / "closed.mkv"
         offset = max(left_dur - d, 0)
         # xfade inputs must share dimensions — generate the black tail at the cut's size
@@ -168,11 +169,12 @@ def join_timeline(mezz: list[dict], work: Path, fps: int, dry: bool) -> Path:
         vs = next((s for s in info.get("streams", []) if s.get("codec_type") == "video"), {})
         w, h = vs.get("width", 1920), vs.get("height", 1080)
         fc = (
-            f"color=c=black:s={w}x{h}:r={fps}:d={d},settb=AVTB[blk];"
+            f"color=c=black:s={w}x{h}:r={fps}:d={d + hold},settb=AVTB[blk];"
             f"[0:v]settb=AVTB[v0];"
-            f"[v0][blk]xfade=transition=circleclose:duration={d}:offset={offset}[v]"
+            f"[v0][blk]xfade=transition=circleclose:duration={d}:offset={offset}[v];"
+            f"[0:a]apad=pad_dur={hold}[a]"
         )
-        run([FFMPEG, "-y", "-i", left, "-filter_complex", fc, "-map", "[v]", "-map", "0:a",
+        run([FFMPEG, "-y", "-i", left, "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
              "-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p",
              "-c:a", "pcm_s16le", out], dry)
         left = out
