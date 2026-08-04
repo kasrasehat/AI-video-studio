@@ -379,10 +379,23 @@ def main(argv=None) -> int:
     print("[4/4] rendering deliverables")
     srt = project / "renders" / "captions.srt"
     outputs = []
+    attempts_dir = project / "renders" / "attempts"
+    render_attempts = {}
     for d in ed["deliverables"]:
         if d["preset_id"] not in wanted:
             continue
         out_path = project / d["out_path"]
+        # Director order 2026-07-31: renders are versioned - never overwrite silently.
+        # An existing output is moved to renders/attempts/<stem>_attemptNN<ext> first.
+        n = 1
+        if out_path.exists() and not args.dry_run:
+            attempts_dir.mkdir(parents=True, exist_ok=True)
+            existing = sorted(attempts_dir.glob(f"{out_path.stem}_attempt*{out_path.suffix}"))
+            n = len(existing) + 1
+            shutil.move(str(out_path), attempts_dir / f"{out_path.stem}_attempt{n:02d}{out_path.suffix}")
+            n += 1
+        render_attempts[d["preset_id"]] = n
+        print(f"  {d['preset_id']}: attempt {n:02d}")
         render_deliverable(mixed, presets[d["preset_id"]], out_path, ed.get("captions", {}),
                            srt if ed.get("captions", {}).get("mode") in ("burn", "srt") else None,
                            args.dry_run)
@@ -399,6 +412,8 @@ def main(argv=None) -> int:
         "outputs": outputs,
         "final_qc": {"verdict": "fix", "watch_through_findings": ["watch-through QC pending"]},
         "completed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "metadata": {"render_attempts": render_attempts,
+                     "note": "prior attempts preserved in renders/attempts/ (Director order 2026-07-31)"},
     }
     rr = project / "artifacts" / "render_report.json"
     if rr.exists():
