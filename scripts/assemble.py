@@ -82,17 +82,28 @@ def probe_duration(path: Path) -> float:
 
 
 def resolve_clip_paths(project: Path, manifest: dict) -> dict[str, Path]:
-    """clip_ref (e.g. S07_C01) -> absolute path of the APPROVED clip file."""
+    """clip_ref (e.g. S07_C01) -> absolute path of the APPROVED clip file.
+
+    output_path may be repo-root-relative ('projects/<slug>/...') or project-relative.
+    If several approved entries share a clip_id, the last one whose file exists wins.
+    """
     out: dict[str, Path] = {}
     for entry in manifest.get("clips", []):
         if entry.get("status") != "approved":
             continue
         ref = entry.get("clip_id") or entry.get("clip_ref")
-        rel = entry.get("file_path") or entry.get("local_path")
+        rel = entry.get("output_path") or entry.get("file_path") or entry.get("local_path")
         if not ref or not rel:
             continue
-        p = project / rel if not Path(rel).is_absolute() else Path(rel)
-        out[ref] = p
+        rp = Path(rel)
+        if rp.is_absolute():
+            p = rp
+        elif rel.replace("\\", "/").startswith("projects/"):
+            p = lib.ROOT / rp
+        else:
+            p = project / rp
+        if p.exists() or ref not in out:
+            out[ref] = p
     return out
 
 
@@ -192,9 +203,9 @@ def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry
 
     out = work / "mixed.mkv"
     if not music and not sfx:
-        run([FFMPEG, "-y", "-i", cut, "-c:v", "copy",
-             "-af", f"loudnorm=I={target_lufs}:TP=-1.5:LRA=11", "-c:a", "pcm_s16le", out], dry)
-        return out
+        premix = work / "premix.mkv"
+        run([FFMPEG, "-y", "-i", cut, "-c", "copy", premix], dry)
+        return loudnorm_two_pass(premix, out, target_lufs, dry)
 
     cmd = [FFMPEG, "-y", "-i", cut]
     for m in music:
@@ -227,12 +238,30 @@ def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry
         mix_inputs.append(f"[{lbl}]")
         idx += 1
     parts.append(f"{dlg_labels[0]}{''.join(mix_inputs)}"
-                 f"amix=inputs={1 + len(mix_inputs)}:duration=first:normalize=0,"
-                 f"loudnorm=I={target_lufs}:TP=-1.5:LRA=11[aout]")
+                 f"amix=inputs={1 + len(mix_inputs)}:duration=first:normalize=0[aout]")
     fc = ";".join(parts)
+    premix = work / "premix.mkv"
     cmd += ["-filter_complex", fc, "-map", "0:v", "-map", "[aout]",
-            "-c:v", "copy", "-c:a", "pcm_s16le", out]
+            "-c:v", "copy", "-c:a", "pcm_s16le", premix]
     run(cmd, dry)
+    return loudnorm_two_pass(premix, out, target_lufs, dry)
+
+
+def loudnorm_two_pass(premix: Path, out: Path, target_lufs: float, dry: bool) -> Path:
+    """Two-pass loudnorm in LINEAR mode: pure gain to target, dynamics untouched —
+    single-pass loudnorm is adaptive and audibly lifts protected silences."""
+    if dry:
+        return premix
+    proc = subprocess.run(
+        [FFMPEG, "-i", str(premix), "-af",
+         f"loudnorm=I={target_lufs}:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
+        capture_output=True, text=True, encoding="utf-8", errors="replace")
+    tail = (proc.stderr or "")[proc.stderr.rfind("{"):]
+    m = json.loads(tail[:tail.rfind("}") + 1])
+    af = (f"loudnorm=I={target_lufs}:TP=-1.5:LRA=11:linear=true:"
+          f"measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
+          f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}")
+    run([FFMPEG, "-y", "-i", premix, "-c:v", "copy", "-af", af, "-c:a", "pcm_s16le", out], dry)
     return out
 
 
