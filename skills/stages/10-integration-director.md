@@ -53,3 +53,7 @@ Author `audio_direction.json` (schema `audio_direction`) — sound is directed l
 - Music under a protected silence, or a cue tail stepping on a dialogue entrance.
 - Trusting `render_report` written by assemble.py as finished — its `final_qc` is born `fix`; only the Director's watch-through turns it `pass`.
 - Editing `.claude/skills` copies instead of `skills/tech` sources (sync law), or forgetting `projects/` is gitignored — artifacts live as files + history archives, not in git.
+
+## Cue-transition smoothing (d-161)
+
+Phase 2 cue design and Phase 3 generation follow `skills/tech/music` → "Cue-transition craft": sneak-in entrances by default, dovetails at cue→cue splices, directed hard exits preserved as events, and SUBTLE emotional gradation — adjacent cues share ≥2 bridge parameters (instrument overlap / related key / tempo step ≤~15%), and a cue following a tender scene opens in the inherited warmth before rotating to its own character. Mix ramps are recorded per cue in `edit_decisions.audio.music[].fade_in_s/fade_out_s`.

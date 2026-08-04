@@ -49,7 +49,9 @@
               "in_s": { "type": "number", "minimum": 0 },
               "out_s": { "type": "number" },
               "gain_db": { "type": "number" },
-              "duck": { "type": "boolean", "description": "Sidechain-duck under dialogue." }
+              "duck": { "type": "boolean", "description": "Sidechain-duck under dialogue." },
+              "fade_in_s": { "type": "number", "minimum": 0, "description": "Sneak-in ramp (d-161). Omit for a cold entrance." },
+              "fade_out_s": { "type": "number", "minimum": 0, "description": "Sneak-out/dovetail ramp (d-161). Omit for directed hard exits (button/stab/dead-stop/suction)." }
             },
             "additionalProperties": false
           }

@@ -96,3 +96,15 @@ except Exception as e:
 Common errors: 401 (invalid key), 422 (invalid params), 429 (rate limit).
 
 <!-- adapted from OpenMontage (.agents/skills/music/SKILL.md) -->
+
+## Cue-transition craft (BINDING — d-161, Director order 2026-07-31 + research)
+
+Smoothness between cues, and between music and silence, is a first-class quality criterion — but a DIRECTED hard exit (a button on a zap, a stab on a dunk, a dead-stop on a valve, a suction into a sneeze) is a story event and is NEVER smoothed away. Everything else follows these rules:
+
+1. **Sneak-in by default:** every cue entrance ramps (0.5–2s `fade_in_s` in the mix) unless the direction demands a cold hit. Creeping/tiptoe cues get the long ramps (1.5–2s); swells get short click-guards (0.3–0.6s) because the composition already ramps.
+2. **Sneak-out or dovetail at cue→cue splices:** when one cue ends where another begins, the outgoing cue gets a 0.5–1.5s `fade_out_s` under the incoming entrance (a mixed-level dovetail — the film-editing "sound bridge"/crossfade family). Never butt-splice two cues at full level.
+3. **Music→silence:** unless the silence IS the event (protected silences arrive via directed exits), leave silence via a relax written into the cue (ask the generator for "relaxing onto a single held note / soft tail") plus a mix-level fade-out. Silence→music re-entries always sneak in.
+4. **Emotional gradation (the Director's law):** feeling changes SUBTLY. Adjacent cues must share at least TWO bridge parameters: overlapping instrumentation (one instrument carries across), related key (same family — relative/closely-related keys), or tempo stepped ≤ ~10–15%. After a tender/romantic scene the next cue OPENS in the inherited warmth (soft, sincere, same palette) and only then rotates toward its own character — a playful cue following a lullaby starts soft-and-warm and earns its mischief over its first bars. Write this gradient INTO the cue prompt ("open gently inheriting the previous lullaby's warmth, then...").
+5. **Level-matched handoffs:** adjacent cues sit within ~2dB of each other at the splice (set per-cue `gain_db` accordingly); the master two-pass loudnorm is not a substitute for cue-level balance.
+
+Mix-side ramps live in `edit_decisions.audio.music[].fade_in_s/fade_out_s` (assemble.py applies them); composition-side gradients live in the cue prompts. Both are used together.

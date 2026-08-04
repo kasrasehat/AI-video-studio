@@ -223,7 +223,14 @@ def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry
     for m in music:
         lbl = f"mus{idx}"
         delay = int(float(m["in_s"]) * 1000)
-        parts.append(f"[{idx}:a]adelay={delay}|{delay},volume={m['gain_db']}dB[{lbl}pre]")
+        fades = ""
+        if m.get("fade_in_s"):
+            fades += f",afade=t=in:d={m['fade_in_s']}"
+        if m.get("fade_out_s"):
+            fdur = probe_duration(project / m["path"]) if not dry else 20.0
+            st = max(fdur - float(m["fade_out_s"]), 0)
+            fades += f",afade=t=out:st={st}:d={m['fade_out_s']}"
+        parts.append(f"[{idx}:a]anull{fades},adelay={delay}|{delay},volume={m['gain_db']}dB[{lbl}pre]")
         if m.get("duck"):
             parts.append(f"[{lbl}pre]{next(key_iter)}"
                          f"sidechaincompress=threshold=0.05:ratio=8:attack=20:release=400[{lbl}]")
