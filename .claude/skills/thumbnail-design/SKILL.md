@@ -51,3 +51,7 @@ Params: `quality: "high"` (NEVER default — it silently drops to low), `resolut
 ## Costs
 
 `gpt_image_2` at quality high ≈ 4cr per image. Concepts are cheap; the discipline is writing the prompt and getting the Director's go BEFORE spending (d-114) — never batch-generate all concepts unprompted.
+
+## A/B policy (d-173 — virality feature #4, standing)
+
+Every release ships **2-3 APPROVED thumbnails** (distinct strategies, as always), and the upload always uses YouTube's built-in Test & Compare so real traffic picks the CTR winner. Refresh policy: if CTR disappoints ~48h after publish, swap to the approved alternate manually and note the change in the publishing kit. The pipeline's job is to guarantee the alternates EXIST and are upload-ready (1280x720 exports for each approved concept).

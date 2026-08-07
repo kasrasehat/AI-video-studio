@@ -28,3 +28,7 @@ Run the writers' room: Writer drafts → Refiner re-reads and repairs → the Di
 - Skipping the refiner because the draft "reads well" — the mandate exists for the failure you can't see.
 - Presenting only a summary at the gate: the Director must be able to read the ACTUAL story text.
 - Letting change_notes say "improved flow" — they must name concrete changes or the audit trail is theater.
+
+## First-3-seconds law (d-173, virality — BINDING for future productions)
+
+The story's OPENING BEAT must put the production's most arresting visual on screen within the first 3 seconds of the film — a cold open, never an establishing preamble. YouTube's promotion decision is dominated by the opening retention cliff; a slow first shot taxes every later view. When writing beats, B01 is authored hook-first: name the exact image that stops a scroll and put it before any setup. (Existing productions are NOT regenerated for this — it applies from the next film onward.)

@@ -35,3 +35,16 @@ The trailer may use any approved clip EXCEPT the resolution. Concretely: the fin
 ## QC before the gate
 
 Watch it three ways: (1) full attention — does tension build and stay unresolved? (2) muted — does it still work? (3) first-3-seconds only — would you stop scrolling? Verify no forbidden resolution beat leaked in, the title card is spelled exactly, and total runtime is 15–30s.
+
+## Vertical micro-teaser set (d-173 — virality feature #1)
+
+Beyond the main trailer, every release cuts **2-3 vertical (9:16) micro-teasers, 4-15s each**, from approved clips — the Shorts/Reels/TikTok discovery engine. Rules:
+1. **One gag per teaser.** A micro-teaser is a single joke or single wow-moment, not a mini-trailer (e.g. the whistle-bubble pop; the time-freeze orbit; the sneeze launch).
+2. **Design the loop.** End state ≈ start state so autoplay replays feel seamless — replay rate is the strongest Shorts ranking signal. Prefer clips whose last frame naturally hands back to their first (a settled pose, a returning camera), or cut ON matching action.
+3. **Silent-first, sound-rewarding:** must work muted (burned hook text card in the vertical pad), but keep the clip's baked audio — the gag's sound is the reward for sound-on viewers.
+4. **Funnel line** burned or in caption: the platform-appropriate "Full film on YouTube" pointer.
+5. Free ffmpeg work (blur-pad vertical per assemble.py's recipe); no generation. Director previews each teaser before posting.
+
+## First-3-seconds law pointer (d-173 — virality feature #2)
+
+The trailer already cold-opens; the FILM must too — see the story/scene-division skills: scene 1 front-loads the production's most arresting visual inside 3 seconds. (Law lives there; noted here because the trailer's hook and the film's hook should be DIFFERENT arresting moments — never spend the same image twice.)
