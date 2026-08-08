@@ -6,17 +6,19 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 
 | Skill | Stage | Status |
 |---|---|---|
-| `executive-producer.md` | Orchestrates all 10 stages, resume, budget | **ready** |
+| `executive-producer.md` | Orchestrates all 12 stages, resume, budget | **ready** |
 | `01-intake-director.md` | 1 intake — conversational Q&A → brief | **ready** |
 | `02-story-director.md` | 2 story — writer → refiner → Director loop | **ready** |
 | `03-scene-division-director.md` | 3 scene-division — ≤15s units | **ready** |
 | `04-scene-recheck-director.md` | 4 scene-recheck — dedupe/continuity | **ready** |
 | `05-directing-director.md` | 5 directing — per-scene direction + QA loop | **ready** |
 | `06-lock-descriptors-director.md` | 6 lock-descriptors — consistency backbone + QA loop | **ready** |
-| `07-asset-generation-director.md` | 7 asset-generation — variants → Director locks | stub (M4) |
-| `08-storyboard-director.md` | 8 storyboard — 3 variants/scene, cherry-pick | stub (M5) |
-| `09-video-generation-director.md` | 9 video-generation — clips + QC regen loop | stub (M6) |
-| `10-integration-director.md` | 10 integration — assembly, sound, delivery | stub (M7) |
+| `07-asset-generation-director.md` | 7 asset-generation — variants → Director locks | **ready** |
+| `08-storyboard-director.md` | 8 storyboard — 3 variants/scene, cherry-pick | **ready** |
+| `09-video-generation-director.md` | 9 video-generation — clips + QC regen loop | **ready** |
+| `10-integration-director.md` | 10 integration — assembly, sound, delivery | **ready** |
+| `11-publishing-director.md` | 11 publishing — thumbnail, trailer, metadata, delivery tree | **ready** |
+| `12-character-spotlight-director.md` | 12 character-spotlight (OPTIONAL) — HeyGen talking characters + b-roll | **ready** |
 
 ## Meta (`skills/meta/`)
 
@@ -38,6 +40,7 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `image-editor/SKILL.md` | Interactive image editing: elicit-first protocol, nano_banana_pro default, text-safety boundary | **ready** |
 | `storyboard-qc/SKILL.md` | Mechanical stage-8 self-QC: panel-split + camera-lock diff tooling, defect taxonomy, exact MCP call shapes | **ready** |
 | `elevenlabs/SKILL.md` | TTS + voice design for character voice samples (voice-design API: pull live docs at M4) | **ready** |
+| `heygen/SKILL.md` | HeyGen MCP for stage 12 spotlights: image/studio/avatar paths, asset uploads, polling | **ready** |
 | `music/SKILL.md` | Score generation (stage 10) | **ready** |
 | `sound-effects/SKILL.md` | SFX generation (stage 10) | **ready** |
 | `ffmpeg/SKILL.md` | Probing, conversion, concat, fades | **ready** |

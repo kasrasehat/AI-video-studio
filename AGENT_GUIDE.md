@@ -11,7 +11,7 @@ The complete operating contract for any AI agent working in this repository. Eve
 Before doing pipeline work, read in this order. Never skip a layer.
 
 1. **This file** — the contract.
-2. **`pipeline.yaml`** — the 10-stage manifest: stage order, artifacts, gates, QA loops, parallelism.
+2. **`pipeline.yaml`** — the 12-stage manifest: stage order, artifacts, gates, QA loops, parallelism.
 3. **The stage-director skill** for the current stage (`skills/stages/NN-<stage>-director.md`) — how to execute the stage.
 4. **The tech skill** for any generation tool you are about to use (`skills/tech/<name>/SKILL.md`) — provider-specific prompting and API contracts. The intelligence is in the skills; do not improvise prompts or parameters.
 
@@ -32,10 +32,11 @@ Artifacts and gates are identical across harnesses — only wall-clock paralleli
 
 ```
 1 intake → 2 story → 3 scene-division → 4 scene-recheck → 5 directing →
-6 lock-descriptors → 7 asset-generation → 8 storyboard → 9 video-generation → 10 integration
+6 lock-descriptors → 7 asset-generation → 8 storyboard → 9 video-generation →
+10 integration → 11 publishing → [12 character-spotlight — OPTIONAL]
 ```
 
-`pipeline.yaml` is the single source of truth for what each stage requires, produces, and gates. Do not restructure the pipeline; the stage list is a user decision.
+`pipeline.yaml` is the single source of truth for what each stage requires, produces, and gates. Do not restructure the pipeline; the stage list is a user decision. Stage 12 is `optional: true`: it is OFFERED to the Director after publishing, never assumed — the Director may run it (per-video gates) or decline it (checkpoint status `skipped`, which requires `--approved` and never blocks pipeline completion).
 
 ## Gate protocol (BINDING)
 

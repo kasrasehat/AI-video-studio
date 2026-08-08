@@ -1,0 +1,81 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "videos": [
+    {
+      "video_id": "SP01",
+      "subject": "Ember the fox introduces herself and the film",
+      "description": "Ember talks straight to camera about who she is and why the lantern matters, with two b-roll moments from the film.",
+      "target_length_s": 50,
+      "tone": "warm, mischievous, family-friendly",
+      "cta": "Watch the full film on YouTube",
+      "characters": [
+        {
+          "char_id": "ember",
+          "source_image": "assets/characters/ember_sheet_front.png",
+          "voice_plan": "uploaded ElevenLabs audio matched to the film voice sample"
+        }
+      ],
+      "platforms": ["youtube", "tiktok"],
+      "script": [
+        {
+          "order": 1,
+          "kind": "talking",
+          "char_id": "ember",
+          "text": "Hi! I'm Ember. Yes, THE fox with the lantern. No, I did not steal it. Mostly.",
+          "est_seconds": 8,
+          "direction": "lean toward camera on 'Mostly', one ear flick"
+        },
+        {
+          "order": 2,
+          "kind": "b_roll",
+          "clip_ref": "S01_C01",
+          "in_s": 0.0,
+          "out_s": 6.0,
+          "text": "That night the whole forest went dark. Every firefly. Gone.",
+          "est_seconds": 6
+        },
+        {
+          "order": 3,
+          "kind": "talking",
+          "char_id": "ember",
+          "text": "So I did what any sensible fox would do. I borrowed the moon's spare light. What happened next... you'll have to watch. Full film on YouTube — bring snacks.",
+          "est_seconds": 14,
+          "direction": "proud chin up, then a wink on the last line"
+        },
+        {
+          "order": 4,
+          "kind": "b_roll",
+          "clip_ref": "S02_C01",
+          "in_s": 1.0,
+          "out_s": 7.0,
+          "est_seconds": 6
+        },
+        {
+          "order": 5,
+          "kind": "talking",
+          "char_id": "ember",
+          "text": "And if the owls ask — you never saw me. Subscribe so you don't miss what I definitely will not be stealing next time.",
+          "est_seconds": 16,
+          "direction": "conspiratorial whisper, glance left and right"
+        }
+      ],
+      "generation": {
+        "path": "dry_run",
+        "payload": {
+          "note": "dry-run placeholder — real productions save the complete HeyGen request(s) here verbatim before any call"
+        },
+        "cost_usd": 0
+      },
+      "output_path": "renders/spotlights/SP01_master.mp4",
+      "measured_length_s": 50.4,
+      "deliverables": [
+        { "platform": "youtube", "path": "delivery/youtube/spotlights/SP01_16x9.mp4", "aspect": "16:9" },
+        { "platform": "tiktok", "path": "delivery/tiktok/spotlights/SP01_9x16.mp4", "aspect": "9:16" }
+      ],
+      "status": "approved",
+      "qc_notes": "dry-run fixture"
+    }
+  ],
+  "notes": "Fixture for the optional stage 12 — one approved spotlight video."
+}

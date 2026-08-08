@@ -57,6 +57,7 @@
             "additionalProperties": false
           },
           "resume_unit": { "type": "string" },
+          "optional": { "type": "boolean", "description": "Optional stage: the Director may skip it (checkpoint status 'skipped'); it never blocks pipeline completion." },
           "review_focus": { "type": "array", "minItems": 1, "items": { "type": "string" } },
           "success_criteria": { "type": "array", "minItems": 1, "items": { "type": "string" } }
         },

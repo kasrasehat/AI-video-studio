@@ -81,6 +81,15 @@ def cmd_write(args) -> int:
         print(f"[ERROR] status must be one of {lib.CHECKPOINT_STATUSES}")
         return 1
 
+    # 'skipped' is reserved for optional stages, and skipping is a Director ruling.
+    if args.status == "skipped":
+        if not stage.get("optional"):
+            print(f"[ERROR] stage {args.stage!r} is not optional — it cannot be skipped")
+            return 1
+        if not args.approved:
+            print(f"[GATE VIOLATION] skipping optional stage {args.stage!r} requires the Director's explicit decision (--approved).")
+            return 2
+
     # ── GATE ENFORCEMENT (binding — see AGENT_GUIDE.md) ──────────────────────
     if args.status == "completed" and stage["human_approval_default"] and not args.approved:
         print(f"[GATE VIOLATION] stage {args.stage!r} requires Director approval.")
@@ -198,10 +207,15 @@ def cmd_next(args) -> int:
         print(f"[ERROR] no project {args.slug!r}")
         return 1
     manifest = lib.load_manifest()
+    optional_available = []
     for stage in manifest["stages"]:
         cp = lib.read_checkpoint(args.slug, stage["name"])
         status = cp["status"] if cp else "not_started"
-        if status == "completed":
+        if status in ("completed", "skipped"):
+            continue
+        # An untouched optional stage never blocks the pipeline; once entered, it gates like any stage.
+        if stage.get("optional") and status == "not_started":
+            optional_available.append(stage)
             continue
         print(f"next stage: {stage['name']} [{status}]")
         print(f"  skill: {stage['skill']}")
@@ -214,7 +228,13 @@ def cmd_next(args) -> int:
             print(f"  resume: {done}/{total} {pp.get('unit', 'units')} done -> continue from the next one")
             print(f"  completed: {', '.join(pp.get('completed_unit_ids', [])) or '-'}")
         return 0
-    print("pipeline complete: all stages completed")
+    if optional_available:
+        names = ", ".join(s["name"] for s in optional_available)
+        print(f"pipeline complete: all required stages completed (optional available: {names})")
+        for s in optional_available:
+            print(f"  optional: {s['name']} — skill: {s['skill']} (Director may run or skip it)")
+    else:
+        print("pipeline complete: all stages completed")
     return 0
 
 

@@ -9,7 +9,7 @@
     "version": { "type": "string", "const": "1.0" },
     "project_id": { "type": "string", "minLength": 1 },
     "stage": { "type": "string", "minLength": 1 },
-    "status": { "type": "string", "enum": ["in_progress", "awaiting_human", "completed", "failed"] },
+    "status": { "type": "string", "enum": ["in_progress", "awaiting_human", "completed", "failed", "skipped"] },
     "timestamp": { "type": "string" },
     "pipeline": { "type": "string" },
     "human_approved": { "type": "boolean" },

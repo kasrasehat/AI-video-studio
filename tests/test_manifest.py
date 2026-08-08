@@ -14,11 +14,16 @@ def test_manifest_validates_against_schema():
     assert not errors, "\n".join(errors)
 
 
-def test_eleven_stages_in_locked_order():
+def test_twelve_stages_in_locked_order():
     expected = ["intake", "story", "scene-division", "scene-recheck", "directing",
                 "lock-descriptors", "asset-generation", "storyboard", "video-generation", "integration",
-                "publishing"]
+                "publishing", "character-spotlight"]
     assert [s["name"] for s in STAGES] == expected
+
+
+def test_optional_flags():
+    optional = {s["name"] for s in STAGES if s.get("optional")}
+    assert optional == {"character-spotlight"}, "only stage 12 is optional"
 
 
 def test_orchestration_skill_exists():
@@ -48,7 +53,8 @@ def test_required_inputs_are_produced_upstream():
 def test_gates_match_locked_design():
     gated = {s["name"] for s in STAGES if s["human_approval_default"]}
     assert gated == {"intake", "story", "scene-recheck", "directing", "lock-descriptors",
-                     "asset-generation", "storyboard", "video-generation", "integration", "publishing"}
+                     "asset-generation", "storyboard", "video-generation", "integration", "publishing",
+                     "character-spotlight"}
     ungated = {s["name"] for s in STAGES if not s["human_approval_default"]}
     assert ungated == {"scene-division"}
 

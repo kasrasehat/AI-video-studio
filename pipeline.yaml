@@ -6,8 +6,9 @@ name: film
 version: "1.0"
 description: >
   Story idea → 2–7 minute film with on-screen speaking characters, assembled from
-  ≤15-second AI clips. Eleven stages, full Director gates, consistency enforced via
-  locked descriptors + reference assets threaded through every generation call.
+  ≤15-second AI clips. Twelve stages (stage 12 optional), full Director gates,
+  consistency enforced via locked descriptors + reference assets threaded through
+  every generation call.
 
 orchestration:
   mode: executive-producer
@@ -207,3 +208,27 @@ stages:
       - Schema-valid publishing_kit with selected_concept_id, selected_title, and an upload-ready delivery_path
       - Every generated thumbnail passed the 168x94 stamp-legibility QC and identity check against locked sheets
       - Trailer approved with status approved, output_path present, and no resolution beat in its cut-list
+
+  # ── Post-release (OPTIONAL) ────────────────────────────────────────────────
+  - name: character-spotlight
+    title: Character spotlight videos (HeyGen talking characters + b-roll)
+    skill: skills/stages/12-character-spotlight-director.md
+    produces: [spotlight_kit]
+    required_artifacts_in: [brief, story, lock_descriptors, asset_manifest, generation_manifest, publishing_kit]
+    checkpoint_required: true
+    human_approval_default: true   # per-video Director gates; the stage itself may be skipped entirely
+    optional: true                 # the Director may reject this stage — 'skipped' status closes it
+    parallel: {claude_subagent: spotlight-writer, unit: video, max_parallel: 1}
+    resume_unit: video
+    review_focus:
+      - Stage offered, never assumed — the Director explicitly opts in or the stage is written skipped
+      - "Per-video intake asked in chat before ANY authoring: subject, short description, target length (>=45s), characters, platforms, tone/CTA"
+      - Dialogue written IN CHARACTER from lock_descriptors (anchors, personality, speech patterns) by the spotlight-writer subagent, which reads brief/story/scene_list/lock_descriptors/publishing_kit before writing a line
+      - Script + full HeyGen request payload SAVED into spotlight_kit BEFORE any generation (d-114 gates every paid call)
+      - B-roll only from APPROVED film clips; spoiler law applies to next-episode teases (nothing unreleased shown)
+      - Each video >=45 seconds of content; per-platform deliverables cut with the free ffmpeg recipes (platform-publishing skill)
+      - The loop is open-ended — after each approved video, ask whether the Director wants another (different characters/subject) or wants the stage closed
+    success_criteria:
+      - Schema-valid spotlight_kit; every video entry has its script and saved generation payload with status approved before the stage completes
+      - Every delivered video >= 45s (ffprobe-verified) with platform variants under delivery/<platform>/spotlights/
+      - Stage closes only on the Director's word — completed --approved after the last video, or skipped if the Director declines the stage

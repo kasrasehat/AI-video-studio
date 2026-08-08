@@ -20,7 +20,7 @@ SCHEMAS_DIR = ROOT / "schemas"
 ARTIFACT_SCHEMAS_DIR = SCHEMAS_DIR / "artifacts"
 MANIFEST_PATH = ROOT / "pipeline.yaml"
 
-CHECKPOINT_STATUSES = ("in_progress", "awaiting_human", "completed", "failed")
+CHECKPOINT_STATUSES = ("in_progress", "awaiting_human", "completed", "failed", "skipped")
 
 
 class GateViolation(Exception):

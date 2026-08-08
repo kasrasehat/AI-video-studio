@@ -131,6 +131,48 @@ def test_partial_progress_roundtrip(tmp_projects, fixtures_dir, capsys):
     assert "S01, S02" in out
 
 
+def test_optional_stage_skip_mechanics(tmp_projects, capsys):
+    init_project(tmp_projects)
+    # 'skipped' is illegal on a required stage.
+    assert run(["write", SLUG, "intake", "--status", "skipped", "--approved"]) == 1
+    # Skipping the optional stage without the Director's explicit decision is a gate violation.
+    assert run(["write", SLUG, "character-spotlight", "--status", "skipped"]) == 2
+    assert lib.read_checkpoint(SLUG, "character-spotlight") is None
+    # With --approved it records, and the untouched-optional stage never blocked 'next' anyway.
+    assert run(["write", SLUG, "character-spotlight", "--status", "skipped", "--approved",
+                "--note", "Director declined stage 12"]) == 0
+    assert lib.read_checkpoint(SLUG, "character-spotlight")["status"] == "skipped"
+    capsys.readouterr()
+    run(["next", SLUG])
+    assert "next stage: intake [not_started]" in capsys.readouterr().out
+
+
+def test_optional_stage_does_not_block_completion(tmp_projects, capsys):
+    """An untouched optional stage reports as available, not as the next required stage."""
+    init_project(tmp_projects)
+    manifest = lib.load_manifest()
+    for stage in manifest["stages"]:
+        if stage.get("optional"):
+            continue
+        argv = ["write", SLUG, stage["name"], "--status", "completed"]
+        if stage["human_approval_default"]:
+            argv.append("--approved")
+        assert run(argv) == 0
+    capsys.readouterr()
+    run(["next", SLUG])
+    out = capsys.readouterr().out
+    assert "pipeline complete: all required stages completed" in out
+    assert "character-spotlight" in out
+    # Once the optional stage is ENTERED it gates like any other stage.
+    assert run(["write", SLUG, "character-spotlight", "--status", "in_progress"]) == 0
+    run(["next", SLUG])
+    assert "next stage: character-spotlight [in_progress]" in capsys.readouterr().out
+    assert run(["write", SLUG, "character-spotlight", "--status", "completed"]) == 2  # unapproved
+    assert run(["write", SLUG, "character-spotlight", "--status", "completed", "--approved"]) == 0
+    run(["next", SLUG])
+    assert "pipeline complete: all stages completed" in capsys.readouterr().out
+
+
 def test_decision_log_append_and_revision(tmp_projects):
     init_project(tmp_projects)
     base = ["log-decision", SLUG, "--stage", "video-generation",
