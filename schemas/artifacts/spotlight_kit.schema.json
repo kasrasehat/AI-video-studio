@@ -13,7 +13,7 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["video_id", "subject", "description", "target_length_s", "characters", "platforms", "script", "generation", "status"],
+        "required": ["video_id", "subject", "description", "target_length_s", "characters", "platforms", "script", "status"],
         "properties": {
           "video_id": { "type": "string", "pattern": "^SP\\d{2}$" },
           "subject": { "type": "string", "minLength": 3, "description": "The Director-given topic (introduce themselves, talk about the movie, tease the next episode, ...)." },
