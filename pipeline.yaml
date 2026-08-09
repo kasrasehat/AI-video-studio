@@ -211,7 +211,7 @@ stages:
 
   # ── Post-release (OPTIONAL) ────────────────────────────────────────────────
   - name: character-spotlight
-    title: Character spotlight videos (HeyGen talking characters + b-roll)
+    title: Character spotlight videos (SJinn talking characters + b-roll)
     skill: skills/stages/12-character-spotlight-director.md
     produces: [spotlight_kit]
     required_artifacts_in: [brief, story, lock_descriptors, asset_manifest, generation_manifest, publishing_kit]
@@ -224,7 +224,7 @@ stages:
       - Stage offered, never assumed — the Director explicitly opts in or the stage is written skipped
       - "Per-video intake asked in chat before ANY authoring: subject, short description, target length (>=45s), characters, platforms, tone/CTA"
       - Dialogue written IN CHARACTER from lock_descriptors (anchors, personality, speech patterns) by the spotlight-writer subagent, which reads brief/story/scene_list/lock_descriptors/publishing_kit before writing a line
-      - Script + full HeyGen request payload SAVED into spotlight_kit BEFORE any generation (d-114 gates every paid call)
+      - Script + full SJinn request payload SAVED into spotlight_kit BEFORE any generation (d-114 gates every paid call; SJinn has no cost preflight — unit price measured by a Director-gated probe + balance delta before any batch)
       - B-roll only from APPROVED film clips; spoiler law applies to next-episode teases (nothing unreleased shown)
       - Each video >=45 seconds of content; per-platform deliverables cut with the free ffmpeg recipes (platform-publishing skill)
       - The loop is open-ended — after each approved video, ask whether the Director wants another (different characters/subject) or wants the stage closed

@@ -40,7 +40,8 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `image-editor/SKILL.md` | Interactive image editing: elicit-first protocol, nano_banana_pro default, text-safety boundary | **ready** |
 | `storyboard-qc/SKILL.md` | Mechanical stage-8 self-QC: panel-split + camera-lock diff tooling, defect taxonomy, exact MCP call shapes | **ready** |
 | `elevenlabs/SKILL.md` | TTS + voice design for character voice samples (voice-design API: pull live docs at M4) | **ready** |
-| `heygen/SKILL.md` | HeyGen MCP for stage 12 spotlights: image/studio/avatar paths, asset uploads, polling | **ready** |
+| `sjinn/SKILL.md` | SJinn MCP — stage-12 spotlight backend (Seedance via public URLs, balance-delta cost law) | **ready** |
+| `heygen/SKILL.md` | HeyGen MCP (SUPERSEDED by sjinn, d-182 — kept for reference) | superseded |
 | `music/SKILL.md` | Score generation (stage 10) | **ready** |
 | `sound-effects/SKILL.md` | SFX generation (stage 10) | **ready** |
 | `ffmpeg/SKILL.md` | Probing, conversion, concat, fades | **ready** |

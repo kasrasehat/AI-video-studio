@@ -5,6 +5,8 @@ description: "HeyGen MCP contract for stage 12 (character-spotlight): make film 
 
 # HeyGen (MCP)
 
+> **SUPERSEDED (d-182, 2026-08-09):** the Director replaced HeyGen with **SJinn** as the stage-12 backend — see `skills/tech/sjinn/SKILL.md`. Kept for reference only. Field lessons that transfer: presigned-download-URLs expire (download immediately); the v3 direct-upload asset ids were NOT usable as image-mode inputs (phantom `image/<id>/original.png` 404) — public URLs were the working route; the MCP exposed no download URL for rendered videos.
+
 HeyGen animates a character image (or avatar) speaking a script with lipsync. In this pipeline it exists for ONE job: **stage 12 spotlight videos** — the film's characters talking to the audience. It is NOT part of the film itself (the film's dialogue is Seedance-native, d-160/consistency contract — that law is untouched).
 
 ## What this MCP can and cannot do (audited 2026-08-08)

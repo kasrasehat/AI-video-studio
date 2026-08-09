@@ -1,10 +1,10 @@
 # Stage 12 — Character Spotlight (OPTIONAL)
 
-Direct-to-audience videos where the film's characters talk to the viewer — introduce themselves, talk about the movie, tease the next session, or any subject the Director orders — optionally intercut with b-roll from the approved film clips. Generated with **HeyGen** (`skills/tech/heygen/SKILL.md`, BINDING), scripted by the **spotlight-writer** subagent. Minimum **45 seconds** of content per video. The stage loops: one video at a time, each fully gated, until the Director closes the stage.
+Direct-to-audience videos where the film's characters talk to the viewer — introduce themselves, talk about the movie, tease the next session, or any subject the Director orders — optionally intercut with b-roll from the approved film clips. Generated with **SJinn** (`skills/tech/sjinn/SKILL.md`, BINDING — replaced HeyGen by d-182), scripted by the **spotlight-writer** subagent. Minimum **45 seconds** of content per video. The stage loops: one video at a time, each fully gated, until the Director closes the stage.
 
 ## Rule -1 — this stage is OPTIONAL
 
-Never start it unprompted. After stage 11 closes (or on `/resume` when `next` reports it as optional-available), OFFER it in one short paragraph: what a spotlight video is, that it uses HeyGen, that each video is individually priced and gated. Then the Director decides:
+Never start it unprompted. After stage 11 closes (or on `/resume` when `next` reports it as optional-available), OFFER it in one short paragraph: what a spotlight video is, that it generates talking-character shots via SJinn, that each video is individually priced and gated. Then the Director decides:
 - **"yes / let's make one"** → enter the stage (`checkpoint.py write <slug> character-spotlight --status in_progress`) and run the per-video loop below.
 - **"no / skip"** → `checkpoint.py write <slug> character-spotlight --status skipped --approved --note "Director declined stage 12"`, log the decision, done. `skipped` never blocks pipeline completion.
 - Once ENTERED, the stage gates like any other — it can still end in `skipped` if the Director changes their mind before any video is approved, or `completed --approved` after the last one.
@@ -25,16 +25,17 @@ Record the answers verbatim in the new `spotlight_kit.videos[]` entry (`video_id
 Spawn `spotlight-writer` with: the intake answers verbatim + paths to `brief`, `story`, `scene_list`, `lock_descriptors`, `publishing_kit`, `generation_manifest`. It returns the `script[]` fragment (in-character talking segments + b-roll picks with real in/out times + per-segment directions, seconds budgeted to the target). Validate, merge into `spotlight_kit.json` (archive-before-edit), status `scripted`.
 **GATE (paper, free):** present the script as readable dialogue with the timing budget. END TURN. Revise on feedback; on approval → status `approved_script`, log the decision.
 
-### 3. Payload (spotlight-writer, task "payload")
-The writer converts the approved script into the COMPLETE HeyGen request payload(s) per the chosen path (default `heygen_image_mode_plus_local_assembly`; `heygen_studio_one_shot` only when `heygen_avatar_id`s exist — see the tech skill). Save into `generation.payload` BEFORE anything is spent (d-114). State the cost estimate (HeyGen credits from the Director's account + any ElevenLabs voice audio, VPN law d-150).
-**GATE (spend):** cost + payload summary. END TURN. On approval only: upload assets (record `asset_ids`), submit, poll, download to `assets/spotlights/`, ffprobe.
+### 3. Payload (spotlight-writer, task "payload") — the d-181 method
+Talking segments are **full cinematic Seedance shots, not animated stills**: each segment is one `create_video_task` (seedance2, mode quality, resolution per Director ruling, ≤15s) staging the character in a LOCKED location — the film set becomes the series' "show set" (micro-explorers: LOC01 garage). Per segment the payload records: prompt per `seedance-prompting` (200–1000 words, anchors VERBATIM, @Image/@Audio map in URL order per the sjinn skill, quoted dialogue line, static direct-address framing held consistent per character across segments), `image_urls` = locked character sheet + locked location plate (public URLs), `audio_urls` = the character's LOCKED voice sample (consistency contract rule 3/4 — Seedance performs the line natively in the locked voice). Voice lines pre-generated for audition (Higgsfield preset voices) remain the b-roll VO source and a delivery reference; Seedance re-performs talking lines itself.
+Save the COMPLETE payload into `spotlight_kit.json` BEFORE anything is spent (d-114). **Cost law (SJinn has no preflight): one Director-gated PROBE segment first; unit price = whoami balance delta; batch cost stated from measured units.**
+**GATE (spend):** probe result + measured unit price + batch total. END TURN. On approval: submit the batch, poll, download to `assets/spotlights/`, ffprobe everything.
 
 ### 4. Assemble + QC
-Image-mode path: assemble talking segments + b-roll locally (video-edit recipes; loudnorm to −14 LUFS like every deliverable; captions per-preset law — srt sidecar for youtube, burned for tiktok, none on master). Master to `renders/spotlights/SP<nn>_master.mp4`, versioned in `renders/attempts/` like stage 10 — never overwrite.
-QC before presenting: ffprobe duration **≥45s** (record `measured_length_s`), lipsync watch-through, identity vs locked sheets, script spoken exactly, b-roll byte-familiar (approved clips only), muted test for vertical variants. QC is report-only — regeneration is the Director's call (d-114/d-159).
+Assemble talking segments + b-roll locally (video-edit recipes; hard cuts in script order; mezzanine-conform first; b-roll clip audio muted where the script says so, with the pre-generated VO lines mixed over; two-pass linear loudnorm to −14 LUFS). Master to `renders/spotlights/SP<nn>_master.mp4`, versioned in `renders/attempts/` like stage 10 — never overwrite.
+QC before presenting: ffprobe duration **≥45s** (record `measured_length_s`), lipsync + identity vs locked sheets (zoom before accusing), script spoken exactly (transcribe if in doubt — video-understand skill), b-roll from approved clips only, muted test for vertical variants, VO fits its b-roll window (judge by silencedetect content-end, d-161). QC is report-only — regeneration is the Director's call (d-114/d-159).
 
 ### 5. Video gate + delivery
-**GATE:** master + platform variants (free ffmpeg vertical blur-pad per platform-publishing) presented with QC findings. END TURN. On approval: status `approved`, files copied to `delivery/<platform>/spotlights/`, caption text files per platform (link policy d-174 applies: spotlight posts MAY carry the film link — they are trailer-class, not teaser-class), `--unit-done SP<nn>`, log the decision.
+**GATE:** master + platform variants (free ffmpeg vertical blur-pad per platform-publishing) presented with QC findings. END TURN. On approval: status `approved`, files copied to `delivery/<platform>/spotlights/`, caption text files per platform (link policy d-174: spotlight posts MAY carry the film link — trailer-class, not teaser-class), `--unit-done SP<nn>`, log the decision.
 Then ASK: **another video (different characters/subject welcome), or close the stage?**
 
 ## Closing
@@ -42,8 +43,9 @@ On "close": `checkpoint.py write <slug> character-spotlight --status completed -
 
 ## Pitfalls
 - Skipping intake and inventing a subject — the six questions are the Director's steering wheel; ask them every video.
-- Letting HeyGen re-imagine the character (generic avatar look, regenerated portrait) — the animated image is a LOCKED asset, full stop.
+- Treating a talking segment as a portrait animation — it is a FILM SHOT: locked set, locked sheet references, anchors verbatim, or identity drifts on first contact.
+- Launching a batch without a measured unit price — SJinn has no cost preflight; the probe-then-delta law is binding.
+- Forgetting `whoami` membership check — credits alone don't unlock SJinn generation.
 - Scripts that sound like a marketer, not the character — the voice-study test in the spotlight-writer agent is binding.
-- Counting on HeyGen for platform variants — the master is 16:9; verticals are OUR free ffmpeg work.
-- Treating presigned download URLs as storage — they expire; the artifact is the downloaded file.
+- Treating provider result URLs as storage — download immediately; the artifact is the local file.
 - Forgetting this stage exists on the NEXT production: it is offered after stage 11 there too.

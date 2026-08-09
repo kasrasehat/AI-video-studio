@@ -63,7 +63,7 @@
             "type": "object",
             "required": ["path", "payload"],
             "properties": {
-              "path": { "type": "string", "enum": ["heygen_image_mode_plus_local_assembly", "heygen_studio_one_shot", "heygen_avatar_mode", "dry_run"], "description": "Which HeyGen route builds this video (see skills/tech/heygen)." },
+              "path": { "type": "string", "enum": ["sjinn_seedance_plus_local_assembly", "higgsfield_seedance_plus_local_assembly", "heygen_image_mode_plus_local_assembly", "heygen_studio_one_shot", "heygen_avatar_mode", "dry_run"], "description": "Which generation route builds this video (sjinn_* is current per d-182; heygen_* retained for historical artifacts)." },
               "payload": { "type": "object", "description": "The COMPLETE HeyGen request payload(s), saved verbatim BEFORE the call (d-114)." },
               "heygen_video_ids": { "type": "array", "items": { "type": "string" }, "description": "HeyGen video/job ids once submitted." },
               "asset_ids": { "type": "object", "description": "Uploaded HeyGen asset ids keyed by local path.", "additionalProperties": { "type": "string" } },
