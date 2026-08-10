@@ -40,6 +40,7 @@ Reference URLs: Higgsfield media/results CloudFront URLs are public and stable �
 SJinn exposes **no cost-preflight tool**. d-114 adaptation, Director-endorsed: (1) `whoami` balance BEFORE a gated call, (2) run the single Director-approved probe, (3) `whoami` after → the delta is the unit price; RECORD it here and in the artifact, then state batch costs from measured units. Never launch a batch whose unit price hasn't been measured by a probe.
 
 - Measured 2026-08-09: **seedance2 quality 720p = 263 credits/s** (probe e6906c01: 4s = 1,052; batch of 11/97s = 25,511 — rate holds). **minimax-h3 2K = 150 credits/s** (probe 37e79285: 5s = 750; charged at task CREATION, before rendering). minimax-h3 is cheaper and sharper but drifted off-model on the film's characters in the A/B (rounder, younger face vs the locked sheet) — seedance2 holds identity; pick minimax only with Director-approved identity tolerance.
+- Measured 2026-08-10: **gpt-image-2 image, 2K, with reference image_urls = 100 credits/image** (probe 9e11de82, 1:1 avatar; balance 308,566 → 308,466). Image tasks take public HTTPS reference URLs in `image_urls` exactly like video; reference-conditioned identity held well on locked sheets. nano-banana-pro/nano-banana-2 prices unmeasured — probe before any batch.
 
 ## Gotchas
 
