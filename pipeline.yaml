@@ -225,7 +225,8 @@ stages:
       - "Per-video intake asked in chat before ANY authoring: subject, short description, target length (>=45s), characters, platforms, tone/CTA"
       - Dialogue written IN CHARACTER from lock_descriptors (anchors, personality, speech patterns) by the spotlight-writer subagent, which reads brief/story/scene_list/lock_descriptors/publishing_kit before writing a line
       - Script + full SJinn request payload SAVED into spotlight_kit BEFORE any generation (d-114 gates every paid call; SJinn has no cost preflight — unit price measured by a Director-gated probe + balance delta before any batch)
-      - B-roll only from APPROVED film clips; spoiler law applies to next-episode teases (nothing unreleased shown)
+      - B-roll only from APPROVED film clips; NO next-episode/next-session mention in any script unless the Director explicitly orders one (d-184); spoiler law applies
+      - B-roll voiceovers voiced by CLONING from the character's in-video segment audio, never raw TTS presets (d-184 — the VO must match the voice the viewer just heard)
       - Each video >=45 seconds of content; per-platform deliverables cut with the free ffmpeg recipes (platform-publishing skill)
       - The loop is open-ended — after each approved video, ask whether the Director wants another (different characters/subject) or wants the stage closed
     success_criteria:

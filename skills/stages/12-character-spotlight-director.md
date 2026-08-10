@@ -43,6 +43,8 @@ On "close": `checkpoint.py write <slug> character-spotlight --status completed -
 
 ## Pitfalls
 - Skipping intake and inventing a subject — the six questions are the Director's steering wheel; ask them every video.
+- Mentioning the next episode/session in ANY script line without an explicit Director order (d-184) — teases are the Director's call, never the writer's.
+- Voicing b-roll VO with raw TTS preset lines — clone from the character's actual in-video segment audio, or the voice audibly shifts at every b-roll cut (d-184).
 - Treating a talking segment as a portrait animation — it is a FILM SHOT: locked set, locked sheet references, anchors verbatim, or identity drifts on first contact.
 - Launching a batch without a measured unit price — SJinn has no cost preflight; the probe-then-delta law is binding.
 - Forgetting `whoami` membership check — credits alone don't unlock SJinn generation.
