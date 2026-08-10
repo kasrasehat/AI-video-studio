@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "series_id": "sample-series",
+  "title": "Sample Series (working title)",
+  "title_locked": false,
+  "premise": "Two inventors shrink, zap, and fling themselves into a different impossible place every episode, and science always half-works.",
+  "format": {
+    "audience": "family / all ages",
+    "language": "en",
+    "style": "Stylized 3D, Pixar-like",
+    "palette": "Lemonade & Lantern-Glow",
+    "tone": "warm-mischievous",
+    "genre": "family adventure comedy",
+    "platform": ["youtube"],
+    "aspect_ratio_primary": "16:9",
+    "episode_duration_target_seconds": { "min": 120, "max": 240 },
+    "content_boundaries": ["no real peril", "no brands"],
+    "music_direction": "orchestral-playful, leitmotif per lead"
+  },
+  "canon": {
+    "characters": [
+      {
+        "element_id": "CH01",
+        "name": "Gramps",
+        "source_episode_slug": "sample-episode-1",
+        "status": "locked",
+        "sheet_path": "assets/characters/CH01_V1_sheet.png",
+        "media_id": "00000000-0000-0000-0000-000000000001",
+        "public_url": "https://example.invalid/ch01.png",
+        "voice_sample_media_id": "00000000-0000-0000-0000-000000000002",
+        "notes": "Classic Round design school."
+      }
+    ],
+    "locations": [
+      {
+        "element_id": "LOC01",
+        "name": "Garage lab",
+        "source_episode_slug": "sample-episode-1",
+        "status": "locked",
+        "sheet_path": "assets/environments/LOC01_V1_sheet.png",
+        "media_id": "00000000-0000-0000-0000-000000000003"
+      }
+    ],
+    "objects": [],
+    "derived_sheets": [
+      {
+        "element_id": "CH01_goggles_down",
+        "name": "Gramps, goggles down",
+        "source_episode_slug": "sample-episode-1",
+        "status": "locked",
+        "sheet_path": "assets/characters/CH01_goggles_down_ref.png"
+      }
+    ]
+  },
+  "voice_presets": [
+    { "character_id": "CH01", "provider": "higgsfield_seed_audio", "preset_id": "arthur-preset-id", "params": {}, "notes": "New dialogue lines only; video conditioning uses the locked sample." }
+  ],
+  "laws": [
+    { "decision_ids": ["d-114"], "rule": "Every regeneration is Director-gated after they personally check the clip." }
+  ],
+  "episodes": [
+    {
+      "episode_number": 1,
+      "slug": "sample-episode-1",
+      "title": "Sample Episode One",
+      "status": "complete",
+      "logline": "The duo shrinks and has to get home.",
+      "duration_seconds": 202.0,
+      "divergences": [],
+      "continuity_notes": "Ends with everyone safe in the kitchen; running gag: rule one.",
+      "completed_at": "2026-08-06"
+    },
+    { "episode_number": 2, "slug": "sample-episode-2", "title": "TBD", "status": "planned" }
+  ],
+  "spotlight": { "show_set_element_id": "LOC01", "notes": "Direct-address videos stage characters in the garage set." },
+  "open_questions": ["Director to ratify the series title."],
+  "metadata": {}
+}

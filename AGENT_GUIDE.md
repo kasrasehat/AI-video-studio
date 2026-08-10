@@ -23,7 +23,7 @@ Before doing pipeline work, read in this order. Never skip a layer.
 |---|---|---|
 | Entry point | `CLAUDE.md` → this file | `CURSOR.md` / `CODEX.md` / `AGENTS.md` → this file |
 | Subagents (`.claude/agents/*.md`) | Run via the Agent/Task tool; parallel allowed (e.g. 3 storyboard variants concurrently). Stage 9 runs the d-137 four-part split (main agent + clip-producer + optional clip-evaluator/virality-checker) — sequential within chain groups (d-112), per-clip Director gate (d-114) | **Not available.** Read the same agent file as a role instruction and perform it yourself, sequentially, one role at a time |
-| Commands (`/new-film`, `/resume`, `/status`, `/gallery`) | `.claude/commands/` | `.cursor/commands/` mirrors; else follow the command file manually |
+| Commands (`/new-film`, `/new-series`, `/new-episode`, `/resume`, `/status`, `/gallery`) | `.claude/commands/` | `.cursor/commands/` mirrors; else follow the command file manually |
 | MCP (higgsfield) | `.mcp.json` | Use your harness's MCP support; if absent, stop and tell the user which call you needed |
 
 Artifacts and gates are identical across harnesses — only wall-clock parallelism differs. When acting out a subagent role sequentially, still honor its input/output contract exactly.
@@ -37,6 +37,8 @@ Artifacts and gates are identical across harnesses — only wall-clock paralleli
 ```
 
 `pipeline.yaml` is the single source of truth for what each stage requires, produces, and gates. Do not restructure the pipeline; the stage list is a user decision. Stage 12 is `optional: true`: it is OFFERED to the Director after publishing, never assumed — the Director may run it (per-video gates) or decline it (checkpoint status `skipped`, which requires `--approved` and never blocks pipeline completion).
+
+**Films vs series:** `/new-film` produces a standalone production. A SERIES is a bible (`projects/_series/<series_id>/series_bible.json`, schema `series_bible`) plus episodes that are each an ordinary full-pipeline production. `/new-series` founds the bible (or adopts a finished film as episode 1); `/new-episode` starts the next episode — inheriting format via delta-only intake and importing canon assets pre-locked at stages 6–7, per `skills/meta/series-continuity.md` (BINDING).
 
 ## Gate protocol (BINDING)
 
@@ -112,6 +114,7 @@ If `project.json` has `dry_run: true`: every generation call is replaced by copy
 | Gate/checkpoint mechanics | `skills/meta/checkpoint-protocol.md` + `scripts/checkpoint.py --help` |
 | QA severities & review rules | `skills/meta/qa-reviewer.md` |
 | Identity/consistency rules | `skills/meta/consistency-guard.md` |
+| Series bible / cross-episode canon | `skills/meta/series-continuity.md` |
 | Which model can do what | `config/model_capabilities.yaml` |
 | Export formats | `config/delivery_presets.yaml` |
 | Provider prompting | `skills/tech/<provider>/SKILL.md` |

@@ -27,6 +27,7 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `checkpoint-protocol.md` | Gates, checkpoints, resume, revisions — BINDING | **ready** |
 | `qa-reviewer.md` | Severity-graded review protocol for QA loops — BINDING | **ready** |
 | `consistency-guard.md` | Identity anchors, ref threading, chaining, drift checklist — BINDING | **ready** |
+| `series-continuity.md` | Series bible, cross-episode canon import/promotion, delta intake — BINDING | **ready** |
 | `taste-direction.md` | Taste profile: design read, dials, audience adaptation | **ready** |
 
 ## Tech (`skills/tech/` — canonical; mirrored to `.claude/skills/` by `scripts/sync_skills.py`)

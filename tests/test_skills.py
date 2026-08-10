@@ -16,7 +16,7 @@ EXPECTED_AGENTS = {
     "thumbnail-artist", "youtube-strategist", "spotlight-writer",
     "clip-producer", "clip-evaluator", "virality-checker",
 }
-EXPECTED_COMMANDS = {"new-film.md", "resume.md", "status.md"}
+EXPECTED_COMMANDS = {"new-film.md", "new-series.md", "new-episode.md", "resume.md", "status.md"}
 
 
 def parse_frontmatter(path: Path) -> dict:

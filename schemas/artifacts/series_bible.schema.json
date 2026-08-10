@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/series_bible",
+  "title": "Series Bible",
+  "description": "Cross-episode canon for a series. Lives at projects/_series/<series_id>/series_bible.json with its own history/ archives. Episodes are ordinary projects/<slug>/ productions; the bible is what carries locked assets, style, and laws between them. BINDING per skills/meta/series-continuity.md.",
+  "type": "object",
+  "required": ["version", "series_id", "title", "premise", "format", "canon", "episodes"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "series_id": { "type": "string", "minLength": 1, "description": "Kebab-case series slug — the directory name under projects/_series/." },
+    "title": { "type": "string", "minLength": 1 },
+    "title_locked": { "type": "boolean", "description": "false = working title, Director has not ratified it yet." },
+    "premise": { "type": "string", "minLength": 1, "description": "What the series is, in one paragraph — the show's engine, not one episode's plot." },
+    "format": {
+      "type": "object",
+      "required": ["audience", "language", "style", "tone", "platform", "aspect_ratio_primary"],
+      "description": "The default brief seed for every episode. Episode intake pre-fills from here; Director overrides are logged per episode and recorded in episodes[].divergences.",
+      "properties": {
+        "audience": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "minLength": 1 },
+        "style": { "type": "string", "minLength": 1, "description": "Visual style verbatim from the founding episode's brief — the series look." },
+        "palette": { "type": "string" },
+        "tone": { "type": "string", "minLength": 1 },
+        "genre": { "type": "string" },
+        "platform": { "type": "array", "minItems": 1, "items": { "type": "string", "enum": ["youtube", "instagram", "tiktok", "linkedin", "cinema", "generic"] } },
+        "aspect_ratio_primary": { "type": "string", "enum": ["16:9", "9:16", "1:1"] },
+        "episode_duration_target_seconds": {
+          "type": "object",
+          "required": ["min", "max"],
+          "properties": { "min": { "type": "number", "minimum": 30 }, "max": { "type": "number", "maximum": 600 } },
+          "additionalProperties": false
+        },
+        "content_boundaries": { "type": "array", "items": { "type": "string" } },
+        "music_direction": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "canon": {
+      "type": "object",
+      "required": ["characters", "locations", "objects"],
+      "description": "Locked cross-episode assets. An episode's stage 7 IMPORTS these as pre-locked elements and only generates what is genuinely new. New elements locked during an episode are PROMOTED here at episode close.",
+      "properties": {
+        "characters": { "type": "array", "items": { "$ref": "#/$defs/canon_element" } },
+        "locations": { "type": "array", "items": { "$ref": "#/$defs/canon_element" } },
+        "objects": { "type": "array", "items": { "$ref": "#/$defs/canon_element" } },
+        "derived_sheets": {
+          "type": "array",
+          "description": "State-variant references (goggles-down, bare-wrist…) that survived an episode and remain useful.",
+          "items": { "$ref": "#/$defs/canon_element" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "voice_presets": {
+      "type": "array",
+      "description": "Provider voice presets in use (Higgsfield seed_audio etc.) — preset ids drive new line generation; locked samples in canon drive video-model voice conditioning.",
+      "items": {
+        "type": "object",
+        "required": ["character_id", "provider", "preset_id"],
+        "properties": {
+          "character_id": { "type": "string" },
+          "provider": { "type": "string" },
+          "preset_id": { "type": "string" },
+          "params": { "type": "object", "additionalProperties": true },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "laws": {
+      "type": "array",
+      "description": "Standing craft/process rules that carry across episodes, each anchored to its decision id in the founding episode's decision log.",
+      "items": {
+        "type": "object",
+        "required": ["decision_ids", "rule"],
+        "properties": {
+          "decision_ids": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+          "rule": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "episodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["episode_number", "slug", "title", "status"],
+        "properties": {
+          "episode_number": { "type": "integer", "minimum": 1 },
+          "slug": { "type": "string", "minLength": 1, "description": "The projects/<slug>/ directory of this episode's production." },
+          "title": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["planned", "in_production", "complete"] },
+          "logline": { "type": "string" },
+          "duration_seconds": { "type": "number" },
+          "divergences": { "type": "array", "items": { "type": "string" }, "description": "Director-approved departures from format/canon in this episode, with decision ids." },
+          "continuity_notes": { "type": "string", "description": "What the NEXT episode must know: end state, running gags, promises made to the audience." },
+          "completed_at": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "spotlight": {
+      "type": "object",
+      "description": "Stage-12 series carry-over: the show set and direct-address conventions.",
+      "properties": {
+        "show_set_element_id": { "type": "string", "description": "Canon location used as the recurring spotlight/direct-address set." },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "open_questions": { "type": "array", "items": { "type": "string" } },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "canon_element": {
+      "type": "object",
+      "required": ["element_id", "name", "source_episode_slug", "status"],
+      "properties": {
+        "element_id": { "type": "string", "minLength": 1, "description": "Stable id (CH01, LOC01, OBJ03…) — identical across episodes." },
+        "name": { "type": "string", "minLength": 1 },
+        "source_episode_slug": { "type": "string", "minLength": 1, "description": "Episode whose production locked this element; its lock_descriptors entry is the descriptor of record." },
+        "status": { "type": "string", "enum": ["locked", "retired"] },
+        "sheet_path": { "type": "string", "description": "Path relative to the SOURCE episode's project dir." },
+        "media_id": { "type": "string", "description": "Provider media/job id of the locked sheet/plate/sample." },
+        "public_url": { "type": "string", "description": "Stable public URL (CloudFront) usable as a cross-provider reference." },
+        "voice_sample_media_id": { "type": "string", "description": "Characters only: locked voice sample conditioning the video model." },
+        "voice_sample_public_url": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
