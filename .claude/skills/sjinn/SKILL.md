@@ -39,9 +39,11 @@ Reference URLs: Higgsfield media/results CloudFront URLs are public and stable �
 
 SJinn exposes **no cost-preflight tool**. d-114 adaptation, Director-endorsed: (1) `whoami` balance BEFORE a gated call, (2) run the single Director-approved probe, (3) `whoami` after → the delta is the unit price; RECORD it here and in the artifact, then state batch costs from measured units. Never launch a batch whose unit price hasn't been measured by a probe.
 
-- Measured 2026-08-09: seedance2 quality 720p 4s + 3 refs → task e6906c01 (fill in delta when confirmed).
+- Measured 2026-08-09: **seedance2 quality 720p = 263 credits/s** (probe e6906c01: 4s = 1,052; batch of 11/97s = 25,511 — rate holds). **minimax-h3 2K = 150 credits/s** (probe 37e79285: 5s = 750; charged at task CREATION, before rendering). minimax-h3 is cheaper and sharper but drifted off-model on the film's characters in the A/B (rounder, younger face vs the locked sheet) — seedance2 holds identity; pick minimax only with Director-approved identity tolerance.
 
 ## Gotchas
+
+- **Concurrency cap: 5 concurrent Seedance tasks per account** (clean `task_creation_failed` error, measured 2026-08-09). Submit batches in waves of ≤5; poll and refill slots as tasks complete.
 
 - `membership_required` even with a large credit balance = membership lapsed; the Director renews in the SJinn app.
 - Unsupported params return `unsupported_parameter` — check the per-model matrix above before calling.
