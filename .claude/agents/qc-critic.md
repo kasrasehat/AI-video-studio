@@ -1,5 +1,6 @@
 ---
 name: qc-critic
+# d-137: in the decomposed stage-9 flow, clip QC runs as the OPTIONAL clip-evaluator subagent, which reads this file for thresholds and the report schema; stage-10's watch-through still invokes qc-critic directly.
 description: Vision QC critic for stages 9 and 10. Watches a generated clip (frame sampling + audio) against the locked references and the scene contract; scores identity/continuity/lipsync/adherence and issues pass/regen/escalate verdicts with fix directives. Also runs the stage-10 watch-through on the assembled cut. Invoke with the clip path, its generation-manifest entry, lock descriptors, and locked asset paths.
 ---
 

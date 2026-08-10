@@ -61,9 +61,15 @@ def test_gates_match_locked_design():
 
 def test_mandatory_qa_loops_present():
     by_name = {s["name"]: s for s in STAGES}
-    for stage_name in ["story", "directing", "lock-descriptors", "video-generation", "integration"]:
+    for stage_name in ["story", "directing", "lock-descriptors", "integration"]:
         assert "qa_loop" in by_name[stage_name], f"{stage_name} must declare its QA loop"
         assert by_name[stage_name]["qa_loop"]["blocking"] is True
+    # d-137 + d-114: stage 9's loop is the OPTIONAL, NON-blocking clip-evaluator —
+    # nothing loops autonomously; every regen is Director-authorized after they check the clip.
+    vg = by_name["video-generation"]["qa_loop"]
+    assert vg["agent"] == "clip-evaluator"
+    assert vg["blocking"] is False
+    assert vg["optional"] is True
 
 
 def test_model_capabilities_config():
@@ -101,7 +107,8 @@ def test_delivery_presets_config():
 def test_skill_index_references_exist():
     """Every path-like reference in skills/INDEX.md tables must exist on disk."""
     index = (lib.ROOT / "skills" / "INDEX.md").read_text(encoding="utf-8")
-    bases = [lib.ROOT / "skills" / "stages", lib.ROOT / "skills" / "meta", lib.ROOT / "skills" / "tech"]
+    bases = [lib.ROOT / "skills" / "stages", lib.ROOT / "skills" / "meta", lib.ROOT / "skills" / "tech",
+             lib.ROOT / ".claude" / "agents"]  # d-137: INDEX also routes the stage-9 role chain
     for line in index.splitlines():
         if line.startswith("| `") and ".md" in line:
             rel = line.split("`")[1]

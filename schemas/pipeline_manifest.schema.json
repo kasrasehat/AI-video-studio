@@ -42,10 +42,12 @@
               "agent": { "type": "string" },
               "min_rounds": { "type": "integer", "minimum": 0 },
               "max_rounds": { "type": "integer", "minimum": 1 },
-              "blocking": { "type": "boolean" }
+              "blocking": { "type": "boolean" },
+              "optional": { "type": "boolean", "description": "d-137: loop runs only on explicit Director request (stage 9 clip-evaluator)" }
             },
             "additionalProperties": false
           },
+          "optional_subagents": { "type": "array", "items": { "type": "string" }, "description": "d-137: subagents invoked only on explicit Director request; never part of the default flow" },
           "parallel": {
             "type": "object",
             "required": ["claude_subagent", "unit", "max_parallel"],

@@ -30,6 +30,8 @@ For the stage that `next` reports:
 
 For `qa_loop: {agent: A, max_rounds: N, blocking: true}`:
 
+**Stage-9 exception (d-137 + d-114):** its `qa_loop` is `optional: true, blocking: false` — the clip-evaluator runs ONLY on Director request, its verdict is a recommendation, and NOTHING loops autonomously: every regen is a fresh Director-authorized clip-producer invocation after the Director personally checks the clip. The generic loop below does not apply to stage 9.
+
 1. Round r: dispatch agent A with the artifact under review + its upstream sources + the stage's `review_focus` bullets (its rubric).
 2. It returns a `qa_review` JSON → write to `artifacts/qa_review_<stage>.json` (supersedes prior round; archive the old one).
 3. `verdict: pass` → done; attach the qa_review as an artifact if the stage `produces` it.

@@ -14,6 +14,7 @@ EXPECTED_AGENTS = {
     "writer", "refiner", "scene-splitter", "director", "qa-reviewer",
     "descriptor-extractor", "storyboard-artist", "prompt-smith", "qc-critic",
     "thumbnail-artist", "youtube-strategist", "spotlight-writer",
+    "clip-producer", "clip-evaluator", "virality-checker",
 }
 EXPECTED_COMMANDS = {"new-film.md", "resume.md", "status.md"}
 

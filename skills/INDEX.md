@@ -15,10 +15,10 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `06-lock-descriptors-director.md` | 6 lock-descriptors — consistency backbone + QA loop | **ready** |
 | `07-asset-generation-director.md` | 7 asset-generation — variants → Director locks | **ready** |
 | `08-storyboard-director.md` | 8 storyboard — 3 variants/scene, cherry-pick | **ready** |
-| `09-video-generation-director.md` | 9 video-generation — clips + QC regen loop | **ready** |
+| `09-video-generation-director.md` | 9 video-generation — MAIN-AGENT doc: orchestration, per-clip Director gate (d-114), d-137 four-part split | **ready** |
 | `10-integration-director.md` | 10 integration — assembly, sound, delivery | **ready** |
 | `11-publishing-director.md` | 11 publishing — thumbnail, trailer, metadata, delivery tree | **ready** |
-| `12-character-spotlight-director.md` | 12 character-spotlight (OPTIONAL) — HeyGen talking characters + b-roll | **ready** |
+| `12-character-spotlight-director.md` | 12 character-spotlight (OPTIONAL) — SJinn talking characters + b-roll | **ready** |
 
 ## Meta (`skills/meta/`)
 
@@ -46,6 +46,15 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `sound-effects/SKILL.md` | SFX generation (stage 10) | **ready** |
 | `ffmpeg/SKILL.md` | Probing, conversion, concat, fades | **ready** |
 | `video-edit/SKILL.md` | Trim/concat/resize/overlay recipes | **ready** |
-| `video-understand/SKILL.md` | Frame sampling + local transcription (qc-critic's eyes) | **ready** |
+| `video-understand/SKILL.md` | Frame sampling + local transcription (clip-evaluator/qc-critic's eyes) | **ready** |
+
+## Stage-9 role chain (d-137 — read by SUBAGENTS, not the main agent)
+
+| Role file (`.claude/agents/`) | Part | Reads |
+|---|---|---|
+| `clip-producer.md` | 2 — end-to-end clip generation (one invocation = one attempt) | seedance-prompting, higgsfield-mcp, prompt-smith, consistency-guard, per-scene slices, model_capabilities |
+| `prompt-smith.md` | prompt-assembly contract consumed BY clip-producer (not invoked standalone in the d-137 flow) | — |
+| `clip-evaluator.md` | 3 — OPTIONAL deep QC, report-only (d-114) | qc-critic.md + the brief's LAWS block |
+| `virality-checker.md` | 4 — OPTIONAL, informational, out-of-pipeline | — |
 | `ai-video-gen/SKILL.md` | Cross-model prompting deltas (Kling/Veo/Wan/…) | **ready** |
 | `flux-bfl/SKILL.md` | FLUX prompting + BFL API (optional) | **ready** |

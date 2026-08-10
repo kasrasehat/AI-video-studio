@@ -23,6 +23,8 @@ Deferred problems noted during production. Each entry: the problem, the evidence
 
 **Candidate solutions:** (a) briefs carry verbatim EP-extracted slices of the scene's entries so artists read only brief + rulebook; (b) keep full-read subagents (Director's lean, ISSUE-001b) and accept token cost as the price of independence/accuracy; (c) split canonical artifacts into per-scene files so a full read is naturally small. Note (a) trades a little independence for cost; (c) preserves disk-authority with small reads but changes artifact layout + schemas.
 
+**STAGE-9 RESOLUTION (d-137, 2026-07-29):** solved for stage 9 with a one-reader-per-document contract — main agent reads only the stage-9 skill/pipeline/checkpoints/reports; clip-producer alone reads the tech skills + per-scene python slices; evaluator receives laws in its brief. The stage-9 skill and clip-producer.md were deduplicated so no rule text exists in both. Pattern is the candidate template for stage 10.
+
 ## ISSUE-003 — Subagents stall on whole-file reads of large JSON artifacts
 
 **Problem:** Both S07 artists stalled (600s stream-watchdog, "no progress") while Reading `scene_list.json` / `lock_descriptors.json` whole, and had to be resumed manually.
@@ -46,6 +48,8 @@ Deferred problems noted during production. Each entry: the problem, the evidence
 **Evidence:** d-059 (storyboard-artist rewritten v2 only after the Director noticed); stages 9–10 skills are still stubs whose completion at M6/M7 will change what prompt-smith/qc-critic must do.
 
 **Candidate solution:** when each stage's skill is completed (M6: 09 + prompt-smith + qc-critic; M7: 10), rewrite its role files in the same pass and adopt the ISSUE-001 principle (whatever variant is chosen) so the role file cannot drift again. Add a checklist item to the milestone kickoff: "audit role files touched by this stage."
+
+**M6 STATUS (d-137, 2026-07-29):** stage-9 role files delivered current: clip-producer (new, end-to-end), prompt-smith (updated d-106/d-111/d-120/d-124/d-127, now the producer's contract), clip-evaluator (new, wraps qc-critic thresholds), virality-checker (new). qc-critic remains authoritative for stage-10's watch-through — audit it at M7 kickoff.
 
 ## ISSUE-006 — Image-model compliance failures are the dominant regen cause (not prompts)
 
