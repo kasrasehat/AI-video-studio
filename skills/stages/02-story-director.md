@@ -14,6 +14,8 @@ Run the writers' room: Writer drafts → Refiner re-reads and repairs → the Di
    - Every beat has a real `emotional_note`; the emotional arc actually progresses.
    - Cast size filmable (≤4 named characters for a 2–3 min film; be skeptical above that).
    - `content_boundaries` respected; language matches the brief.
+   - **Causal chain audit (d-191)** — run the checks in the section below; a story failing them goes back to the refiner BEFORE the gate.
+   - **Conversation density (d-191)** — every beat where 2+ characters are present carries a real multi-turn exchange (each speaker ≥2 turns) or names its silence as a choice; flag any stretch of consecutive beats carried by single lines or narration-with-visuals.
    - Schema-valid (`validate_artifact.py artifacts/story.json`). Fix or re-dispatch on failure.
 4. **Gate.** Present: title + genre, the synopsis, the beat map (one line per beat: summary → emotion → seconds), the full story text, WHAT THE REFINER CHANGED (from change_notes — the Director should see the room's work), and `remaining_risks`. Options: accept / give notes / abort.
 5. **On Director notes:** route them through `refiner` (notes verbatim in the prompt; `changed_by` stays `refiner`, round increments, change_notes describe the response to each note). Archive the prior `story.json` to `history/` first. Re-run step 3, re-gate. Log each revision round as a decision (`--decided-by user`, their note as the reason). Cap: `max_revisions_per_stage` (3) — then present the impasse honestly.
@@ -28,6 +30,25 @@ Run the writers' room: Writer drafts → Refiner re-reads and repairs → the Di
 - Skipping the refiner because the draft "reads well" — the mandate exists for the failure you can't see.
 - Presenting only a summary at the gate: the Director must be able to read the ACTUAL story text.
 - Letting change_notes say "improved flow" — they must name concrete changes or the audit trail is theater.
+
+## Causal clarity law (d-191, audience feedback — BINDING)
+
+Episode 1 shipped with a comprehension bug: real viewers could not say HOW the heroes ended up inside Grandma — the mechanism (shrunk duo on the cookie → cookie dunked in lemonade → Grandma drinks) was distributed across cuts and inference. Audiences do not infer load-bearing plot mechanics; they experience a gap and disengage. Three rules:
+
+1. **Every world/location entry and exit is a MECHANISM BEAT** — its own beat (or an explicitly named portion of one) that shows cause → effect on screen, in order, uninterrupted: the audience must SEE the thing that moves the heroes from world A to world B, not deduce it. "How did they get there?" must be answerable by pointing at the screen.
+2. **The naive retell test:** after drafting, retell the whole story using ONLY what a first-time viewer sees and hears — no author knowledge. Every location change, every character appearance, every plot-critical object must survive the retell. Any step that needs "well, obviously..." is a defect; name it and fix it in the story, not in a caption.
+3. **Mechanism beats are never trimmed for time.** When runtime pressure comes, cut a joke, a lingering shot, a b-plot — never the 3 seconds that make the plot legible. A confused viewer is a lost subscriber; no gag out-earns comprehension.
+
+The qa-reviewer runs the retell test independently (comprehension audit); it reaching QA is already a miss — the writers' room owns clarity first.
+
+## Conversation density law (d-191, audience feedback — BINDING)
+
+The Director's standing order: dialogue like professional animation. Films in this genre are carried by talk — characterful, overlapping, reactive. Concretely:
+
+- **Default texture = exchange, not statement.** Wherever two characters share a beat, write a real back-and-forth (≥2 turns EACH, short lines) that plays through the action. One character saying one line while things happen around them is a storyboard note, not a scene.
+- **Reactions are lines too.** The listener answers — with words, an interjection, a comeback. Alternating monologues are not conversation.
+- **Talk reveals, never narrates.** Every line carries want/worry/joke/character; exposition is smuggled inside attitude ("Rule one of introductions: name first"), never delivered as information.
+- **Silence stays legal but must be BOUGHT:** a named dramatic reason in the beat (awe, held breath, suspense) — same standard as d-111, now with the density bar raised: a story averaging under ~2 exchanges per dialogue-capable beat is flat by definition and goes back to the room.
 
 ## First-3-seconds law (d-173, virality — BINDING for future productions)
 

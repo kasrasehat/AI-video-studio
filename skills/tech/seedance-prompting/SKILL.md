@@ -82,6 +82,15 @@ Seedance renders comparisons as literal objects. "Dust motes drift overhead **li
 
 For montage-type scenes, explicit blocks: `Shot 1 (wide establishing, slow push-in, ~4s): … Shot 2 (medium close-up, static, ~5s): …` — ~2.5s minimum per shot, identity anchors re-stated verbatim in every block, subject transitions named with their cause ("revealed by camera movement"). Our default remains ONE idea per 15s scene; multi-shot only when the storyboard variant was designed that way.
 
+## Handoff beat (BINDING — d-191, audience feedback: visible cuts between clips)
+
+Chained clips share a start FRAME (d-112) but audiences see a jump when they don't share MOTION. Every prompt therefore books its last ~1–1.5s as an explicit **handoff beat**, and every chained successor's 0–2s bridge (d-124) continues it:
+
+- **Outgoing clip, final beat:** either (a) the action DECELERATES into a describable settle — name the exact end pose, gaze direction, and any residual motion ("Milo lands the jump and holds, knees still flexed, cape settling, eyes frame-right"), or (b) for boundaries the direction marks continuous, name the exact motion state crossing the cut — what is moving, screen direction, energy ("still sliding left-to-right at full speed as the clip ends").
+- **Incoming chained clip, 0–2s bridge:** restate the start frame content per d-124 AND the inherited motion — the first beat continues it before anything new happens ("continuing the left-to-right slide from the opening frame, he decelerates as…"). A bridge that poses a moving character static is how seams become visible.
+- The `transition_out` in scene_direction (stage-5 boundary motion contract, d-191) is the source of truth for which mode each boundary uses; the prompt-writer copies it, never invents it.
+- End-frame pins (`end_image`) remain the strongest handoff for hard choreography — when one exists, the handoff beat describes THAT frame.
+
 ## Params (via Higgsfield MCP — model id `seedance_2_0`, budget variant `seedance_2_0_mini`)
 
 | Param | Use |

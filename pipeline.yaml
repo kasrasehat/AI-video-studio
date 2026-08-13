@@ -45,6 +45,8 @@ stages:
       - Refiner pass performed — detail added, broken logic fixed, genre-appropriate emotion present
       - Beats sum to the brief's duration target (±10%)
       - Tone and audience fit the brief
+      - Causal chain audit passed — every world/location entry+exit has an ON-SCREEN mechanism beat; naive retell test clean (d-191)
+      - Conversation density at professional-animation level — multi-turn exchanges wherever characters share a beat; silence only as stated choice (d-191)
     success_criteria:
       - Schema-valid story with beats and per-beat duration estimates
       - estimated_runtime_seconds within duration target ±10%
@@ -93,6 +95,7 @@ stages:
       - Camera movement executable by a 15s clip model (no impossible multi-move choreography)
       - Palette stated as hexes + name; lighting and mood concrete, not vibes
       - Blocking never contradicts scene_list continuity_notes or the 180° line
+      - Boundary motion contract — every transition_out names the exit motion state AND how the next scene's opening absorbs it (d-191, generalizes d-158 to all boundaries)
     success_criteria:
       - Schema-valid scene_direction covering every scene
       - Blocking qa_review verdict == pass within 3 rounds
@@ -166,6 +169,7 @@ stages:
       - Every prompt embeds identity anchors verbatim, quoted dialogue lines, 200–1000 words (Seedance, d-138)
       - References threaded — locked sheets/plates (≤9 images), start frame @-named per d-124/d-127, end frames where pinned, locked voice reference_audio for every speaker
       - Every generated clip presented at the per-clip Director gate with the producer report; evaluator (when requested) checked identity/continuity/lipsync with native-res verification (d-114)
+      - Handoff beat present — each chained clip's final second settles into a describable state, and the successor's 0-2s bridge continues the inherited motion (d-191)
     success_criteria:
       - Schema-valid generation_manifest + clip_qc_report
       - Every clip status == approved (QC pass + Director batch approval)
@@ -181,6 +185,7 @@ stages:
     resume_unit: preset
     review_focus:
       - Transitions follow scene_direction / transition_out_hint — not uniform crossfades
+      - Seam pass done — every boundary classified (continuous / new-beat / hinge), motion-matched via micro-trims, soft-cut applied where a continuous seam still jumps; watch-through scores every seam for visibility (d-191)
       - audio_direction authored and Director-approved ON PAPER before any cue is generated (score architecture, timecoded cue sheets citing sound_direction lines, protected silences, mix plan, main-theme audition)
       - Music + SFX generated to the brief's music_direction; dialogue never buried (ducking applied)
       - Captions per brief language; every deliverable preset from config/delivery_presets.yaml

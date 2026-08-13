@@ -27,6 +27,16 @@ For story, scene-division and directing artifacts, hunt flatness as a first-clas
 3. **Single-expression scenes** — a scene whose blocking/mood names no facial emotion, or names one flat state for all beats and characters: SUGGESTION; CRITICAL at an emotional peak (the audience reads faces before anything else).
 4. **Static life** — blocking where nothing moves but the mouths: SUGGESTION, paired with a concrete business/motion proposal in the fix.
 
+## Comprehension audit (binding — added d-191 after real viewers lost the plot)
+
+For story, scene_list and scene_direction: perform the **naive retell test** — reconstruct the entire narrative using ONLY what a first-time viewer will see and hear, in order. Flag as CRITICAL:
+1. A world/location entry or exit whose mechanism is off-screen, split across cuts such that cause and effect never appear together, or inferable-only (the E01 bug: viewers could not say how the heroes got inside Grandma — the cookie-dunk-swallow chain never played as one legible on-screen sequence).
+2. A plot-critical object or character whose first appearance does the story work before the audience has been shown what it is.
+3. Any step of the retell that requires author knowledge to complete ("she must have drunk it").
+The proposed_fix must name the missing on-screen beat, not a caption or dialogue patch-over. Runtime pressure is never an accepted reason — mechanism beats outrank gags (stage-2 skill, causal clarity law).
+
+Additionally, grade **conversation density** (d-191, raises the d-111 bar): compute exchanges per dialogue-capable beat/scene; a stretch of 2+ consecutive company-beats carried by single lines or silence without stated reason is CRITICAL; a story averaging under ~2 exchanges per dialogue-capable beat gets a CRITICAL on the artifact as a whole.
+
 ## Trajectory audit (binding — added d-084)
 
 For any artifact containing blocking or motion (scene_direction above all): RECONSTRUCT each scene's spatial diagram from its text — every named element placed on the location's relative-position map, every motion traced source → path → target in screen space. Flag as CRITICAL:

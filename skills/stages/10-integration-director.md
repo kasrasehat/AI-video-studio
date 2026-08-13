@@ -54,6 +54,18 @@ Author `audio_direction.json` (schema `audio_direction`) — sound is directed l
 - Trusting `render_report` written by assemble.py as finished — its `final_qc` is born `fix`; only the Director's watch-through turns it `pass`.
 - Editing `.claude/skills` copies instead of `skills/tech` sources (sync law), or forgetting `projects/` is gitignored — artifacts live as files + history archives, not in git.
 
+## Seam pass (d-191, audience feedback: visible cuts read as unnatural — BINDING)
+
+Before the watch-through QC, walk EVERY clip boundary in the assembled cut and treat it explicitly:
+
+1. **Classify the seam** from scene_direction: `continuous` (same action/location flows across), `new-beat` (same world, new moment), or `hinge` (location/time break). Record the class per boundary in `edit_decisions` notes.
+2. **Motion-match with micro-trims first.** On a continuous seam, trim the outgoing tail (`out_s`) and incoming head (`in_s`) to the frames where the motion states best agree — a limb mid-swing on both sides, or settle-point to settle-point. Frame-step the boundary (extract ±6 frames each side via ffmpeg) and LOOK; never judge a seam from the timeline alone.
+3. **Soft-cut as the fallback, not the default.** If a continuous seam still jumps after trimming (pose or lighting mismatch the trims can't fix), a 2–4 frame micro-crossfade (`xfade`, ≤0.15s) hides the discontinuity without reading as a dissolve. Never on new-beat or hinge seams — those WANT a clean cut; d-161's music dovetails and the score carry them.
+4. **Escalate honestly.** A seam that still reads as a jump after 2 and 3 is a generation problem, not an edit problem — propose the clip-tail regeneration to the Director with the quality case (d-159: cost is never a veto; their call, d-114).
+5. **Watch-through QC scores every seam** (qc-critic brief gains a seam-visibility dimension): each boundary rated invisible / acceptable / visible, with `visible` findings citing timestamp and cause. The film's target is zero `visible` seams.
+
+Root cause note (why this section exists): E01 audiences reported "clear cuts / unnatural transitions." Upstream, d-191 also hardened stage 5 (boundary motion contract: every transition_out names exit motion + absorption) and stage 9 (handoff beat: chained clips settle into describable states; successors continue inherited motion) — this pass is the last line, not the only one.
+
 ## Cue-transition smoothing (d-161)
 
 Phase 2 cue design and Phase 3 generation follow `skills/tech/music` → "Cue-transition craft": sneak-in entrances by default, dovetails at cue→cue splices, directed hard exits preserved as events, and SUBTLE emotional gradation — adjacent cues share ≥2 bridge parameters (instrument overlap / related key / tempo step ≤~15%), and a cue following a tender scene opens in the inherited warmth before rotating to its own character. Mix ramps are recorded per cue in `edit_decisions.audio.music[].fade_in_s/fade_out_s`.
