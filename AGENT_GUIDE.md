@@ -38,7 +38,7 @@ Artifacts and gates are identical across harnesses — only wall-clock paralleli
 
 `pipeline.yaml` is the single source of truth for what each stage requires, produces, and gates. Do not restructure the pipeline; the stage list is a user decision. Stage 12 is `optional: true`: it is OFFERED to the Director after publishing, never assumed — the Director may run it (per-video gates) or decline it (checkpoint status `skipped`, which requires `--approved` and never blocks pipeline completion).
 
-**Films vs series:** `/new-film` produces a standalone production. A SERIES is a bible (`projects/_series/<series_id>/series_bible.json`, schema `series_bible`) plus episodes that are each an ordinary full-pipeline production. `/new-series` founds the bible (or adopts a finished film as episode 1); `/new-episode` starts the next episode — inheriting format via delta-only intake and importing canon assets pre-locked at stages 6–7, per `skills/meta/series-continuity.md` (BINDING).
+**Films vs series:** `/new-film` produces a standalone production at `projects/<slug>/`. A SERIES is one directory — `projects/_series/<series_id>/` — holding the bible (`series_bible.json`, schema `series_bible`), series-level channel assets/delivery, and each episode as an ordinary full-pipeline production under `episodes/<slug>/` (the CLI resolves bare slugs from both layouts). `/new-series` founds the bible (or adopts a finished film as episode 1); `/new-episode` starts the next episode — inheriting format via delta-only intake and importing canon assets pre-locked at stages 6–7, per `skills/meta/series-continuity.md` (BINDING).
 
 ## Gate protocol (BINDING)
 

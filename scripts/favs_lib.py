@@ -41,7 +41,20 @@ def projects_dir() -> Path:
 
 
 def project_dir(slug: str) -> Path:
-    return projects_dir() / slug
+    """Resolve a production dir by slug. Flat layout (projects/<slug>) wins; otherwise
+    series episodes at projects/_series/<series_id>/episodes/<slug>. Falls back to the
+    flat path for not-yet-created projects (init)."""
+    flat = projects_dir() / slug
+    if flat.exists():
+        return flat
+    series_root = projects_dir() / "_series"
+    if series_root.exists():
+        hits = sorted(series_root.glob(f"*/episodes/{slug}"))
+        if len(hits) > 1:
+            raise ValueError(f"slug {slug!r} is ambiguous across series: {[str(h) for h in hits]}")
+        if hits:
+            return hits[0]
+    return flat
 
 
 def now_iso() -> str:

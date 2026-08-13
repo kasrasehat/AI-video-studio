@@ -1,6 +1,6 @@
 # Series Continuity — BINDING
 
-How episodes of a series share canon without re-arguing or re-buying it. A series is a **bible** (`projects/_series/<series_id>/series_bible.json`, schema `series_bible`, archived to a sibling `history/` on every edit) plus ordinary episode productions (`projects/<slug>/`, full 12-stage pipeline, unchanged). The pipeline is NOT restructured for series — continuity lives in what flows into stage 1 and stage 7 and what flows back out at episode close.
+How episodes of a series share canon without re-arguing or re-buying it. A series is ONE directory — `projects/_series/<series_id>/` — holding the **bible** (`series_bible.json`, schema `series_bible`, archived to a sibling `history/` on every edit), series-level assets/delivery (`assets/channel/`, `delivery/`), and the episode productions under `episodes/<slug>/` (each a full 12-stage production, unchanged). `favs_lib.project_dir()` resolves a slug to `projects/<slug>` (standalone films) or `projects/_series/*/episodes/<slug>` automatically — all CLI commands take the bare slug either way; episode slugs must stay unique across the whole repo. The pipeline is NOT restructured for series — continuity lives in what flows into stage 1 and stage 7 and what flows back out at episode close.
 
 ## Entry points
 
