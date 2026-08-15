@@ -1,0 +1,55 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "researched_at": "2026-08-10",
+  "proposals": [
+    {
+      "trend_id": "TR01",
+      "name": "Tiny POV worlds",
+      "kind": "format",
+      "evidence": ["TikTok #tinypov 2.1B views (checked 2026-08-10, https://example.invalid/evidence)"],
+      "fit_rationale": "The show IS a tiny-POV machine; our characters can perform the format natively.",
+      "risk": "Format may saturate within months.",
+      "longevity": "months",
+      "example_uses": ["A beat shot from ant-height in the garden", "Vertical teaser cut as a tiny-POV walk"]
+    },
+    {
+      "trend_id": "TR02",
+      "name": "Explain-it-like-I'm-five science",
+      "kind": "topic",
+      "evidence": ["YouTube search interest for kid-science explainers rising 6 months (https://example.invalid/e2)"],
+      "fit_rationale": "Gramps' voice is built for it; educational pull is evergreen for family co-viewing.",
+      "risk": "Low risk; crowded space.",
+      "longevity": "evergreen",
+      "example_uses": ["Gramps mid-adventure one-liner explanations", "Description hook phrased as a question kids ask"]
+    }
+  ],
+  "selection": {
+    "selected_trend_ids": ["TR02"],
+    "decided_by": "Director",
+    "decision_note": "TR02 only; TR01 revisit next episode."
+  },
+  "integration": {
+    "story_plan": [
+      {
+        "trend_id": "TR02",
+        "approach": "Gramps answers Milo's mid-peril questions with 5-second gadget-side science bits, always in character, always mid-action.",
+        "where": "B02 and B05",
+        "subtlety_test": "Trend-aware viewers recognize the explainer rhythm; trend-blind viewers just see Gramps being Gramps — the beats work as pure comedy.",
+        "canon_impact": "none"
+      }
+    ],
+    "metadata_placements": {
+      "title_angle": "question-phrased title kids actually search",
+      "description_hook": "Why CAN'T you re-big inside a grandmother? Science has answers.",
+      "tags": ["science for kids", "how does it work"],
+      "hashtags_by_platform": { "tiktok": ["#learnontiktok"] },
+      "thumbnail_note": "curiosity question energy, no text change needed",
+      "trailer_note": "include one 2s explainer gag beat",
+      "spotlight_note": "characters could answer real kid questions direct-to-camera",
+      "teaser_note": ""
+    },
+    "notes": "Teasers deliberately skip the trend (reach tax on niche hashtags, d-174)."
+  },
+  "metadata": { "rejected": ["licensed-audio dance trend — music licensing"] }
+}

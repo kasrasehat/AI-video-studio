@@ -8,6 +8,7 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 |---|---|---|
 | `executive-producer.md` | Orchestrates all 12 stages, resume, budget | **ready** |
 | `01-intake-director.md` | 1 intake — conversational Q&A → brief | **ready** |
+| `01b-trend-scan-director.md` | 1b trend-scan (OPTIONAL) — live social trends → Director picks → subtle integration plan | **ready** |
 | `02-story-director.md` | 2 story — writer → refiner → Director loop | **ready** |
 | `03-scene-division-director.md` | 3 scene-division — ≤15s units | **ready** |
 | `04-scene-recheck-director.md` | 4 scene-recheck — dedupe/continuity | **ready** |

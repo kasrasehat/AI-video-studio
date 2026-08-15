@@ -15,6 +15,7 @@ EXPECTED_AGENTS = {
     "descriptor-extractor", "storyboard-artist", "prompt-smith", "qc-critic",
     "thumbnail-artist", "youtube-strategist", "spotlight-writer",
     "clip-producer", "clip-evaluator", "virality-checker",
+    "trend-scout", "trend-weaver",
 }
 EXPECTED_COMMANDS = {"new-film.md", "new-series.md", "new-episode.md", "resume.md", "status.md"}
 

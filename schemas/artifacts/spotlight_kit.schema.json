@@ -87,6 +87,19 @@
               "additionalProperties": false
             }
           },
+          "metadata": {
+            "type": "object",
+            "description": "Per-video publishing metadata, authored at delivery (d-192): every spotlight ships with title, description, TAGS and per-platform hashtags; trend placements applied when a trend_kit selection is active.",
+            "required": ["title", "description", "tags"],
+            "properties": {
+              "title": { "type": "string", "minLength": 1 },
+              "description": { "type": "string", "minLength": 1 },
+              "tags": { "type": "array", "minItems": 5, "items": { "type": "string" }, "description": "YouTube tag list (settings field, not hashtags) — ≤500 chars total." },
+              "hashtags_by_platform": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+              "trend_refs": { "type": "array", "items": { "type": "string" }, "description": "trend_kit proposal ids woven into this video's metadata/script, if any." }
+            },
+            "additionalProperties": false
+          },
           "status": { "type": "string", "enum": ["intake", "scripted", "approved_script", "generated", "approved", "rejected"] },
           "qc_notes": { "type": "string" }
         },

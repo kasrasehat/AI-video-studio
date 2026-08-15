@@ -170,7 +170,9 @@ def test_optional_stage_does_not_block_completion(tmp_projects, capsys):
     assert run(["write", SLUG, "character-spotlight", "--status", "completed"]) == 2  # unapproved
     assert run(["write", SLUG, "character-spotlight", "--status", "completed", "--approved"]) == 0
     run(["next", SLUG])
-    assert "pipeline complete: all stages completed" in capsys.readouterr().out
+    out = capsys.readouterr().out
+    assert "pipeline complete" in out
+    assert "optional available: trend-scan" in out  # trend-scan untouched: never blocks (d-192)
 
 
 def test_decision_log_append_and_revision(tmp_projects):

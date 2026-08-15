@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/trend_kit",
+  "title": "Trend Kit",
+  "description": "Produced by the optional trend-scan stage (d-192). trend-scout researches live social platforms and proposes 10 trends; the Director selects one/many/none; trend-weaver authors the integration plan that stages 2 (story), 11 (publishing) and 12 (spotlights) consume.",
+  "type": "object",
+  "required": ["version", "project_id", "researched_at", "proposals", "selection"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "researched_at": { "type": "string", "description": "ISO date of the research pass — trends expire; re-scan if production starts >2 weeks later." },
+    "proposals": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 15,
+      "items": {
+        "type": "object",
+        "required": ["trend_id", "name", "kind", "evidence", "fit_rationale", "risk", "longevity"],
+        "properties": {
+          "trend_id": { "type": "string", "pattern": "^TR[0-9]{2}$" },
+          "name": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string", "enum": ["topic", "format", "meme", "sound", "challenge", "aesthetic", "phrase", "seasonal"] },
+          "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Where it is trending and how big — platform + concrete signal (views, hashtag volume, examples), with source URLs where possible." },
+          "fit_rationale": { "type": "string", "minLength": 1, "description": "Why it suits THIS brand: family tone, content boundaries, characters. A trend that fights the brand is not proposed." },
+          "risk": { "type": "string", "minLength": 1, "description": "Honest downside: dating fast, kids-safety optics, copyright/music licensing, cringe potential." },
+          "longevity": { "type": "string", "enum": ["days", "weeks", "months", "evergreen"] },
+          "example_uses": { "type": "array", "items": { "type": "string" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "selection": {
+      "type": "object",
+      "required": ["selected_trend_ids", "decided_by"],
+      "properties": {
+        "selected_trend_ids": { "type": "array", "items": { "type": "string", "pattern": "^TR[0-9]{2}$" }, "description": "Empty array = Director chose NONE (legitimate outcome; stage closes with no integration)." },
+        "decided_by": { "type": "string" },
+        "decision_note": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "integration": {
+      "type": "object",
+      "description": "trend-weaver output — REQUIRED when selection is non-empty. The subtlety contract: the story must work for a viewer who has never seen the trend.",
+      "required": ["story_plan", "metadata_placements"],
+      "properties": {
+        "story_plan": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["trend_id", "approach", "where", "subtlety_test"],
+            "properties": {
+              "trend_id": { "type": "string" },
+              "approach": { "type": "string", "minLength": 1, "description": "HOW it lives in the story: a gag, a visual motif, a character bit, a location flavor, a musical wink — concrete, not 'reference the trend'." },
+              "where": { "type": "string", "minLength": 1, "description": "Which beat(s)/scene(s) carry it." },
+              "subtlety_test": { "type": "string", "minLength": 1, "description": "Written proof both ways: what a trend-aware viewer gains, AND why a trend-blind viewer loses nothing." },
+              "canon_impact": { "type": "string", "description": "Any touch on locked canon/tone — must be none or Director-gated." }
+            },
+            "additionalProperties": false
+          }
+        },
+        "metadata_placements": {
+          "type": "object",
+          "description": "Every click surface the trend should boost. Empty string/array = weaver judged that surface should NOT carry it (record why in notes).",
+          "properties": {
+            "title_angle": { "type": "string" },
+            "description_hook": { "type": "string" },
+            "tags": { "type": "array", "items": { "type": "string" } },
+            "hashtags_by_platform": { "type": "object", "additionalProperties": { "type": "array", "items": { "type": "string" } } },
+            "thumbnail_note": { "type": "string" },
+            "trailer_note": { "type": "string" },
+            "spotlight_note": { "type": "string" },
+            "teaser_note": { "type": "string" }
+          },
+          "additionalProperties": false
+        },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}

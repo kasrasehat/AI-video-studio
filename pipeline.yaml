@@ -31,13 +31,31 @@ stages:
       - Open questions listed rather than silently guessed
     success_criteria:
       - Schema-valid brief with all required fields
-      - Duration target within 120–420 seconds
+      - Duration target within the brief schema bounds (30–600s; no series-level limit — d-187, per-episode at intake)
+
+  - name: trend-scan
+    title: Social trend scan (OPTIONAL)
+    skill: skills/stages/01b-trend-scan-director.md
+    produces: [trend_kit]
+    required_artifacts_in: [brief]
+    checkpoint_required: true
+    human_approval_default: true   # two gates: trend selection, then integration plan
+    optional: true                 # offered after intake, never assumed; skipped/untouched never blocks (d-192)
+    review_focus:
+      - Scout researched LIVE (dated sources, URLs in evidence) — never from model memory; 10 proposals spanning ≥4 kinds
+      - Brand filter applied — every proposal survives tone + content_boundaries + no licensed IP/music
+      - Selection is the Director's alone; "none" is a first-class outcome recorded without argument
+      - Integration passes the subtlety contract — story works for a trend-blind viewer; trend translated in-world, never quoted raw
+      - Metadata placements decided per surface (tags, title, description, hashtags, thumbnail, trailer, teasers, spotlights) with deliberate blanks explained
+    success_criteria:
+      - Schema-valid trend_kit; selection recorded; integration block present when selection is non-empty
 
   - name: story
     title: Story writing (writer → refiner)
     skill: skills/stages/02-story-director.md
     produces: [story]
     required_artifacts_in: [brief]
+    optional_artifacts_in: [trend_kit]   # when a trend was selected, the writer receives integration.story_plan (d-192)
     checkpoint_required: true
     human_approval_default: true
     qa_loop: {agent: refiner, min_rounds: 1, max_rounds: 3, blocking: true}
@@ -209,6 +227,7 @@ stages:
       - Characters in the thumbnail conditioned on LOCKED sheets (@-named references, anchors verbatim), never text alone
       - Metadata per skills/tech/youtube-publishing — title options with distinct angles, standalone 125-char hook, ≤15 hashtags, title never echoing the on-image text
       - made_for_kids and platform flags presented as explicit Director decisions, never defaulted
+      - Active trend_kit placements applied across title/tags/description/hashtags/thumbnail/trailer/teasers — after re-verifying the trend is still live; stale placements dropped with a note (d-192)
       - Trailer per skills/tech/trailer-design — cut-list over APPROVED clips only, spoiler law applied (resolution beats excluded, spoiler_check recorded), 15–30s, works muted
     success_criteria:
       - Schema-valid publishing_kit with selected_concept_id, selected_title, and an upload-ready delivery_path

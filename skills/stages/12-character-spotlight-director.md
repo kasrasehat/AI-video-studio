@@ -36,6 +36,7 @@ QC before presenting: ffprobe duration **≥45s** (record `measured_length_s`), 
 
 ### 5. Video gate + delivery
 **GATE:** master + platform variants (free ffmpeg vertical blur-pad per platform-publishing) presented with QC findings. END TURN. On approval: status `approved`, files copied to `delivery/<platform>/spotlights/`, caption text files per platform (link policy d-174: spotlight posts MAY carry the film link — trailer-class, not teaser-class), `--unit-done SP<nn>`, log the decision.
+**Metadata is part of delivery (d-192, MANDATORY per video):** author the video's `metadata` block in spotlight_kit — title (click-worthy, in-voice), description (first line = hook), **YouTube `tags` list (≥5 entries, ≤500 chars total — the settings field, distinct from hashtags)**, and `hashtags_by_platform`. Write them into the delivered `metadata.txt` (youtube: TITLE/DESCRIPTION/TAGS/HASHTAGS/SETTINGS) and `caption.txt` files. If the production has an active `trend_kit` selection, apply its metadata placements here and record the ids in `metadata.trend_refs`.
 Then ASK: **another video (different characters/subject welcome), or close the stage?**
 
 ## Closing

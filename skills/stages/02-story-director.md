@@ -7,7 +7,7 @@ Run the writers' room: Writer drafts → Refiner re-reads and repairs → the Di
 
 ## Process
 
-1. **Dispatch `writer`** with the project dir + path to `artifacts/brief.json`. It returns a draft story JSON (`revision.round=1, changed_by=writer`) + one paragraph of intent.
+1. **Dispatch `writer`** with the project dir + path to `artifacts/brief.json`. If `artifacts/trend_kit.json` exists with a non-empty selection (optional stage 1b, d-192), include its `integration.story_plan` verbatim in the writer's brief — the weave follows THAT plan, and the subtlety contract governs (story must fully work for a trend-blind viewer; QA treats a bolted-on trend as CRITICAL). It returns a draft story JSON (`revision.round=1, changed_by=writer`) + one paragraph of intent.
 2. **Dispatch `refiner`** with the brief path + the draft (write the draft to `artifacts/story.json` first so the refiner reads the real file). This round is MANDATORY even if the draft looks perfect — fresh eyes are the point. It returns the revised story (`round=2, changed_by=refiner`, honest `change_notes`) + `remaining_risks`.
 3. **Sanity-check before the gate** (you, not the agents):
    - `estimated_runtime_seconds` within the brief's duration target ±10%; beats sum to it.

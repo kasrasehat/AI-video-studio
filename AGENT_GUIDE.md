@@ -31,9 +31,9 @@ Artifacts and gates are identical across harnesses — only wall-clock paralleli
 ## The pipeline at a glance
 
 ```
-1 intake → 2 story → 3 scene-division → 4 scene-recheck → 5 directing →
-6 lock-descriptors → 7 asset-generation → 8 storyboard → 9 video-generation →
-10 integration → 11 publishing → [12 character-spotlight — OPTIONAL]
+1 intake → [1b trend-scan — OPTIONAL] → 2 story → 3 scene-division → 4 scene-recheck →
+5 directing → 6 lock-descriptors → 7 asset-generation → 8 storyboard →
+9 video-generation → 10 integration → 11 publishing → [12 character-spotlight — OPTIONAL]
 ```
 
 `pipeline.yaml` is the single source of truth for what each stage requires, produces, and gates. Do not restructure the pipeline; the stage list is a user decision. Stage 12 is `optional: true`: it is OFFERED to the Director after publishing, never assumed — the Director may run it (per-video gates) or decline it (checkpoint status `skipped`, which requires `--approved` and never blocks pipeline completion).
