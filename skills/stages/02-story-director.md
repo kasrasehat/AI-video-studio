@@ -31,6 +31,10 @@ Run the writers' room: Writer drafts → Refiner re-reads and repairs → the Di
 - Presenting only a summary at the gate: the Director must be able to read the ACTUAL story text.
 - Letting change_notes say "improved flow" — they must name concrete changes or the audit trail is theater.
 
+## The room's laws (CANONICAL — d-194)
+
+The three law sections below are the SINGLE home of these rules. The `writer` and `refiner` read them directly (their role files point here and restate nothing); the qa-reviewer detects against them. Any future amendment happens HERE and only here.
+
 ## Causal clarity law (d-191, audience feedback — BINDING)
 
 Episode 1 shipped with a comprehension bug: real viewers could not say HOW the heroes ended up inside Grandma — the mechanism (shrunk duo on the cookie → cookie dunked in lemonade → Grandma drinks) was distributed across cuts and inference. Audiences do not infer load-bearing plot mechanics; they experience a gap and disengage. Three rules:
@@ -48,7 +52,7 @@ The Director's standing order: dialogue like professional animation. Films in th
 - **Default texture = exchange, not statement.** Wherever two characters share a beat, write a real back-and-forth (≥2 turns EACH, short lines) that plays through the action. One character saying one line while things happen around them is a storyboard note, not a scene.
 - **Reactions are lines too.** The listener answers — with words, an interjection, a comeback. Alternating monologues are not conversation.
 - **Talk reveals, never narrates.** Every line carries want/worry/joke/character; exposition is smuggled inside attitude ("Rule one of introductions: name first"), never delivered as information.
-- **Silence stays legal but must be BOUGHT:** a named dramatic reason in the beat (awe, held breath, suspense) — same standard as d-111, now with the density bar raised: a story averaging under ~2 exchanges per dialogue-capable beat is flat by definition and goes back to the room.
+- **Silence stays legal but must be BOUGHT:** a named dramatic reason recorded in the beat's `emotional_note` (awe, held breath, suspense) — same standard as d-111, now with the density bar raised: a story averaging under ~2 exchanges per dialogue-capable beat is flat by definition and goes back to the room.
 
 ## First-3-seconds law (d-173, virality — BINDING for future productions)
 
