@@ -25,7 +25,7 @@
       "required": ["min", "max"],
       "properties": {
         "min": { "type": "number", "minimum": 30 },
-        "max": { "type": "number", "maximum": 600 }
+        "max": { "type": "number", "minimum": 30, "description": "No hard ceiling (d-187/d-193): target length is a per-production intake decision, driven by the story." }
       },
       "additionalProperties": false
     },

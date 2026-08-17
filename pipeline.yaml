@@ -31,7 +31,7 @@ stages:
       - Open questions listed rather than silently guessed
     success_criteria:
       - Schema-valid brief with all required fields
-      - Duration target within the brief schema bounds (30–600s; no series-level limit — d-187, per-episode at intake)
+      - Duration target explicit and story-driven (30s minimum; NO upper ceiling — d-187/d-193, per-production at intake)
 
   - name: trend-scan
     title: Social trend scan (OPTIONAL)
