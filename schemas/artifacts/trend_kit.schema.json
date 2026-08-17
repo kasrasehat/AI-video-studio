@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "full-ai-video-system/artifacts/trend_kit",
   "title": "Trend Kit",
-  "description": "Produced by the optional trend-scan stage (d-192). trend-scout researches live social platforms and proposes 10 trends; the Director selects one/many/none; trend-weaver authors the integration plan that stages 2 (story), 11 (publishing) and 12 (spotlights) consume.",
+  "description": "Produced by the optional trend-scan stage (d-192/d-199). trend-scout — story-blind — researches the internet's biggest live waves in any domain and proposes 10, ranked by audience size; the Director selects one/many/none; trend-weaver authors the integration plan (subtle, in-world, brand-safe) that stages 2 (story), 11 (publishing) and 12 (spotlights) consume.",
   "type": "object",
   "required": ["version", "project_id", "researched_at", "proposals", "selection"],
   "properties": {
@@ -21,7 +21,7 @@
           "name": { "type": "string", "minLength": 1 },
           "kind": { "type": "string", "enum": ["topic", "format", "meme", "sound", "challenge", "aesthetic", "phrase", "seasonal"] },
           "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" }, "description": "Where it is trending and how big — platform + concrete signal (views, hashtag volume, examples), with source URLs where possible." },
-          "fit_rationale": { "type": "string", "minLength": 1, "description": "Why it suits THIS brand: family tone, content boundaries, characters. A trend that fights the brand is not proposed." },
+          "fit_rationale": { "type": "string", "minLength": 1, "description": "Mass-appeal rationale (d-199): why this wave commands huge attention and what audience it carries. The scout is story-blind — fit to the show is judged later by the Director (selection) and the weaver (integration)." },
           "risk": { "type": "string", "minLength": 1, "description": "Honest downside: dating fast, kids-safety optics, copyright/music licensing, cringe potential." },
           "longevity": { "type": "string", "enum": ["days", "weeks", "months", "evergreen"] },
           "example_uses": { "type": "array", "items": { "type": "string" } }

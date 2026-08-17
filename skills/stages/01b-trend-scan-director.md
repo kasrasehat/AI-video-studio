@@ -12,9 +12,9 @@ Offer in one short paragraph at the end of intake: a trend scan researches what'
 ## Process
 
 1. `checkpoint.py write <slug> trend-scan --status in_progress`.
-2. **Dispatch `trend-scout`** with the brief (+ bible), today's date, and — when Higgsfield is connected — the output of `tiktok_music_trending` folded into its inputs. It returns 10 evidence-backed proposals (TR01–TR10). Research is FREE (web + MCP reads only).
+2. **Dispatch `trend-scout`** with TODAY'S DATE ONLY — the scout is STORY-BLIND (d-199): it never sees the brief, bible, or story, and applies no brand filter. It hunts the internet's biggest live waves in any domain (celebrity moments, new movies/animations, toy crazes, sports/world events, games, memes), ranked by sheer audience size, risks flagged as information. When Higgsfield is connected, fold the output of `tiktok_music_trending` into its inputs (it is a raw feed, not story context). It returns 10 evidence-backed proposals (TR01–TR10). Research is FREE (web + MCP reads only).
 3. Write `trend_kit.json` (proposals + empty selection), validate.
-4. **GATE 1 (selection):** present the 10 as a table — name | kind | where it's trending (evidence 1-liner) | why it fits us | risk | longevity — strongest first, with the scout's coverage note. Options: **pick one or many / none / ask for a re-scan with different focus**. END TURN.
+4. **GATE 1 (selection):** present the 10 as a table — name | kind | where it's trending (evidence 1-liner) | mass-appeal note | risk | longevity — biggest first, with the scout's coverage note. Fit is NOT pre-judged (d-199): the Director picks the wave they want to ride; the weaver then works out how the show can carry it. Options: **pick one or many / none / ask for a re-scan with different focus**. END TURN.
    - "None" → record `selection.selected_trend_ids: []`, checkpoint `completed --approved`, log, done — a legitimate outcome, never argue for a trend.
 5. On selection: record it (archive → edit → validate), log the decision (`--decided-by user`). **Dispatch `trend-weaver`** with the selected proposals, brief/bible, and any existing story material. It returns the `integration` block (story plan with subtlety tests + per-surface metadata placements).
 6. **GATE 2 (integration plan):** present the story plan (approach, where, the subtlety test verbatim) and the metadata placement table (surface → what appears there, including deliberate blanks). END TURN. Revise via the weaver on notes.
@@ -30,7 +30,8 @@ Offer in one short paragraph at the end of intake: a trend scan researches what'
 
 - Running the scan from training-data memory — trends must be researched LIVE with dated sources, or the film chases last year's wave.
 - Letting the scout pre-select or the weaver upsell — 10 honest options, Director picks, subtlety contract governs.
+- Feeding the scout ANY story/brand context (d-199) — a story-conditioned scout returns "trends we already are" instead of the internet's actual biggest waves; brand/IP/safety judgment belongs to the weaver stage and the Director's gates.
 - Baking a "days"-class trend into generated clips — bake into METADATA (editable at upload) unless longevity justifies pixels.
 - A trend integration whose removal would break the story — that's a plot pillar, not seasoning; redesign.
 - Skipping the re-verify at publish time — stage 11 owns the staleness check.
-- Trend material that violates content_boundaries or uses licensed IP/music — the brand filter is not negotiable.
+- Trend material that violates content_boundaries or uses licensed IP/music IN THE INTEGRATION — the scout may propose IP-heavy waves (they're often the biggest), but the weaver must translate them in-world (parody-of-the-phenomenon, never the licensed characters/music themselves); anything untranslatable is flagged to the Director.

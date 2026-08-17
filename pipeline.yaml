@@ -43,7 +43,7 @@ stages:
     optional: true                 # offered after intake, never assumed; skipped/untouched never blocks (d-192)
     review_focus:
       - Scout researched LIVE (dated sources, URLs in evidence) — never from model memory; 10 proposals spanning ≥4 kinds
-      - Brand filter applied — every proposal survives tone + content_boundaries + no licensed IP/music
+      - Scout is STORY-BLIND (d-199) — no brief/bible/story input, no brand filter; internet-wide waves ranked by audience size, risks flagged as information; brand/IP safety is enforced at the weaver integration, never at research
       - Selection is the Director's alone; "none" is a first-class outcome recorded without argument
       - Integration passes the subtlety contract — story works for a trend-blind viewer; trend translated in-world, never quoted raw
       - Metadata placements decided per surface (tags, title, description, hashtags, thumbnail, trailer, teasers, spotlights) with deliberate blanks explained
