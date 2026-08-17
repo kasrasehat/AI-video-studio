@@ -20,6 +20,7 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md → pipel
 | `10-integration-director.md` | 10 integration — assembly, sound, delivery | **ready** |
 | `11-publishing-director.md` | 11 publishing — thumbnail, trailer, metadata, delivery tree | **ready** |
 | `12-character-spotlight-director.md` | 12 character-spotlight (OPTIONAL) — SJinn talking characters + b-roll | **ready** |
+| `13-dub-pass-director.md` | 13 dub-pass (OPTIONAL, repeatable) — per-language dubs as YouTube audio tracks (d-195/d-196) | **ready** |
 
 ## Meta (`skills/meta/`)
 

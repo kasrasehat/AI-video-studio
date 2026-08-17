@@ -13,8 +13,8 @@ FIXTURE_ARTIFACTS = sorted((Path(__file__).parent / "fixtures" / "sample-project
 
 
 def test_schemas_exist():
-    assert len(ALL_SCHEMAS) == 21, f"expected 21 schemas, found {len(ALL_SCHEMAS)}"
-    assert len(list(lib.ARTIFACT_SCHEMAS_DIR.glob("*.schema.json"))) == 19
+    assert len(ALL_SCHEMAS) == 22, f"expected 22 schemas, found {len(ALL_SCHEMAS)}"
+    assert len(list(lib.ARTIFACT_SCHEMAS_DIR.glob("*.schema.json"))) == 20
 
 
 @pytest.mark.parametrize("schema_path", ALL_SCHEMAS, ids=lambda p: p.stem)

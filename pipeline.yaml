@@ -258,3 +258,22 @@ stages:
       - Schema-valid spotlight_kit; every video entry has its script and saved generation payload with status approved before the stage completes
       - Every delivered video >= 45s (ffprobe-verified) with platform variants under delivery/<platform>/spotlights/
       - Stage closes only on the Director's word — completed --approved after the last video, or skipped if the Director declines the stage
+
+  - name: dub-pass
+    title: Multi-language dub pass (OPTIONAL)
+    skill: skills/stages/13-dub-pass-director.md
+    produces: [dub_kit]
+    required_artifacts_in: [render_report]
+    checkpoint_required: true
+    human_approval_default: true   # per-language Director gates (d-114); the stage itself may be skipped
+    optional: true                 # offered after publishing/spotlights, repeatable for more languages (d-196)
+    resume_unit: language
+    review_focus:
+      - Backend law (d-195/d-196) — YouTube dubs are ElevenLabs AUDIO TRACKS on the ONE existing upload, never re-uploads; Higgsfield lip-sync dubs only for TikTok/IG verticals
+      - Language availability verified LIVE against the backend; unsupported languages recorded unavailable, never silently dropped
+      - "First language of a session is the pricing probe: real credit burn measured before any batch; quota headroom checked before proposing"
+      - Character names and catchphrases survive translation recognizably; family tone register QC'd per language
+      - Delivery per language complete - audio track + translated srt + localized title/description under delivery/youtube/audio_tracks/<lang>/
+    success_criteria:
+      - Schema-valid dub_kit; every language entry approved, rejected, or unavailable — nothing half-generated
+      - Approved languages delivered upload-ready for YouTube multi-language audio + metadata localization

@@ -1,0 +1,33 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "source": {
+    "master_path": "renders/sample_master.mp4",
+    "duration_s": 202.0,
+    "source_language": "en"
+  },
+  "languages": [
+    {
+      "lang_code": "tr",
+      "lang_name": "Turkish",
+      "accent_note": "Istanbul",
+      "backend": "elevenlabs_dubbing",
+      "status": "approved",
+      "dubbing_id": "dub_abc123",
+      "audio_track_path": "delivery/youtube/audio_tracks/tr/track.m4a",
+      "srt_path": "delivery/youtube/audio_tracks/tr/captions_tr.srt",
+      "localized_metadata_path": "delivery/youtube/audio_tracks/tr/localized_metadata.txt",
+      "cost_credits": 6740,
+      "qc_notes": "Catchphrase survives; names untranslated."
+    },
+    {
+      "lang_code": "fa",
+      "lang_name": "Persian",
+      "backend": "elevenlabs_dubbing",
+      "status": "unavailable",
+      "qc_notes": "Not offered by backend at check time - recorded, not dropped."
+    }
+  ],
+  "policy_note": "YouTube multi-language audio tracks on the one existing upload (d-195).",
+  "metadata": {}
+}

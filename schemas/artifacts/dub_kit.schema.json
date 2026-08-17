@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/dub_kit",
+  "title": "Dub Kit",
+  "description": "Produced by the optional dub-pass stage (13, d-196). Per-language dubs of a finished production, shipped as YouTube multi-language audio tracks on the ONE existing upload (policy d-195 — never per-language re-uploads).",
+  "type": "object",
+  "required": ["version", "project_id", "source", "languages"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "required": ["master_path", "duration_s"],
+      "properties": {
+        "master_path": { "type": "string", "description": "The finished master the dubs layer on — never regenerated." },
+        "duration_s": { "type": "number", "exclusiveMinimum": 0 },
+        "source_language": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "languages": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["lang_code", "lang_name", "backend", "status"],
+        "properties": {
+          "lang_code": { "type": "string", "minLength": 2, "description": "BCP-47 / backend code, e.g. tr, fa, nl, ja, zh." },
+          "lang_name": { "type": "string", "minLength": 1 },
+          "accent_note": { "type": "string", "description": "Locale/accent request, e.g. Istanbul Turkish, Mandarin." },
+          "backend": { "type": "string", "enum": ["elevenlabs_dubbing", "higgsfield_dubbing", "youtube_autodub", "manual"], "description": "elevenlabs_dubbing = audio track for YouTube MLA (default); higgsfield_dubbing = lip-synced VIDEO (TikTok/IG verticals only — never a YouTube re-upload, d-195)." },
+          "status": { "type": "string", "enum": ["planned", "generated", "approved", "rejected", "unavailable"], "description": "unavailable = backend does not support this language (recorded, not silently dropped)." },
+          "dubbing_id": { "type": "string", "description": "Backend job/dubbing id." },
+          "audio_track_path": { "type": "string", "description": "Delivered audio track for YouTube MLA upload." },
+          "srt_path": { "type": "string", "description": "Translated captions sidecar." },
+          "localized_metadata_path": { "type": "string", "description": "Localized title/description file for YouTube metadata localization." },
+          "video_path": { "type": "string", "description": "higgsfield_dubbing only: the lip-synced vertical for TikTok/IG." },
+          "cost_credits": { "type": "number" },
+          "qc_notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "policy_note": { "type": "string" },
+    "metadata": { "type": "object", "additionalProperties": true }
+  },
+  "additionalProperties": false
+}
