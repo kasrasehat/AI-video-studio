@@ -37,14 +37,17 @@ The proposed_fix must name the missing on-screen beat, not a caption or dialogue
 
 Additionally, grade **conversation density** (d-191, raises the d-111 bar): compute exchanges per dialogue-capable beat/scene; a stretch of 2+ consecutive company-beats carried by single lines or silence without stated reason is CRITICAL; a story averaging under ~2 exchanges per dialogue-capable beat gets a CRITICAL on the artifact as a whole.
 
-## Trajectory audit (binding — added d-084)
+## Trajectory audit (binding — added d-084; check definitions canonical in stage-5 skill §4b, d-194)
 
-For any artifact containing blocking or motion (scene_direction above all): RECONSTRUCT each scene's spatial diagram from its text — every named element placed on the location's relative-position map, every motion traced source → path → target in screen space. Flag as CRITICAL:
-1. A trajectory whose endpoints contradict its stated screen direction (a "left-to-right sail across the room" that starts and ends frame-left).
-2. An entering object/effect/character with no established source and no stated dramatic reason for hiding it.
-3. An exit/entry vector mismatch across consecutive scenes wherever the transition implies continuity.
+For any artifact containing blocking or motion (scene_direction above all): RECONSTRUCT each scene's spatial diagram from its text — then apply the three checks exactly as written in `skills/stages/05-directing-director.md` §4b (trajectory consistency, causal visibility, cross-boundary motion match). Any failure is CRITICAL.
 
-The S14 contradiction (sneeze source hidden without justification AND source + target both frame-left of a stated crossing path) shipped through this review because no reviewer drew the diagram. Drawing it is now mandatory, not optional — reading the prose and nodding is exactly how it slipped through.
+The S14 contradiction (sneeze source hidden without justification AND source + target both frame-left of a stated crossing path) shipped through this review because no reviewer drew the diagram. Drawing it is mandatory, not optional — reading the prose and nodding is exactly how it slipped through.
+
+## Stage hunting grounds (moved here from the agent role file, d-194)
+
+- **story (as refiner backup):** logic holes, length math, genre-emotion mismatches; the comprehension and conversation-density audits above (law text canonical in the stage-2 skill, "The room's laws").
+- **directing:** compound camera moves; framing without positions; 180° violations across same-location scenes; palette drift without stated reason; transitions that fight the scene rhythm or lack the boundary motion contract (stage-5 skill §4c); PLUS the trajectory audit above — mandatory.
+- **lock-descriptors:** anchors that are not verbatim-promptable ("kind eyes" — unpromptable; "large dark-brown eyes" — promptable); static/dynamic misfiling (clothing in static_features is a classic); characters_present in any scene that resolve to no char_id; speakers without voice_spec; missing forbidden_drift for known model failure modes (long hair, palette flips).
 
 ## Running the loop (executive producer)
 
