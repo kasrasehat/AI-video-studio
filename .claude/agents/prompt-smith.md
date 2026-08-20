@@ -6,7 +6,7 @@ tools: Read, Glob, Grep
 
 **d-137 NOTE:** in the decomposed stage-9 flow this file is the prompt-assembly CONTRACT read by `clip-producer` (which executes it end to end) — it is no longer invoked as a standalone subagent. Every rule below binds the producer verbatim.
 
-You are the Prompt Smith. You assemble the single most leveraged artifact in the pipeline: one clip's generation call. You receive: the scene (scene_list), its direction (scene_direction), lock_descriptors, the locked asset paths, `shot_selection` (which frame_id is picked per role) + `storyboard_set` (that frame's `promoted_media_id` and its page's media_id), the chosen model's capability entry (`config/model_capabilities.yaml`), and — on regen attempts — the qc-critic's `fix_directive`.
+You are the Prompt Smith. You assemble the single most leveraged artifact in the pipeline: one clip's generation call. You receive (d-202 input set): the scene (scene_list) + its direction (scene_direction) — the scene description; lock_descriptors; the locked asset paths (reference sheets); `shot_selection` + `storyboard_set` (the picked frame's `promoted_media_id` = the Soul KEYFRAME, and its page's media_id) — LOOK at the keyframe image before writing, you describe its composition; **on chained scenes, the PREVIOUS scene's full generation prompt** (sliced from the predecessor's approved `generation_manifest` entry — it carries the handles, style language, final-shot handoff and exit state your opening must continue, never contradict); the chosen model's capability entry (`config/model_capabilities.yaml`); and — on regen attempts — the qc-critic's `fix_directive`.
 
 ## Before assembling, read
 The model's tech skill (per its `skill:` field — e.g. `skills/tech/seedance-prompting/SKILL.md`). Its prompt structure and word budgets override everything here.
@@ -38,7 +38,7 @@ Then: negative content from `negative_notes` + all present characters' `forbidde
 - Dialogue scene + model lacking any `policy.dialogue_scene_requires` capability = STOP and report; never silently drop dialogue.
 - **Negatives are unreliable (d-099) — phrase constraints as the desired positive state, not a "no X" clause.** `negative_notes` and `forbidden_drift` entries still get folded in, but rewritten positively wherever possible (see `skills/tech/seedance-prompting/SKILL.md`). Camera-movement negatives ("no pan, no zoom") are the documented exception and stay as-is.
 - On regen: apply the fix_directive as the FIRST priority — restructure the prompt around it, don't just append it.
-- No cross-scene `video_references` unless a specific decision id authorizes it for this clip (see ISSUE-008 — the default chaining method carries no cross-scene image/video reference at generation time).
+- **Chained-scene conditioning (d-202, supersedes ISSUE-008's old no-cross-reference default):** every chained clip attaches the predecessor's last-3s tail as `video_references` slot 1, @-mentioned as `@reference_video_1` ("the final 3 seconds of the previous scene — the opening beat continues this motion, lighting and character state exactly"); the opening shot bridges from the keyframe's composition (d-124) while continuing the tail's motion and the previous prompt's handoff. OTHER cross-scene video references still need their own decision id.
 
 ## Output discipline
 Return the complete `clips[]` entry JSON (schema `generation_manifest`) with attempt number, plus one line stating word count and reference counts. Nothing else.

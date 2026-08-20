@@ -104,9 +104,20 @@ ACTIVE REFERENCES
 - Open the character description with an identity-lock block and stack the proven anti-drift phrases: `[identity_lock] The same character — <anchors verbatim> — consistent across all shots, maintain exact appearance from reference image, no deformation, no face morph. Do not alter clothing category or primary color.` Fold in `forbidden_drift` entries (rewritten positively where possible, d-099).
 - **Voice lock:** every speaker's locked voice sample attached as `reference_audio` on EVERY clip where they speak. Quoted dialogue drives lips; the reference audio pins the voice. Never generate a speaking clip without it.
 
+## Chained-scene conditioning (BINDING — d-202, supersedes d-112 last-frame chaining)
+
+Every CHAINED scene's generation call attaches, by Director order (2026-08-17):
+
+1. **The last 3 seconds of the previous scene's APPROVED clip** as a `video_references` entry — `scripts/extract_last_seconds.py <clip> -s 3` → media_upload → media_confirm. This is the motion/lighting/state continuity carrier: the model sees how the previous scene actually ENDED (real footage, not a frozen frame). It is @-mentioned like every reference (`@reference_video_1: the final 3 seconds of the previous scene — the opening beat continues this motion, lighting and character state exactly`).
+2. **The scene's own promoted Soul-cinema KEYFRAME** (d-200) as `start_image` = `@reference_image_1` — always, for chained scenes and hinges alike (this replaces d-112's extracted-last-frame start for chained scenes).
+3. **The locked reference sheets** — present characters' sheet views + the location plate — as `image_references`.
+4. **The picked storyboard PAGE** also rides as an `image_reference` (authoritative staging). The Director has ordered that the keyframe + storyboard combination be CHECKED in production — at each early E02 gate, report how well the clip honored keyframe vs page so the Director can tune what stays attached.
+
+Consequences: the cut between clips is no longer pixel-continuous by construction (the start frame is the keyframe, not the predecessor's last frame) — continuity is carried by the video reference + the handoff/bridge prompting below, and the stage-10 seam pass (d-191) remains the guard. `extract_last_frame.py` stays in use for QC stills and frame-0 verification (frame 0 must match the KEYFRAME now). The ≤3 video_references budget means the previous-scene tail always claims one slot on chained scenes.
+
 ## Handoff beat (BINDING — d-191, audience feedback: visible cuts between clips)
 
-Chained clips share a start FRAME (d-112) but audiences see a jump when they don't share MOTION. Every prompt books its last ~1–1.5s as an explicit **handoff beat**, and every chained successor's 0–2s bridge (d-124) continues it:
+Chained clips inherit the previous scene's ending via the last-3s video reference (d-202), but audiences still see a jump when prompts don't share MOTION. Every prompt books its last ~1–1.5s as an explicit **handoff beat**, and every chained successor's 0–2s bridge (d-124) continues it:
 
 - **Outgoing clip, final beat:** either (a) the action DECELERATES into a describable settle — exact end pose, gaze direction, residual motion — or (b) for boundaries marked continuous, the exact motion state crossing the cut (what moves, screen direction, energy).
 - **Incoming chained clip, 0–2s bridge:** restate the start frame content AND the inherited motion — the first beat continues it before anything new happens. A bridge that poses a moving character static is how seams become visible.
@@ -142,7 +153,7 @@ Camera primitives named precisely (dolly/truck/pedestal = translation; pan/tilt/
 | generate_audio | always true (native audio is the moat; independent of audio_references) |
 | genre | optional cinematic hint (auto/action/horror/comedy/noir/drama/epic) — set from the brief's genre when it maps |
 | bitrate_mode | `high` for the final pick of a scene, `standard` otherwise |
-| medias[] roles | `start_image`, `end_image`, `image_references` (≤9 images total), `video_references` (≤3), `audio_references` = locked voice samples |
+| medias[] roles | `start_image` = the scene's Soul keyframe (d-200/d-202), `end_image`, `image_references` (≤9 images total: sheets + plate + storyboard page), `video_references` (≤3; slot 1 = previous scene's last-3s tail on chained scenes, d-202), `audio_references` = locked voice samples |
 | `end_image` caveat | **Steers, doesn't lock (confirmed S05B):** content arrives, framing may not. Strong destination hint; for frame-exact joins plan to trim the tail or cut on action. `start_image` remains pixel-exact. |
 | get_cost | preflight `get_cost: true` before every batch and announce credits |
 
