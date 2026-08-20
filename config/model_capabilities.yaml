@@ -161,10 +161,10 @@ image_models:
   soul_2:
     gateway: higgsfield
     multi_image_refs: true
-    strengths: [portraits, fashion, editorial, character_refs]
+    strengths: [portraits, fashion, editorial, character_refs, cinematic_frames]
     skill: character-sheets
-    verify: true                     # params/roles to inspect at M4
-    use_for: [character_sheets, environment_plates]
+    verify: true                     # exact id + cinema preset + cost to confirm before first paid promotion call (models_explore/presets_show/get_cost)
+    use_for: [character_sheets, environment_plates, storyboard_keyframes]   # keyframes = Director order d-200 ("Soul cinema"): storyboard-artist promotes picked panels full-frame on Soul cinema preset; grid pages stay gpt_image_2
     note: "Higgsfield 'Soul' also supports TRAINED reusable characters (5-20 photos via show_characters action=train) — candidate v2 upgrade of the character lock."
 
   higgsfield_image:
