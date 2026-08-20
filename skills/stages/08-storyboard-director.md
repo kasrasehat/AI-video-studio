@@ -14,7 +14,8 @@ Read `skills/tech/storyboard-design` (frame rules — static snapshots, template
 
 A scene×variant is ONE generated image: a storyboard PAGE containing the scene's sequential frames as a uniform grid, read left-to-right, top-to-bottom. **Default model: `gpt_image_2`** (layout control is the whole job here), quality high, 2k, 16:9.
 
-1. Classify each scene by **BEAT COUNT** (distinct storyboard-able instants in the scene_direction blocking; duration alone never decides):
+0b. **Panels board the SHOT PLAN (d-201):** scene_direction now designs scenes as multi-shot cut sequences by default. Every CUT in the shot plan begins a new panel, and the double contrast must be visible across those panels (shot size and camera character both change); beats within one shot may add further panels. Panel 1 remains the start-frame candidate of the FIRST shot (the chaining anchor).
+1. Classify each scene by **BEAT COUNT** (distinct storyboard-able instants in the scene_direction blocking — shots count as at least one beat each; duration alone never decides):
    - **≤ 4 beats** (one held idea) → **2×2 grid = 4 sequential frames**
    - **5–9 beats** (entrances, reveals, multi-stage blocking) → **3×3 = 9 frames**
    - **10+ beats** (continuous-motion set pieces where in-betweens matter) → **4×4 = 16 frames**

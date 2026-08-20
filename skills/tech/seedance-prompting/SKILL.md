@@ -7,89 +7,130 @@ description: Prompt engineering for Seedance 2.0 — our primary video model (na
 
 Seedance 2.0 (ByteDance) is this pipeline's default video model: single-pass native synced audio (speech + SFX + ambience), lipsync from quoted dialogue, multi-shot inside one generation, director-level camera control, and reference conditioning of up to **9 images + 3 video clips + 3 audio clips**. Max clip 15s (our scene unit), 4–15s range, aspects 21:9/16:9/9:16/4:3/1:1. Access is via the Higgsfield MCP (`skills/tech/higgsfield-mcp`); routing/capabilities live in `config/model_capabilities.yaml`.
 
-## The prompt contract (200–1000 words — Director order 2026-07-29, raised from 200–400)
+**This skill was merged with the Director-supplied "Seedance 2.0 Universal Director" skill (d-201, 2026-08-17). Director rulings on the merge: prompts are ENGLISH ONLY (the source skill's bilingual EN+ZH output is eliminated); MULTI-SHOT cut grammar is the DEFAULT scene form; per-shot timing marks are dropped; the age-blind rule applies with a single exemption for locked identity anchors. Where this skill and old E01 prompt patterns disagree, this skill wins.**
 
-Seedance rewards structured density: 200–1000 words, every one earning its place. The raised ceiling buys room for the reference blocks, per-beat state restatement and performance layers the binding rules require — it is NOT license for padding: stop when every law is stated once per beat. Assemble in this order — it is the 5-aspect formula with Seedance's 8 components folded in:
+## The prompt contract (200–1000 words, EN only — d-138/d-201)
 
-1. **Format declaration (first line).** Declare the shot structure before any creative text: `Single continuous shot, medium close-up, slow dolly push-in, photorealistic, 35mm film grain.` — or for multi-beat scenes a shot-block plan (below). Never open with story prose.
-2. **Subject** — every present character via their `lock_descriptors.identity_anchors` VERBATIM + this scene's outfit. Key objects with their anchors.
-3. **Subject Motion** — action beats in temporal order, one beat per sentence. Use temporal markers on longer clips: `0–4s: … 4–9s: … 9–14s: …`. Strong specific verbs (darts, weaves, plants, spins); avoid generic ones (goes, moves, does). **Every temporal beat names each visible character's FACE (Director order d-111)** — the emotion at that instant and where it turns (`2–4s: Milo's grin falters into wide-eyed doubt as…`). Faces that change across the clip are the cheapest engagement multiplier the prompt controls; a clip whose characters hold one expression start-to-finish is a flat clip regardless of action.
-4. **Dialogue** — `Name says: "line."` / `Name replies: "line."` exactly; mouth shapes key off the quoted strings. **≤6 words per line on fast cuts**; longer lines only on a close, calm, single-speaker framing. **One speaker at a time** — overlapping dialogue breaks sync. Delivery rides as a parenthetical: `Mira, worried, calls: "Kenji, wait — stay close!"`. **Direct the listener too (d-111):** on every line, state the non-speaker's visible reaction (`Gramps' eyebrows climb; he bites back a smile`) — the cutaway face sells the exchange, and Seedance animates reactions only if the prompt asks for them.
-5. **Scene** — location via its anchors, time_of_day, weather/atmosphere with sensory detail (wet asphalt, lantern haze). One lighting idea, committed — never mix conflicting light ("bright noon" + "neon night").
-6. **Spatial** — who is where in frame, facing which direction, FG/MG/BG layers, the 180° axis.
-7. **Camera** — the direction's ONE move with speed and end state. Name primitives precisely (dolly/truck/pedestal = translation; pan/tilt/roll = rotation; zoom/rack focus = lens; static = strictly nothing). **State what the camera is NOT doing**: `no cuts, no zoom` on continuous shots — ambiguity is Seedance's main misfire.
-   **Emotional beats earn camera freedom (Director ruling d-118).** An absolute static lock fights the model's cinematic instincts exactly where they're best: on S06, Seedance broke a hard "the frame must not move" to push into a close two-shot for a whispered line — and the Director judged the result BETTER than the boarded stillness ("gives more freedom and transfers emotion better than static"). The rule now: static-locked framing remains the default for staging clarity, but when a scene lands on an emotional peak, either DIRECT the move explicitly ("the camera eases slowly closer as the line lands, settling in a close two-shot") or grant room for it ("the camera may drift gently toward the faces on the final beat"). Reserve absolute no-move language for shots where stillness IS the storytelling (the S01 tabletop-magic shrink) — and say why in the prompt, which the model respects far more than a bare prohibition.
-8. **Style + Audio** — grade/era/grain per scene_direction global look; audio kept textural (`festival drums two streets over, crowd murmur`; diegetic foley like `sandals on stone`). Never request full music scores — scoring belongs to stage 10.
-   **The clip's baked audio IS the film's SFX track (BINDING — d-160):** every sound the scene needs (foley, ambience, directed effects like a heartbeat or a fridge hum) must be asked for HERE, in the prompt, from `sound_direction` — Seedance bakes it and stage 10 will NOT add it later. Post-audio never re-adds a sound class the prompt requested: a separately-mixed heartbeat bed doubled the clips' own baked heartbeats in this pipeline's first production and degraded the mix. If a directed sound spans a CUT into the next scene (continuity bed), still prompt it in BOTH clips consistently (same rate/character stated identically) — cross-cut consistency comes from consistent prompts, not from a post overlay.
+One continuous English string with inline section labels, present tense, active voice, 200–1000 words (the window buys room for the reference block and per-shot state restatement — never padding). Sections in this order:
 
-## Negative prompts are unreliable (BINDING — d-099, confirmed empirically)
+1. **ACTIVE REFERENCES** (empirical law d-106/d-124/d-127 — opens every prompt; see Identity lock below): the @-map of every attached media, positional tags + named handles.
+2. **Style & Mood:** palette, lighting, lens/grain, atmosphere. Never skip, always specific. One lighting idea, committed — never mix conflicting light ("bright noon" + "neon night").
+3. **Narrative Summary:** one sentence of scene intent. Optional — first to trim when the word budget is tight.
+4. **Dynamic Description:** shot-by-shot prose per the direction's SHOT PLAN — camera, movement, action, faces. The cut rules below are binding. **No per-shot timing, no "Shot 1:" labels (d-201)** — rhythm is implied by description density; transitions are woven into the prose ("Hard cut to low-angle close-up: …").
+5. **Static Description:** location via its anchors, key props, ambient details, time_of_day/weather with sensory detail (wet asphalt, lantern haze). Everything Dynamic references must be established here or in the references block.
+6. **Audio:** ALWAYS present in our pipeline — this overrides the source skill's dialogue-scenes-only rule, on production evidence (d-160): **the clip's baked audio IS the film's SFX track.** Every sound the scene needs (foley, ambience, directed effects like a heartbeat) must be asked for here, from `sound_direction` — stage 10 will NOT add it later, and post-audio never re-adds a sound class the prompt requested (a separately-mixed heartbeat bed doubled the baked heartbeats in E01). Keep it textural (`sandals on stone, festival drums two streets over`); never request full music scores — scoring belongs to stage 10. If a directed sound spans the cut into the next scene, prompt it in BOTH clips identically. Dialogue lines live here too: `Name says: "line."` — exact quoted strings drive lipsync.
 
-Seedance does not reliably honor "no X" / "zero X" / "without X" clauses — a negative is a much weaker signal to the model than a positive, concrete description of the desired state. Confirmed on S01_C01: "zero smoke, zero haze, zero ember, nothing lingering in the air" was added explicitly after attempt 1 showed a smoke wisp, and attempt 2 rendered MORE smoke, not less, despite the strengthened negative.
+## Scene archetype router (d-201)
 
-**Write every constraint as what SHOULD be on screen, not what must be absent:**
-- Bad: `no smoke, no haze, no scorch marks`
-- Better: `the beam ends in a single bright flash; the instant it fades, the apple sits pea-sized in perfectly clear, still air`
-- Bad: `no camera movement, no pan, no zoom, no shake`
-- Good (keep this one — camera primitives are a documented exception, see component 7 above): naming what the camera is NOT doing works for CAMERA MOVEMENT specifically, because Seedance treats camera primitives as a distinct instruction channel from scene content. Negatives about physical scene content (smoke, props, wardrobe, weather) are the unreliable case.
-- Reference-image conflicts are a SEPARATE failure mode from this one and need a different fix: if a locked reference image itself shows the thing being negated (e.g. a character sheet depicting an accessory the scene says is absent), no amount of prompt wording — positive or negative — reliably overrides it. See `skills/tech/character-sheets/SKILL.md`'s scene-conditional-accessories rule (d-098): fix the reference, not the words, when the conflict is visual.
-- On a `qc-critic` regen for a physical-content violation (smoke, debris, wrong prop, wrong material state): the `fix_directive` should propose a positive rewrite first, and only fall back to a stronger negative if no positive phrasing captures the constraint. If the defect persists after a positive rewrite, treat it as a possible model limitation for that effect and escalate rather than iterating on negative wording indefinitely.
+Classify every scene before writing — the archetype guides camera behavior, spatial logic, and what changes across time. The stage-5 direction names the archetype; the prompt executes it.
+
+**Action:** chase/being chased → **Pursuit** (distance closing/opening; pursued ahead in frame, pursuer behind; path narrows/opens). Two opponents trading advantage → **Duel** (camera lower on the dominant side; dominance MUST alternate — neither side dominates more than one consecutive beat, else write it as a one-sided assault). Single decisive contact → **Impact** (build-up slow → hit fast → aftermath slow; point of contact = frame center). Default: Duel.
+
+**General:** subject moves through space → **Journey** (tracking/aerial/traveling alongside; landscapes pass). Hidden becomes visible → **Reveal** (pan/crane/dolly reveal; the camera controls WHEN the viewer sees the subject). Nothing changes, mood IS the content → **Atmosphere** (minimal movement; slow push-in or static hold; micro-changes carry all drama). Default: Atmosphere.
+
+**Dialogue:** both push, dominance trades → **Confrontation** (tight OTS, camera crosses axis on the power shift). One extracts, one resists → **Interrogation** (low-angle on the questioner, push-in on silence). Both need something, balanced → **Negotiation** (symmetrical framing, matching shot sizes). Default: Confrontation.
+
+**Dialogue budget:** ~25–30 spoken words fit 15 seconds. If the scene carries more, keep the power-shift exchange (the line where dominance flips or truth emerges), one line before (setup), one after (reaction) — convert the rest to physical behavior. Stage 3 budgets scenes to this ceiling at division time, so the d-191 conversation-density law is satisfied across MORE scenes, never by cramming one.
+
+## Engine rules (hard rendering constraints — d-201 + E01 evidence)
+
+- **Action beats = intent + named technique, not biomechanics.** ✅ "spinning back kick connects." ❌ "left forearm rotates 45° to deflect the hook at wrist level." A named move from the direction is preserved; joint mechanics are compressed to the move's name or intent.
+- **Describe force and direction, not destruction sequence.** ✅ "driven into the shelf, jars rattling." ❌ "thrown into the shelf, glass shatters, uses the rebound to sweep."
+- **Spatial continuity breaks on cuts** — re-anchor positions and facing after any cut (see Cut rules).
+- **≤3 characters tracked across cuts.** Name the acting pair and their interaction vector per shot; extras stay background texture.
+- **Exit-frame = implicit cut.** A character who leaves frame is gone for the remainder of that shot — never choreograph exit + re-entry inside one continuous shot.
+- **Off-screen = nonexistent.** State changes must be shown on camera before being referenced.
+- **Avoid reflection shots** (blades, puddles, mirrors, chrome) — Seedance breaks scene geography rendering reflections.
+- **Only describe what can be seen or heard.** ❌ "The air smells of ozone." ✅ "Fine dust drifting in the beam, wind moving the ferns."
+- **Micro-expressions as physics (merges d-111).** ✅ "jaw clenches, nostrils flare; the grin falters, eyes widening." ❌ "looks angry," "is amazed." Every shot names what each visible face DOES — and faces must change across the clip; the listener's face on a dialogue line is directed as deliberately as the speaker's. Emotion words without a visible cause constrain nothing.
+
+## Cut rules — multi-shot is the DEFAULT (d-201, Director ruling)
+
+A scene's clip is a designed shot sequence by default; a single continuous shot is now the deliberate exception (Atmosphere archetype, tableaux, or wherever stage 5 explicitly designs one). Within the sequence:
+
+1. **Double contrast (mandatory):** every cut changes BOTH shot size AND camera character. Shot-size scale: `extreme wide → wide → medium → medium close-up → close-up → ECU`. Camera modes: Handheld | Static/locked-off | Stabilized tracking | Crane/vertical | Aerial/drone — never repeat a mode across a cut.
+2. **Re-anchoring + 180°:** after any cut returning to established space, re-state who is where and which direction they face. Screen direction survives the cut (moving left-to-right before = left-to-right after); state it explicitly.
+3. **Inserts:** sub-second (0.3–0.5s) dramatic punctuation, any shot size, NO story beats (static moments only), **causally motivated** (the viewer must understand why they see this detail — the hand of the character just slammed down, not a generic boot in a puddle), and **the subject is named** (WHOSE hand — unattributed inserts render wrong content). Inserts obey double contrast.
+4. **No per-shot timing** in the prompt — density carries rhythm. (This supersedes E01's `0–4s:` temporal markers. The per-beat STATE restatement those markers carried survives per-shot: every shot re-states each visible character's wearable/prop state — goggles, wet/dry, bracelet — and faces.)
+5. **Within one shot, ONE clean camera idea still rules** — compound choreography inside a single shot ("dolly in while panning then tilt") remains forbidden (the E01 clip-killer). Framing changes now happen at CUTS, which is what they're for. The d-118 motivated emotional drift stays legal inside a shot.
+6. **Chain edges are exempt from restructuring:** the FIRST shot must begin on the start frame and bridge from its actual composition (d-124); the FINAL shot books the handoff beat (d-191). Cuts live between those two anchors.
+7. **In medias res** is the default entry energy — the scene is already in progress — expressed WITHIN the start-frame bridge, never instead of it.
 
 ## Impact moves — the special-effects vocabulary (Director order d-120)
 
 Seedance executes in-camera effects well when they're directed as ONE named event, and they hit hardest when they're rare. The proven vocabulary:
-- **Speed ramp** — real-time ramping smoothly into super slow motion for one held close-up, then snapping back HARD and instantly (the S05A bubble beat; the reference-prompt butterfly). Always: one ramp, a named subject for the slow beat, an instant (never gradual) return.
-- **Freeze-and-orbit** — time stops entirely mid-action; the camera sweeps a smooth arc around the suspended subjects while particles (droplets, crumbs, sparks) hang crisp and individually readable; then time snaps back (the S05B frozen fall). Direct the frozen expressions explicitly — they're locked for the whole orbit.
-- **Masked reframe** — a whiteout/flash/occlusion fills the frame and hides a full camera repositioning inside one continuous clip (the S03 shrink hinge, the boarded S15 FOOM).
-- **Motivated emotional drift** — the d-118 push-in: the camera eases closer as an emotional beat lands (the S06 whisper).
-- **Rear chase lock** — the camera rides the subject's tail through an action sequence, world rushing past (the S05A ride, from the Director's reference).
+- **Speed ramp** — real-time ramping smoothly into super slow motion for one held close-up, then snapping back HARD and instantly. Always: one ramp, a named subject for the slow beat, an instant (never gradual) return.
+- **Freeze-and-orbit** — time stops mid-action; the camera sweeps a smooth arc around suspended subjects while particles hang crisp and individually readable; then time snaps back. Direct the frozen expressions explicitly.
+- **Masked reframe** — a whiteout/flash/occlusion fills the frame and hides a full camera repositioning inside one continuous shot.
+- **Motivated emotional drift** — the d-118 push-in: the camera eases closer as an emotional beat lands.
+- **Rear chase lock** — the camera rides the subject's tail through an action sequence, world rushing past.
 
-**The budget rule (BINDING): impact moves are spent, not sprinkled.** At most ONE per scene, reserved for the scene's peak moment, and neighboring scenes should not repeat the same move — a film that freezes time twice in three minutes has taught the audience the trick and lost it. The director role picks the moment; the prompt names exactly one effect and states its boundaries (what starts it, what ends it, what must stay crisp).
+**The budget rule (BINDING): at most ONE impact move per scene**, reserved for the peak moment, never repeating a neighboring scene's move. Cuts (above) are the everyday grammar; impact moves are the exclamation points. The prompt names exactly one effect and states its boundaries (what starts it, what ends it, what must stay crisp).
 
-## Named @asset handles (Director order d-120 — extends the d-106 @-mention rule)
+## Age-blind rule (d-201, with the anchors exemption)
 
-Asset names start with @ — that's the hook that pulls them straight into a prompt later. Beyond positional `@reference_image_N` tags, define memorable HANDLES for the production's recurring assets and bind each handle to its reference once in the references block, then use the handle everywhere:
+Never describe characters by age in free prose: *boy, girl, child, kid, young, teen, little* and equivalents are forbidden. Describe by **role** (rider, figure, speaker), **clothing**, and **action** — label what they do, never who they are; unnamed figures get functional labels ("a figure in a wool cloak").
+**The single exemption (Director ruling 2026-08-17):** locked `identity_anchors` are quoted VERBATIM even where they contain age wording — the cross-episode identity lock outranks the age-blind rule for exactly those quoted phrases and nothing else. New characters' anchors (Luna onward) should be authored age-neutral where possible so the exemption shrinks over time.
 
-```
-ACTIVE REFERENCES
-@gramps: reference image 2 — his character sheet; 100% match, identical design every frame.
-@milo: reference image 3 — his character sheet; 100% match, same boy throughout.
-@cookie-sled: the bitten cookie chunk they ride; keeps its shape every frame.
-@stomach-cavern: reference image 4 — the location plate; the room must match it.
-```
+## Negative prompts are unreliable (BINDING — d-099, confirmed empirically)
 
-Then inline: `@gramps kneels at the rear, @milo up front`, `the camera orbits @milo and @gramps`, `the reveal matches @stomach-cavern`. Handles make long prompts readable, keep every mention consistently bound to its reference, and let a scene's cast be swapped by editing one block. Production handles are stable across scenes — reuse the same handle names film-wide so prompts can be assembled from parts.
+Seedance does not reliably honor "no X" / "zero X" / "without X" for physical scene content — a negative is a far weaker signal than a positive, concrete description of the desired state. Confirmed on S01_C01: a strengthened "zero smoke" clause produced MORE smoke.
+
+- Bad: `no smoke, no haze, no scorch marks` → Better: `the beam ends in a single bright flash; the instant it fades, the apple sits pea-sized in perfectly clear, still air`
+- **Camera primitives are the documented exception:** `no cuts, no zoom` works on continuous shots because Seedance treats camera language as a separate instruction channel. Keep those.
+- If a locked reference image itself shows the thing being negated, no wording overrides it — fix the reference (derived state sheet, d-098), not the words.
+- On a qc-critic regen for physical content: propose a positive rewrite first; escalate rather than iterating negatives indefinitely.
 
 ## Similes and metaphors literalize (BINDING — confirmed twice)
 
-Seedance renders comparisons as literal objects. "Dust motes drift overhead **like slow planets**" produced a banded Jupiter floating in the garage (S03); "inside the glass is a liquid amber **cathedral**" produced an actual gothic church interior with arched windows submerged in the lemonade (S05). Scene-direction prose is written for humans and full of these figures — NEVER carry them verbatim into a generation prompt. Translate every simile/metaphor into direct visual description before it ships: "sun refracting through the lemonade in tall shafts, bubbles as drifting gold sparks" renders the intended image; naming the thing it resembles renders the thing itself.
+Seedance renders comparisons as literal objects: "dust motes **like slow planets**" produced a banded Jupiter (S03); "a liquid amber **cathedral**" produced an actual gothic church inside the lemonade (S05). Direction prose is full of figures — NEVER carry them into a prompt. Translate every simile/metaphor into direct visual description ("sun refracting through the lemonade in tall shafts, bubbles as drifting gold sparks").
 
 ## Identity lock (BINDING — this is the consistency mechanism)
 
-- Reference images: locked character sheet views (2–3 per present character, view matched to facing direction) + locked environment plate + selected storyboard frames. ≤9 total — prioritize present-character sheets first.
-- **@-mention every reference in the prompt body (BINDING — Director order 2026-07-22, d-106).** Attaching an image without naming it in the text leaves the model to guess what each picture is for — confirmed on S03_C01 attempts 1–3, where the picked storyboard page rode along unlabeled among five images and the model ignored its staging entirely while following the prompt's prose instead. The fix: open the prompt with a references block that maps every attached image by its position in the medias array, then @-mention them inline wherever the element they depict is described:
-  - `References: @reference_image_1 is this shot's start frame — begin on exactly this image. @reference_image_2 is the storyboard page for this scene — its numbered panels are the authoritative staging, composition and object scale for every beat. @reference_image_3 is Gramps' character sheet. …`
-  - Inline: `GRAMPS (@reference_image_3): white walrus mustache…`, `the garage of @reference_image_5, staged exactly as drawn in @reference_image_2`.
-  - Numbering = the order images are passed in `medias` (start_image first, then image_references in order). A mismatch between the block and the array silently mislabels every reference — verify the mapping against the actual call before submitting.
-  - The storyboard page's @-mention must state its authority explicitly ("authoritative staging/composition/scale — match it"), not merely name it.
-  - **When a clip has NO start frame (d-127):** `@reference_image_1` is then the FIRST image in `medias` — usually the storyboard page. The references block is ALWAYS derived from the actual medias array of the call being submitted, never copied from another scene's prompt or a template: with a start frame the numbering begins at it; without one, every number shifts down by one, and a copied block silently mislabels EVERY reference (expensive to debug — the failure looks like random non-adherence). Mandatory pre-submit check: list the medias array in order, write one line per entry (`position → role → what the file is → @tag used in prompt`), and only then finalize the block. If any attached media has no @tag, or any @tag has no attached media, do not submit.
-  - **NO reference may be left unnamed — the start frame included (Director order 2026-07-26, d-124; confirmed on S07_C01 attempt 1).** Passing `start_image` in the medias while giving @-numbers only to the other references broke the chain: the start frame was attached but referred to as just "the provided start frame", and the motion text opened on a different composition — the model followed the prose and discarded the frame entirely (126cr lost). Binding rules: (a) the start frame is ALWAYS `@reference_image_1`, described by content: `@reference_image_1 is this shot's start frame — begin on exactly this image (<what it shows>)`; (b) the 0–2s beat must be written as a BRIDGE from the start frame's actual composition to the scene's staging — never open the motion on a composition that contradicts the start frame, because when prose and an attached image disagree, the prose wins and the chain breaks.
-- Open the character block with an identity-lock block and stack the proven anti-drift phrases (redundancy measurably helps):
-  `[identity_lock] The same character — straight black bob with blunt bangs, large dark-brown eyes, small mole under left eye — consistent across all shots, maintain exact appearance from reference image, no deformation, no face morph. Do not alter clothing category or primary color.`
-- Add each character's `forbidden_drift` entries as explicit negatives.
-- **Voice lock:** attach every speaker's locked voice sample as an audio reference (`reference_audio`) on EVERY clip where they speak. The quoted dialogue drives lips; the reference audio pins the voice. Never generate a speaking clip without it.
+- Reference images: locked character sheet views (2–3 per present character, matched to facing direction) + locked environment plate + selected storyboard material. ≤9 total — present-character sheets first.
+- **@-mention every reference (d-106):** the ACTIVE REFERENCES block opens the prompt, mapping every attached image by its position in the medias array, with named handles for recurring assets (d-120):
 
-## Multi-shot inside one clip (use sparingly)
+```
+ACTIVE REFERENCES
+@reference_image_1: this shot's start frame — begin on exactly this image (<what it shows>).
+@reference_image_2: the storyboard page — its numbered panels are the authoritative staging, composition and scale; match them.
+@gramps: reference image 3 — his character sheet; 100% match, identical design every frame.
+@luna: reference image 4 — her character sheet; 100% match throughout.
+```
 
-For montage-type scenes, explicit blocks: `Shot 1 (wide establishing, slow push-in, ~4s): … Shot 2 (medium close-up, static, ~5s): …` — ~2.5s minimum per shot, identity anchors re-stated verbatim in every block, subject transitions named with their cause ("revealed by camera movement"). Our default remains ONE idea per 15s scene; multi-shot only when the storyboard variant was designed that way.
+  Then inline: `@gramps kneels at the rear`, `the reveal matches @stomach-cavern`. Handles are stable film-wide.
+- **Numbering = the actual medias array order** of THIS call (d-127): with a start frame it is `@reference_image_1`; without one, everything shifts — the block is always derived fresh, never copied. Mandatory pre-submit map: one line per medias entry (`position → role → file → @tag`); any attached media without an @tag, or @tag without media, = do not submit.
+- **The start frame is never left unnamed (d-124, 126cr lesson):** always `@reference_image_1 … begin on exactly this image (<content>)`, and the opening beat is written as a BRIDGE from that frame's actual composition — when prose and image disagree, prose wins and the chain breaks.
+- Open the character description with an identity-lock block and stack the proven anti-drift phrases: `[identity_lock] The same character — <anchors verbatim> — consistent across all shots, maintain exact appearance from reference image, no deformation, no face morph. Do not alter clothing category or primary color.` Fold in `forbidden_drift` entries (rewritten positively where possible, d-099).
+- **Voice lock:** every speaker's locked voice sample attached as `reference_audio` on EVERY clip where they speak. Quoted dialogue drives lips; the reference audio pins the voice. Never generate a speaking clip without it.
 
 ## Handoff beat (BINDING — d-191, audience feedback: visible cuts between clips)
 
-Chained clips share a start FRAME (d-112) but audiences see a jump when they don't share MOTION. Every prompt therefore books its last ~1–1.5s as an explicit **handoff beat**, and every chained successor's 0–2s bridge (d-124) continues it:
+Chained clips share a start FRAME (d-112) but audiences see a jump when they don't share MOTION. Every prompt books its last ~1–1.5s as an explicit **handoff beat**, and every chained successor's 0–2s bridge (d-124) continues it:
 
-- **Outgoing clip, final beat:** either (a) the action DECELERATES into a describable settle — name the exact end pose, gaze direction, and any residual motion ("Milo lands the jump and holds, knees still flexed, cape settling, eyes frame-right"), or (b) for boundaries the direction marks continuous, name the exact motion state crossing the cut — what is moving, screen direction, energy ("still sliding left-to-right at full speed as the clip ends").
-- **Incoming chained clip, 0–2s bridge:** restate the start frame content per d-124 AND the inherited motion — the first beat continues it before anything new happens ("continuing the left-to-right slide from the opening frame, he decelerates as…"). A bridge that poses a moving character static is how seams become visible.
-- The `transition_out` in scene_direction (stage-5 boundary motion contract, d-191) is the source of truth for which mode each boundary uses; the prompt-writer copies it, never invents it.
+- **Outgoing clip, final beat:** either (a) the action DECELERATES into a describable settle — exact end pose, gaze direction, residual motion — or (b) for boundaries marked continuous, the exact motion state crossing the cut (what moves, screen direction, energy).
+- **Incoming chained clip, 0–2s bridge:** restate the start frame content AND the inherited motion — the first beat continues it before anything new happens. A bridge that poses a moving character static is how seams become visible.
+- The `transition_out` in scene_direction (stage-5 boundary motion contract, d-191) is the source of truth; the prompt-writer copies it, never invents it.
 - End-frame pins (`end_image`) remain the strongest handoff for hard choreography — when one exists, the handoff beat describes THAT frame.
+
+## Language rules (d-201)
+
+- English only — the source skill's ZH output is ELIMINATED by Director order; never author or submit Chinese prompts.
+- Present tense, active voice. Vivid but economical — concrete visual direction, no poetic padding.
+- No metadata headers ("Shot 1:", "Beat 2:") — weave transitions into prose.
+- Identity is carried by @handles + verbatim anchors, never by bare names or pronouns the model can't resolve ("she", "the same girl").
+- No dialogue or on-screen text unless the scene direction provides it; dialogue lines are never paraphrased or translated.
+- **Antislop — never use:** breathtaking, stunning, captivating, mesmerizing, awe-inspiring, masterfully, meticulously, exquisitely, beautifully crafted, cinematic masterpiece, visual feast, a symphony of, seamlessly, effortlessly, flawlessly, cutting-edge, state-of-the-art, next-level, rich tapestry, vibrant tapestry, kaleidoscope of, elevate, unlock, unleash, harness, groundbreaking, a testament to, speaks volumes, resonates deeply.
+
+## Camera language appendix (d-201)
+
+**Angles:** low-angle, high-angle, dutch angle, bird's-eye, worm's-eye, eye-level, OTS (over-the-shoulder).
+**Focal length:** wide 14–24mm, standard 35–50mm, telephoto 85–200mm, macro.
+**Movement:** tracking, dolly-in, dolly-out, crane, pan, tilt, whip-pan, orbit, push-in, pull-back, handheld, Steadicam, aerial.
+**Time:** slow-motion, speed ramp, freeze frame.
+**Transitions:** smash cut, match cut, whip-pan transition, hard cut, L-cut.
+
+Camera primitives named precisely (dolly/truck/pedestal = translation; pan/tilt/roll = rotation; zoom/rack focus = lens; static = strictly nothing). A shot's camera states its move, speed, and end state; user/Director camera instructions ALWAYS appear in the final prompt.
 
 ## Params (via Higgsfield MCP — model id `seedance_2_0`, budget variant `seedance_2_0_mini`)
 
@@ -102,16 +143,16 @@ Chained clips share a start FRAME (d-112) but audiences see a jump when they don
 | genre | optional cinematic hint (auto/action/horror/comedy/noir/drama/epic) — set from the brief's genre when it maps |
 | bitrate_mode | `high` for the final pick of a scene, `standard` otherwise |
 | medias[] roles | `start_image`, `end_image`, `image_references` (≤9 images total), `video_references` (≤3), `audio_references` = locked voice samples |
-| `end_image` caveat | **Steers, doesn't lock (confirmed S05B):** the clip arrived at the target's CONTENT (same location, same event, same palette) but not its framing — the final frame was a closer composition than the pinned image. Treat `end_image` as a strong destination hint; if a frame-exact join matters, plan to trim the tail or cut on action instead. `start_image` remains pixel-exact. |
+| `end_image` caveat | **Steers, doesn't lock (confirmed S05B):** content arrives, framing may not. Strong destination hint; for frame-exact joins plan to trim the tail or cut on action. `start_image` remains pixel-exact. |
 | get_cost | preflight `get_cost: true` before every batch and announce credits |
 
-`mode: fast` / the mini variant trade camera-motion fidelity for cost — never use them for slow-mo, multi-shot, or dolly-heavy prompts; they are for blockout drafts and QC retries. Record every job_id (and seed, where returned) in `generation_manifest`.
+`mode: fast` / the mini variant trade camera-motion fidelity for cost — never for slow-mo, multi-shot, or dolly-heavy prompts; they are for blockout drafts and QC retries. Record every job_id (and seed, where returned) in `generation_manifest`.
 
 ## Anti-drift fallback ladder (when qc-critic returns regen for identity)
 
-1. Re-emphasize the violated anchor at prompt start AND in the camera section; add the drift to negatives.
+1. Re-emphasize the violated anchor at prompt start AND in the camera section; add the drift to negatives (positively phrased where possible).
 2. Add/replace a reference view matching the character's facing direction; cull references to the 3 most consistent rather than flooding all 9.
-3. Shorten duration (10s → 6s) and simplify motion.
+3. Shorten duration (10s → 6s) and simplify the shot plan (fewer cuts).
 4. Escalate (bad start frame or impossible direction is upstream's problem — say so).
 
 ## Avoid table
@@ -119,9 +160,14 @@ Chained clips share a start FRAME (d-112) but audiences see a jump when they don
 | Don't | Why |
 |---|---|
 | 4+ simultaneous character actions | motion coherence breaks — split shots |
+| >3 characters tracked across cuts | engine limit — name the acting pair per shot |
 | Readable text/logos in-clip | unreliable rendering — captions belong to stage 10 |
 | Two characters speaking in one breath | lipsync drift — alternate speaker beats |
-| Emotional adjectives without visual cause | "sad" constrains nothing; "tears on cheek, shoulders slumped" renders |
-| Names/pronouns as identity ("she", "the same girl") | the model never saw the cast list — anchors only |
+| Emotion labels without visible physics | "sad" constrains nothing; "tears on cheek, shoulders slumped" renders |
+| Names/pronouns as identity ("she", "the same girl") | the model never saw the cast list — @handles + anchors only |
+| Reflection shots (mirrors, blades, puddles) | Seedance breaks scene geography on reflections |
+| Exit + re-entry in one continuous shot | exit-frame = implicit cut; the character is gone |
+| Age words outside verbatim anchors | d-201 age-blind rule |
+| Antislop vocabulary | reads as filler; see Language rules |
 
-<!-- adapted from OpenMontage seedance-2-0 pack + video-gen-prompting handbook (research extraction, 2026-07-09) -->
+<!-- adapted from OpenMontage seedance-2-0 pack + video-gen-prompting handbook (research extraction, 2026-07-09); merged with the Director-supplied Seedance 2.0 Universal Director skill (d-201, 2026-08-17) -->

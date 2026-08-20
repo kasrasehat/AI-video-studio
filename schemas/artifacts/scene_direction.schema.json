@@ -35,8 +35,8 @@
         "required": ["scene_id", "shot_framing", "camera_movement", "lighting", "blocking", "mood"],
         "properties": {
           "scene_id": { "type": "string", "pattern": "^S\\d{2,}[A-Z]?$" },
-          "shot_framing": { "type": "string", "minLength": 1, "description": "e.g. 'medium close-up, eye level, subject frame-left'." },
-          "camera_movement": { "type": "string", "minLength": 1, "description": "ONE executable move per 15s clip, e.g. 'slow dolly-in 20cm'." },
+          "shot_framing": { "type": "string", "minLength": 1, "description": "The scene's OPENING shot: size, angle, subject placement — e.g. 'medium close-up, eye level, subject frame-left'." },
+          "camera_movement": { "type": "string", "minLength": 1, "description": "The scene's SHOT PLAN (d-201, multi-shot default): archetype + shots in order, each shot ONE clean camera idea (mode + move + end state), cuts obeying double contrast (size AND mode change). A single continuous move is the deliberate exception, stated with its reason." },
           "lighting": { "type": "string", "minLength": 1 },
           "blocking": { "type": "string", "minLength": 1, "description": "Who is where, facing which way; respect the 180-degree line." },
           "mood": { "type": "string", "minLength": 1 },

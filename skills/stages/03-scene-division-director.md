@@ -8,7 +8,7 @@ Split the approved story into ≤15-second scene units — the atomic clips of p
 
 1. **Dispatch `scene-splitter`** with paths to `artifacts/story.json` + `artifacts/brief.json`. It returns the scene_list JSON + a 3-line summary (scene count, total vs target, trickiest scene).
 2. **Self-check before writing** (the stage's own QA — no external loop, so be strict):
-   - Every `est_duration_seconds` in (0, 15]; **dialogue speakability**: words in the scene's lines ÷ 3 wps + ~2s of reaction beats must fit the duration — recompute, don't trust.
+   - Every `est_duration_seconds` in (0, 15]; **dialogue speakability (tightened d-201)**: ~25–30 spoken words fit a full 15s clip (≈2 wps + reaction beats) — budget each scene's lines to that ceiling and recompute, don't trust. The d-191 conversation-density law is satisfied by dividing talk across MORE scenes, never by cramming one clip.
    - **Coverage:** every story beat_id appears in some scene's `beat_refs`; no scene without one.
    - **Speakers present:** every dialogue `character` is in that scene's `characters_present`.
    - **Continuity fields real:** location_ref/time_of_day progress logically scene-to-scene; `continuity_notes` state carryable facts (props in hand, wardrobe), not vibes.
