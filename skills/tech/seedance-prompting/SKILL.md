@@ -109,11 +109,12 @@ ACTIVE REFERENCES
 Every CHAINED scene's generation call attaches, by Director order (2026-08-17):
 
 1. **The last 3 seconds of the previous scene's APPROVED clip** as a `video_references` entry — `scripts/extract_last_seconds.py <clip> -s 3` → media_upload → media_confirm. This is the motion/lighting/state continuity carrier: the model sees how the previous scene actually ENDED (real footage, not a frozen frame). It is @-mentioned like every reference (`@reference_video_1: the final 3 seconds of the previous scene — the opening beat continues this motion, lighting and character state exactly`).
-2. **The scene's own promoted Soul-cinema KEYFRAME** (d-200) as `start_image` = `@reference_image_1` — always, for chained scenes and hinges alike (this replaces d-112's extracted-last-frame start for chained scenes).
+2. **The scene's own promoted Soul-cinema KEYFRAME** (d-200) as an `image_reference` — a **STYLE + COMPOSITION reference, NOT a start frame (d-203)**. @-mention it as such: `@keyframe: the scene's cinematic keyframe — match its look, lighting, palette and composition language; the scene travels through this image, it does not have to open on it.`
 3. **The locked reference sheets** — present characters' sheet views + the location plate — as `image_references`.
 4. **The picked storyboard PAGE** also rides as an `image_reference` (authoritative staging). The Director has ordered that the keyframe + storyboard combination be CHECKED in production — at each early E02 gate, report how well the clip honored keyframe vs page so the Director can tune what stays attached.
+5. **`start_image` — under production evaluation (d-203):** on CONTINUOUS (chained) scenes, the same input set is ALSO checked WITH the previous scene's extracted last frame (`extract_last_frame.py`, d-112 tooling) as `start_image` — that variant restores pixel-continuous cuts by construction. The main agent runs the comparison at E02's first chained scenes (Director-gated spend, both variants reported side by side); the Director picks the standing method. Hinges carry no predecessor frame — no start_image unless a decision orders one. Whenever a start_image IS attached, all d-124 laws apply to it (named `@reference_image_1`, content described, 0–2s bridge from its actual composition, frame-0 verification against it).
 
-Consequences: the cut between clips is no longer pixel-continuous by construction (the start frame is the keyframe, not the predecessor's last frame) — continuity is carried by the video reference + the handoff/bridge prompting below, and the stage-10 seam pass (d-191) remains the guard. `extract_last_frame.py` stays in use for QC stills and frame-0 verification (frame 0 must match the KEYFRAME now). The ≤3 video_references budget means the previous-scene tail always claims one slot on chained scenes.
+Consequences: without a start_image the cut is not pixel-continuous by construction — continuity is carried by the tail reference + the handoff/bridge prompting below, and the stage-10 seam pass (d-191) remains the guard; the last-frame-start variant exists precisely to measure whether construction-level continuity still wins. The ≤3 video_references budget means the previous-scene tail always claims one slot on chained scenes.
 
 ## Handoff beat (BINDING — d-191, audience feedback: visible cuts between clips)
 
@@ -153,7 +154,7 @@ Camera primitives named precisely (dolly/truck/pedestal = translation; pan/tilt/
 | generate_audio | always true (native audio is the moat; independent of audio_references) |
 | genre | optional cinematic hint (auto/action/horror/comedy/noir/drama/epic) — set from the brief's genre when it maps |
 | bitrate_mode | `high` for the final pick of a scene, `standard` otherwise |
-| medias[] roles | `start_image` = the scene's Soul keyframe (d-200/d-202), `end_image`, `image_references` (≤9 images total: sheets + plate + storyboard page), `video_references` (≤3; slot 1 = previous scene's last-3s tail on chained scenes, d-202), `audio_references` = locked voice samples |
+| medias[] roles | `start_image` = predecessor's last frame on the d-203 continuity variant only (keyframe is NEVER the start frame), `end_image`, `image_references` (≤9 images total: Soul keyframe as STYLE reference d-203 + sheets + plate + storyboard page), `video_references` (≤3; slot 1 = previous scene's last-3s tail on chained scenes, d-202), `audio_references` = locked voice samples |
 | `end_image` caveat | **Steers, doesn't lock (confirmed S05B):** content arrives, framing may not. Strong destination hint; for frame-exact joins plan to trim the tail or cut on action. `start_image` remains pixel-exact. |
 | get_cost | preflight `get_cost: true` before every batch and announce credits |
 
