@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "full-ai-video-system/artifacts/scene_list",
   "title": "Scene List",
-  "description": "Produced by stage 3, finalized by stage 4 (recheck). Scenes are <=15s clip units.",
+  "description": "Produced by stage 3, finalized by stage 4 (recheck). Scenes are clip units sized to the active video model: <=15s (Seedance 2.0, default) or <=30s (Seedance 2.5, d-204).",
   "type": "object",
   "required": ["version", "project_id", "scenes", "total_est_seconds", "recheck"],
   "properties": {
@@ -35,7 +35,7 @@
           "location_ref": { "type": "string", "minLength": 1 },
           "characters_present": { "type": "array", "items": { "type": "string" } },
           "time_of_day": { "type": "string", "enum": ["dawn", "morning", "midday", "afternoon", "golden_hour", "dusk", "night", "interior_ambiguous"] },
-          "est_duration_seconds": { "type": "number", "exclusiveMinimum": 0, "maximum": 15 },
+          "est_duration_seconds": { "type": "number", "exclusiveMinimum": 0, "maximum": 30, "description": "<= the active video model's max clip length: 15 for Seedance 2.0 (default), 30 for Seedance 2.5 (d-204, Director-ordered). Stage 3 enforces the per-model ceiling; the schema caps the absolute maximum." },
           "scene_type": { "type": "string", "enum": ["dialogue", "action", "establishing", "montage", "emotional_beat"] },
           "continuity_notes": { "type": "string", "description": "Props/wardrobe/screen-direction facts that must hold." },
           "transition_out_hint": { "type": "string", "description": "Suggested transition into the next scene." }

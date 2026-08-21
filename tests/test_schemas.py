@@ -70,8 +70,11 @@ def test_scene_duration_cap_enforced():
     path = Path(__file__).parent / "fixtures" / "sample-project" / "artifacts" / "scene_list.json"
     instance = json.loads(path.read_text(encoding="utf-8"))
     bad = copy.deepcopy(instance)
-    bad["scenes"][0]["est_duration_seconds"] = 22  # over the 15s Seedance clip unit
-    assert lib.validation_errors(bad, "scene_list"), "scene over 15s must fail"
+    bad["scenes"][0]["est_duration_seconds"] = 31  # over the 30s absolute cap (Seedance 2.5, d-204)
+    assert lib.validation_errors(bad, "scene_list"), "scene over 30s must fail"
+    ok = copy.deepcopy(instance)
+    ok["scenes"][0]["est_duration_seconds"] = 22  # legal only for a 2.5-assigned scene (stage 3 enforces per-model)
+    assert not lib.validation_errors(ok, "scene_list"), "a <=30s scene must pass the schema (d-204)"
 
 
 def test_reference_images_capped_at_nine():

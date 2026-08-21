@@ -32,6 +32,25 @@ video_models:
     skill: seedance-prompting
     use_for: [dialogue, action, establishing]
 
+  seedance_2_5:                      # PARALLEL FLOW (Director order d-204): 30s clips; picked ONLY on explicit Director command
+    gateway: higgsfield
+    native_voice: true
+    quoted_dialogue_lipsync: true    # assumed = 2.0 parity per d-204 ("everything the same"); confirm on the first test clip
+    reference_audio: true
+    media_roles: [start_image, end_image, image_references, video_references, audio_references]
+    reference_images_max: 9
+    start_end_frames: true
+    multi_shot: true
+    duration_seconds: {min: 4, max: 30}
+    resolutions: [480p, 720p, 1080p, 4k]
+    params: {mode: [std, fast], bitrate_mode: [standard, high], genre: [auto, action, horror, comedy, noir, drama, epic]}
+    aspects: ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"]
+    prompt_words: [200, 1000]
+    skill: seedance-prompting        # the ENTIRE 2.0 rulebook applies verbatim (d-204)
+    verify: true                     # exact catalog id + params + per-second rate UNCONFIRMED — models_explore + get_cost before the first paid call, Director-gated (d-114)
+    use_for: [dialogue, action, establishing, long_takes]
+    note: "d-204 A/B protocol: same story stretch as N short 2.0 clips vs one long 2.5 clip (e.g. 3x10s vs 1x30s), both Director-gated, judged side by side; the Director then picks one model or mixes both per scene."
+
   seedance_2_0_mini:                 # fast/budget variant — SAME reference roles incl. audio
     gateway: higgsfield
     native_voice: true

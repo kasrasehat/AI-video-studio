@@ -2,7 +2,7 @@
 
 The complete operating contract for any AI agent working in this repository. Every rule here is binding regardless of which harness (Claude Code, Cursor, Codex) you run under.
 
-**What this system does:** turns a user's story idea into a coherent 2–7 minute film with on-screen speaking characters, assembled from ≤15-second AI-generated clips (Seedance 2.0 via Higgsfield MCP, plus Kling/Veo/Sora for non-dialogue scenes). The user is the Director: every creative stage ends at a human approval gate.
+**What this system does:** turns a user's story idea into a coherent multi-minute film with on-screen speaking characters, assembled from AI-generated clips — ≤15s on Seedance 2.0 (the default) or ≤30s on Seedance 2.5 (parallel flow, Director-ordered only, d-204) — via Higgsfield MCP, plus Kling/Veo for non-dialogue scenes. The user is the Director: every creative stage ends at a human approval gate.
 
 ---
 

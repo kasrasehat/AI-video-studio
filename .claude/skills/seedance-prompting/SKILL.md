@@ -9,6 +9,15 @@ Seedance 2.0 (ByteDance) is this pipeline's default video model: single-pass nat
 
 **This skill was merged with the Director-supplied "Seedance 2.0 Universal Director" skill (d-201, 2026-08-17). Director rulings on the merge: prompts are ENGLISH ONLY (the source skill's bilingual EN+ZH output is eliminated); MULTI-SHOT cut grammar is the DEFAULT scene form; per-shot timing marks are dropped; the age-blind rule applies with a single exemption for locked identity anchors. Where this skill and old E01 prompt patterns disagree, this skill wins.**
 
+## Seedance 2.5 — the parallel 30s flow (d-204)
+
+Seedance 2.5 (`seedance_2_5` in `config/model_capabilities.yaml`) generates clips up to **30 seconds** and runs as a PARALLEL flow beside 2.0: **every rule in this skill applies to 2.5 verbatim** — prompt contract, archetype router, engine rules, cut grammar, chaining/conditioning (d-202/d-203), identity lock, handoff beats, word window. Only the ceiling changes: scenes may be divided up to 30s (stage 3), the dialogue budget scales at ≈2 wps (~50–60 words per 30s clip), and a 30s shot plan carries proportionally more cuts.
+
+- **Model choice is the Director's command, never yours:** 2.0 remains the default; route to 2.5 ONLY when the Director explicitly orders it ("use seedance 2.5") — log the pick as `model_selection`.
+- **Verify before the first paid call:** the 2.5 catalog id, params and per-second rate are UNCONFIRMED (`verify: true`) — `models_explore` + `get_cost:true`, announce, Director-gate (d-114). Never assume 2.0's rate.
+- **The A/B protocol (Director-designed):** the same story stretch produced both ways — N short 2.0 clips vs one long 2.5 clip (e.g. 3×10s vs 1×30s), each spend gated, judged side by side at the gate. The Director then proceeds with one model, or uses BOTH together (per-scene assignment; stage 3 sizes each scene to its assigned model's ceiling).
+- The 2.5 long take reduces SEAM COUNT (fewer clip boundaries = fewer d-191 handoffs) at the price of a bigger single-generation risk (one 30s reject costs more than one 10s reject) — surface both sides in the comparison report.
+
 ## The prompt contract (200–1000 words, EN only — d-138/d-201)
 
 One continuous English string with inline section labels, present tense, active voice, 200–1000 words (the window buys room for the reference block and per-shot state restatement — never padding). Sections in this order:

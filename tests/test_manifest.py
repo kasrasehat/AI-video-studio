@@ -1,4 +1,4 @@
-"""pipeline.yaml is schema-valid, internally consistent, and its references resolve."""
+﻿"""pipeline.yaml is schema-valid, internally consistent, and its references resolve."""
 import json
 
 import yaml
@@ -64,7 +64,7 @@ def test_mandatory_qa_loops_present():
     for stage_name in ["story", "directing", "lock-descriptors", "integration"]:
         assert "qa_loop" in by_name[stage_name], f"{stage_name} must declare its QA loop"
         assert by_name[stage_name]["qa_loop"]["blocking"] is True
-    # d-137 + d-114: stage 9's loop is the OPTIONAL, NON-blocking clip-evaluator —
+    # d-137 + d-114: stage 9's loop is the OPTIONAL, NON-blocking clip-evaluator â€”
     # nothing loops autonomously; every regen is Director-authorized after they check the clip.
     vg = by_name["video-generation"]["qa_loop"]
     assert vg["agent"] == "clip-evaluator"
@@ -84,11 +84,12 @@ def test_model_capabilities_config():
                   if all(m.get(cap) is True for cap in required)]
     assert satisfying, "no video model satisfies the dialogue policy"
     assert "seedance_2_0" in satisfying
-    # Every video model must fit the <=15s scene unit contract.
+    # Scene-unit ceilings (d-204): 30s for the seedance_2_5 parallel flow, 15s for everything else.
     for name, m in caps["video_models"].items():
         dur = m["duration_seconds"]
         max_s = dur["max"] if "max" in dur else max(dur["options"])
-        assert 0 < max_s <= 15, f"{name} duration exceeds the 15s scene unit"
+        ceiling = 30 if name == "seedance_2_5" else 15
+        assert 0 < max_s <= ceiling, f"{name} duration exceeds its {ceiling}s scene unit"
 
 
 def test_delivery_presets_config():

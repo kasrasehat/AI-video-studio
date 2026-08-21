@@ -1,6 +1,6 @@
 # Scene Division Director — stage 3
 
-Split the approved story into ≤15-second scene units — the atomic clips of production. No gate here: output flows straight into stage 4's recheck, and the Director gates THERE on the final list.
+Split the approved story into scene units — the atomic clips of production — sized to the ACTIVE VIDEO MODEL's max clip length (d-204): **≤15s on Seedance 2.0 (the default)**, **≤30s on Seedance 2.5 (only when the Director has explicitly ordered 2.5** for the production or a segment; a mixed production sizes each scene to the model the Director assigned it). No gate here: output flows straight into stage 4's recheck, and the Director gates THERE on the final list.
 
 **Consumes:** `story`, `brief`. **Produces:** `artifacts/scene_list.json` (schema `scene_list`, `recheck: {performed:false, final:false}`).
 
@@ -8,7 +8,7 @@ Split the approved story into ≤15-second scene units — the atomic clips of p
 
 1. **Dispatch `scene-splitter`** with paths to `artifacts/story.json` + `artifacts/brief.json`. It returns the scene_list JSON + a 3-line summary (scene count, total vs target, trickiest scene).
 2. **Self-check before writing** (the stage's own QA — no external loop, so be strict):
-   - Every `est_duration_seconds` in (0, 15]; **dialogue speakability (tightened d-201)**: ~25–30 spoken words fit a full 15s clip (≈2 wps + reaction beats) — budget each scene's lines to that ceiling and recompute, don't trust. The d-191 conversation-density law is satisfied by dividing talk across MORE scenes, never by cramming one clip.
+   - Every `est_duration_seconds` in (0, ceiling] — ceiling = 15 (Seedance 2.0 default) or 30 (Seedance 2.5, Director-ordered, d-204); **dialogue speakability (tightened d-201)**: ≈2 wps + reaction beats — ~25–30 spoken words fit a full 15s clip, ~50–60 fit a 30s clip — budget each scene's lines to its ceiling and recompute, don't trust. The d-191 conversation-density law is satisfied by dividing talk across MORE scenes, never by cramming one clip.
    - **Coverage:** every story beat_id appears in some scene's `beat_refs`; no scene without one.
    - **Speakers present:** every dialogue `character` is in that scene's `characters_present`.
    - **Continuity fields real:** location_ref/time_of_day progress logically scene-to-scene; `continuity_notes` state carryable facts (props in hand, wardrobe), not vibes.
