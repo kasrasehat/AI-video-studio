@@ -1,0 +1,24 @@
+# seam_policy.yaml — kill-switch file for the ISSUE-008 seam fixes ([SEAM d-210])
+#
+# THE CONTRACT: every runtime behavior added by the d-210..d-218 seam change-set
+# reads its flag from this file. All flags default TRUE (fix active). Flipping a
+# flag to FALSE must restore the exact pre-change behavior — scripts/assemble.py
+# guards every new code path with `if seam_policy.<flag>:`, and the skills name
+# their flag so the Director can disable any single fix without touching code.
+# Reverting the matching `d-2xx:` git commit removes the fix entirely.
+#
+# Record every flip in disabled_log (date + flag + reason) so the history of
+# what was turned off, when, and why survives sessions.
+
+version: 1
+
+flags:
+  color_pipeline: true             # d-214 — assemble.py normalize_clip(): explicit bt709 conversion + tagging + one container timebase
+  dup_frame_trim: true             # d-215 — assemble.py: SSIM duplicate-frame detection at chained boundaries; drop incoming frame 0 when >=0.99
+  audio_crossfade: true            # d-216 — assemble.py: never hard-splice clip audio; min 3-6 frame acrossfade; J/L-cut via edit_decisions audio_treatment
+  seam_metrics_gate: true          # d-217 — stage 10: objective per-boundary metrics (motion energy, frame-0 SSIM, delta-YUV) recorded + rest->rest findings
+  overlap_generation_default: true # d-213 — stage 9: continuous seams generate the successor from a frame overlap_seconds BEFORE the predecessor's end
+  boundary_classes_required: true  # d-211 — stage 4 recheck: reject unclassified boundaries / continuous boundaries without an overlap plan
+
+disabled_log: []
+  # - {date: "YYYY-MM-DD", flag: <name>, reason: "<Director's words>"}
