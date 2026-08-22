@@ -47,6 +47,30 @@ import favs_lib as lib  # noqa: E402
 FFMPEG = "ffmpeg"
 FFPROBE = "ffprobe"
 
+
+def load_seam_policy() -> dict:
+    """[SEAM d-210] Kill-switch flags from config/seam_policy.yaml.
+
+    Every seam-fix code path in this script is guarded `if SEAM.get(<flag>):`.
+    A missing file or missing key reads as False = exact pre-change behavior,
+    so deleting the config (or flipping a flag) is a complete kill-switch.
+    """
+    p = Path(__file__).resolve().parent.parent / "config" / "seam_policy.yaml"
+    if not p.exists():
+        return {}
+    try:
+        data = yaml.safe_load(p.read_text(encoding="utf-8")) or {}
+        return data.get("flags", {}) or {}
+    except Exception as e:  # a broken policy file must never kill a render
+        print(f"[WARN] seam_policy.yaml unreadable ({e}) - seam fixes disabled this run")
+        return {}
+
+
+SEAM = load_seam_policy()
+
+# [SEAM d-216] 3 frames at 24fps — the minimum audio fade that kills a splice click.
+AFADE_PAIR_S = 3.0 / 24.0
+
 XFADE_MAP = {
     "xfade": "fade",
     "dip_black": "fadeblack",
@@ -108,20 +132,131 @@ def resolve_clip_paths(project: Path, manifest: dict) -> dict[str, Path]:
 
 
 def normalize_clip(src: Path, dst: Path, width: int, height: int, fps: int, trim_in: float | None,
-                   trim_out: float | None, dry: bool) -> None:
-    """Mezzanine: scale-to-fit + pad (never distort), constant fps, 48k stereo audio, near-lossless."""
-    vf = (
-        f"scale={width}:{height}:force_original_aspect_ratio=decrease,"
-        f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps}"
-    )
+                   trim_out: float | None, dry: bool,
+                   afade_head_s: float = 0.0, afade_tail_s: float = 0.0) -> None:
+    """Mezzanine: scale-to-fit + pad (never distort), constant fps, 48k stereo audio, near-lossless.
+
+    [SEAM d-214] flag color_pipeline: Seedance MP4s are UNTAGGED (color_range/space/
+    transfer/primaries=unknown -> decoder-dependent exposure pops at joins). With the
+    flag on, the scale filter converts explicitly and the encode TAGS bt709/tv so every
+    downstream join reads identical color. Flag off = the exact pre-change command.
+    [SEAM d-216] flag audio_crossfade: afade_head_s/afade_tail_s put a 3-frame audio
+    fade at hard-cut boundary edges so no join is ever a hard splice.
+    """
+    if SEAM.get("color_pipeline"):
+        vf = (
+            f"scale={width}:{height}:force_original_aspect_ratio=decrease:"
+            f"in_range=tv:out_range=tv:in_color_matrix=bt709:out_color_matrix=bt709,"
+            f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps}"
+        )
+    else:
+        vf = (
+            f"scale={width}:{height}:force_original_aspect_ratio=decrease,"
+            f"pad={width}:{height}:(ow-iw)/2:(oh-ih)/2,setsar=1,fps={fps}"
+        )
     cmd = [FFMPEG, "-y", "-i", src]
     if trim_in:
         cmd += ["-ss", f"{trim_in}"]
     if trim_out:
         cmd += ["-to", f"{trim_out}"]
-    cmd += ["-vf", vf, "-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p",
-            "-c:a", "pcm_s16le", "-ar", "48000", "-ac", "2", dst.with_suffix(".mkv")]
+    cmd += ["-vf", vf]
+    if SEAM.get("audio_crossfade") and (afade_head_s > 0 or afade_tail_s > 0):
+        af_parts = []
+        if afade_head_s > 0:
+            af_parts.append(f"afade=t=in:st=0:d={afade_head_s:.4f}")
+        if afade_tail_s > 0:
+            dur = probe_duration(src) if not dry else 10.0
+            eff_end = (trim_out if trim_out else dur) - (trim_in or 0.0)
+            af_parts.append(f"afade=t=out:st={max(eff_end - afade_tail_s, 0):.4f}:d={afade_tail_s:.4f}")
+        cmd += ["-af", ",".join(af_parts)]
+    cmd += ["-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p"]
+    if SEAM.get("color_pipeline"):
+        cmd += ["-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+                "-color_range", "tv"]
+    cmd += ["-c:a", "pcm_s16le", "-ar", "48000", "-ac", "2", dst.with_suffix(".mkv")]
     run(cmd, dry)
+
+
+def boundary_ssim(prev_mkv: Path, next_mkv: Path, work: Path, tag: str, dry: bool) -> float | None:
+    """[SEAM d-215] SSIM between the outgoing clip's LAST frame and the incoming clip's
+    frame 0. >= 0.99 means the chained conditioning frame survived as a duplicate —
+    two identical frames across a cut read as a stutter."""
+    if dry:
+        return None
+    a = work / f"ssim_{tag}_out.png"
+    b = work / f"ssim_{tag}_in.png"
+    r1 = subprocess.run([FFMPEG, "-y", "-v", "error", "-sseof", "-0.5", "-i", str(prev_mkv),
+                         "-vsync", "0", "-update", "1", "-q:v", "1", str(a)],
+                        capture_output=True, text=True)
+    r2 = subprocess.run([FFMPEG, "-y", "-v", "error", "-i", str(next_mkv),
+                         "-frames:v", "1", "-q:v", "1", str(b)],
+                        capture_output=True, text=True)
+    if r1.returncode != 0 or r2.returncode != 0 or not a.exists() or not b.exists():
+        return None
+    proc = subprocess.run([FFMPEG, "-i", str(a), "-i", str(b),
+                           "-filter_complex", "[0][1]ssim", "-f", "null", "-"],
+                          capture_output=True, text=True, encoding="utf-8", errors="replace")
+    import re
+    m = re.search(r"All:([0-9.]+)", proc.stderr or "")
+    return float(m.group(1)) if m else None
+
+
+def drop_first_frame(mkv: Path, fps: int, dry: bool) -> Path:
+    """[SEAM d-215] Drop the incoming clip's duplicated frame 0 (and its 1/fps of audio,
+    keeping A/V sync). Writes <stem>_dedup.mkv beside the input and returns it."""
+    out = mkv.with_name(mkv.stem + "_dedup.mkv")
+    one = 1.0 / fps
+    run([FFMPEG, "-y", "-i", mkv,
+         "-vf", "select='gte(n\\,1)',setpts=PTS-STARTPTS",
+         "-af", f"atrim=start={one:.6f},asetpts=PTS-STARTPTS",
+         "-vsync", "0", "-c:v", "libx264", "-crf", "12", "-preset", "fast",
+         "-pix_fmt", "yuv420p", "-c:a", "pcm_s16le", out], dry)
+    return out
+
+
+def apply_audio_bridges(cut: Path, bridges: list[dict], work: Path, dry: bool) -> Path:
+    """[SEAM d-216] Sound bridges at treated boundaries — picture and sound never cut on
+    the same frame. Sync-safe implementation (no timeline-length change):
+      J-cut (audio_lead_s): the INCOMING clip's first `lead` seconds of audio are
+        UNDERLAID beneath the outgoing tail at -6dB with a fade-in, ending at the cut —
+        the next world's ambience arrives before its picture.
+      L-cut (audio_tail_s): the OUTGOING clip's last `tail` seconds of audio are
+        UNDERLAID beneath the incoming head at -6dB with a fade-out — the old world's
+        room decays across the cut.
+    Full track-replacement J/L cuts would require re-timing every downstream clip's
+    audio; the additive-bridge form delivers the perceptual effect without desync risk.
+    """
+    cur = cut
+    for i, br in enumerate(bridges):
+        t = br["time"]
+        parts, extra_inputs = [], []
+        n = 1
+        mix = ["[0:a]"]
+        if br.get("lead_s") and br.get("incoming"):
+            L = min(float(br["lead_s"]), 2.0)
+            extra_inputs += ["-i", str(br["incoming"])]
+            delay_ms = max(int((t - L) * 1000), 0)
+            parts.append(f"[{n}:a]atrim=0:{L:.3f},afade=t=in:st=0:d={min(L, 0.25):.3f},"
+                         f"volume=-6dB,adelay={delay_ms}|{delay_ms}[jb{i}]")
+            mix.append(f"[jb{i}]")
+            n += 1
+        if br.get("tail_s") and br.get("outgoing"):
+            T = min(float(br["tail_s"]), 2.0)
+            src_dur = probe_duration(Path(br["outgoing"])) if not dry else 10.0
+            extra_inputs += ["-i", str(br["outgoing"])]
+            delay_ms = max(int(t * 1000), 0)
+            parts.append(f"[{n}:a]atrim={max(src_dur - T, 0):.3f},asetpts=PTS-STARTPTS,"
+                         f"afade=t=out:st=0:d={T:.3f},volume=-6dB,adelay={delay_ms}|{delay_ms}[lb{i}]")
+            mix.append(f"[lb{i}]")
+            n += 1
+        if len(mix) == 1:
+            continue
+        parts.append("".join(mix) + f"amix=inputs={len(mix)}:duration=first:normalize=0[aout]")
+        out = work / f"bridge{i:02d}.mkv"
+        run([FFMPEG, "-y", "-i", cur, *extra_inputs, "-filter_complex", ";".join(parts),
+             "-map", "0:v", "-map", "[aout]", "-c:v", "copy", "-c:a", "pcm_s16le", out], dry)
+        cur = out
+    return cur
 
 
 def join_timeline(mezz: list[dict], work: Path, fps: int, dry: bool) -> Path:
@@ -304,7 +439,14 @@ def render_deliverable(mixed: Path, preset: dict, out_path: Path, captions: dict
     cmd += ["-filter_complex" if aspect_vertical else "-vf", vf]
     cmd += ["-r", str(fps), "-c:v", preset["video_codec"], "-crf", str(preset["crf"]),
             "-pix_fmt", preset["pixel_format"], "-c:a", preset["audio_codec"],
-            "-b:a", preset["audio_bitrate"], "-movflags", "+faststart", out_path]
+            "-b:a", preset["audio_bitrate"], "-movflags", "+faststart"]
+    # [SEAM d-214] tag deliverables bt709/tv + one container timebase (mp4/mov only).
+    if SEAM.get("color_pipeline"):
+        cmd += ["-colorspace", "bt709", "-color_primaries", "bt709", "-color_trc", "bt709",
+                "-color_range", "tv"]
+        if out_path.suffix.lower() in (".mp4", ".mov", ".m4v"):
+            cmd += ["-video_track_timescale", "24000"]
+    cmd += [out_path]
     run(cmd, dry)
     if mode == "srt" and srt_path and srt_path.exists():
         shutil.copy2(srt_path, out_path.with_suffix(".srt"))
@@ -368,17 +510,78 @@ def main(argv=None) -> int:
     bw, bh = (1920, 1080)
     fps = base_preset["fps"]
     print(f"[1/4] normalizing {len(timeline)} clips -> {bw}x{bh}@{fps}")
+    hard = ("cut", "match_cut")
     mezz = []
-    for t in timeline:
+    for i, t in enumerate(timeline):
         src = clip_paths[t["clip_ref"]]
         dst = work / f"n_{t['order']:02d}_{t['clip_ref']}"
-        normalize_clip(src, dst, bw, bh, fps, t.get("in_s"), t.get("out_s"), args.dry_run)
+        # [SEAM d-216] 3-frame audio fade pair at every HARD-cut boundary edge — no hard splices.
+        head = AFADE_PAIR_S if (i > 0 and timeline[i - 1]["transition_out"]["type"] in hard) else 0.0
+        tail = AFADE_PAIR_S if (i < len(timeline) - 1 and t["transition_out"]["type"] in hard) else 0.0
+        normalize_clip(src, dst, bw, bh, fps, t.get("in_s"), t.get("out_s"), args.dry_run,
+                       afade_head_s=head, afade_tail_s=tail)
         mp = dst.with_suffix(".mkv")
         mezz.append({"path": mp, "duration": probe_duration(mp) if not args.dry_run else 10.0,
                      "transition_out": t["transition_out"]})
 
+    # [SEAM d-215] duplicate-conditioning-frame detection at chained boundaries.
+    seam_boundaries = []
+    if SEAM.get("dup_frame_trim"):
+        chained_refs = {e.get("clip_id") for e in manifest.get("clips", [])
+                        if e.get("status") == "approved"
+                        and (e.get("start_frame") or e.get("chain_start_offset_s") is not None)}
+        for i in range(len(mezz) - 1):
+            nxt_ref = timeline[i + 1]["clip_ref"]
+            if nxt_ref not in chained_refs:
+                continue
+            s = boundary_ssim(mezz[i]["path"], mezz[i + 1]["path"], work, f"b{i:02d}", args.dry_run)
+            rec = {"boundary": f"{timeline[i]['clip_ref']}->{nxt_ref}", "frame0_ssim": s,
+                   "dropped_dup_frame": False}
+            if s is not None and s >= 0.99:
+                new_path = drop_first_frame(mezz[i + 1]["path"], fps, args.dry_run)
+                mezz[i + 1]["path"] = new_path
+                mezz[i + 1]["duration"] = probe_duration(new_path) if not args.dry_run else 10.0
+                rec["dropped_dup_frame"] = True
+                print(f"  [SEAM d-215] duplicate frame at {rec['boundary']} (SSIM {s:.4f}) - frame 0 dropped")
+            seam_boundaries.append(rec)
+
     print("[2/4] joining timeline with transitions")
     cut = join_timeline(mezz, work, fps, args.dry_run)
+
+    # [SEAM d-216] J/L sound bridges at boundaries carrying an audio_treatment.
+    total_fade_s = 0.0
+    if SEAM.get("audio_crossfade"):
+        bridges, t_cursor = [], 0.0
+        for i, (t, m) in enumerate(zip(timeline, mezz)):
+            t_cursor += m["duration"]
+            tr = t["transition_out"]
+            if tr["type"] in XFADE_MAP and i < len(timeline) - 1:
+                t_cursor -= float(tr.get("duration_s") or DEFAULT_XFADE_S)
+                total_fade_s += float(tr.get("duration_s") or DEFAULT_XFADE_S)
+            at = t.get("audio_treatment")
+            if at and i < len(timeline) - 1 and (at.get("audio_lead_s") or at.get("audio_tail_s")):
+                bridges.append({"time": t_cursor, "lead_s": at.get("audio_lead_s"),
+                                "incoming": mezz[i + 1]["path"], "tail_s": at.get("audio_tail_s"),
+                                "outgoing": m["path"]})
+        if bridges:
+            print(f"  [SEAM d-216] applying {len(bridges)} sound bridge(s)")
+            cut = apply_audio_bridges(cut, bridges, work, args.dry_run)
+    else:
+        total_fade_s = sum(float(t["transition_out"].get("duration_s") or DEFAULT_XFADE_S)
+                           for i, t in enumerate(timeline[:-1])
+                           if t["transition_out"]["type"] in XFADE_MAP)
+
+    # [SEAM d-214] xfade timing law: every video crossfade SHORTENS the timeline by its
+    # duration. Cue-sheet timecodes must be computed AFTER transitions are final.
+    if total_fade_s > 0:
+        final_dur = probe_duration(cut) if not args.dry_run else 0.0
+        print(f"  [SEAM] crossfades shortened the timeline by {total_fade_s:.2f}s - "
+              f"verify audio cue timecodes were authored against the POST-transition timeline")
+        if not args.dry_run and final_dur > 0:
+            for mcue in ed.get("audio", {}).get("music", []):
+                if float(mcue.get("in_s", 0)) > final_dur:
+                    print(f"  [WARN] music cue '{mcue.get('path')}' in_s={mcue.get('in_s')} is BEYOND "
+                          f"the {final_dur:.1f}s timeline - cue sheet predates final transitions?")
 
     print("[3/4] audio mix")
     mixed = mix_audio(cut, ed.get("audio", {}), project, work, args.skip_audio, args.dry_run)
@@ -420,7 +623,10 @@ def main(argv=None) -> int:
         "final_qc": {"verdict": "fix", "watch_through_findings": ["watch-through QC pending"]},
         "completed_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "metadata": {"render_attempts": render_attempts,
-                     "note": "prior attempts preserved in renders/attempts/ (Director order 2026-07-31)"},
+                     "note": "prior attempts preserved in renders/attempts/ (Director order 2026-07-31)",
+                     "seam": {"flags_active": {k: bool(v) for k, v in SEAM.items()},
+                              "boundaries": seam_boundaries,
+                              "xfade_timeline_shortening_s": round(total_fade_s, 3)}},
     }
     rr = project / "artifacts" / "render_report.json"
     if rr.exists():

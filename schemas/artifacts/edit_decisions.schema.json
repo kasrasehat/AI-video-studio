@@ -20,6 +20,15 @@
           "in_s": { "type": "number", "minimum": 0, "description": "Trim-in within the clip (default 0)." },
           "out_s": { "type": "number", "exclusiveMinimum": 0, "description": "Trim-out within the clip (default clip end)." },
           "order": { "type": "integer", "minimum": 1 },
+          "audio_treatment": {
+            "type": "object",
+            "description": "[SEAM d-216] Optional per-boundary audio treatment applied at THIS entry's transition_out (active while seam_policy.audio_crossfade is true).",
+            "properties": {
+              "audio_lead_s": { "type": "number", "minimum": 0, "maximum": 2, "description": "J-cut: the NEXT clip's audio starts this many seconds BEFORE the picture cut (12-24 frames = 0.5-1.0s typical for hinges)." },
+              "audio_tail_s": { "type": "number", "minimum": 0, "maximum": 2, "description": "L-cut: THIS clip's audio continues this many seconds AFTER the picture cut." }
+            },
+            "additionalProperties": false
+          },
           "transition_out": {
             "type": "object",
             "required": ["type"],
