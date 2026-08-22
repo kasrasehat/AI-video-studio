@@ -14,6 +14,7 @@ Split the approved story into scene units — the atomic clips of production —
    - **Continuity fields real:** location_ref/time_of_day progress logically scene-to-scene; `continuity_notes` state carryable facts (props in hand, wardrobe), not vibes.
    - `total_est_seconds` within the brief target ±15% (stage 4 fine-tunes to ±10%).
    - **Generatability scan:** flag any scene needing >3 characters, multiple locations, or complex physics — either restructure now or note it explicitly for the recheck.
+   - **Boundary design ([SEAM d-211]):** every boundary classified (`boundary_class_out`), landing on a natural action articulation (never mid-gesture), incoming `head_action` = a new motion beginning. Continuous boundaries are last-resort and MUST carry `overlap_from`/`overlap_seconds` (3–4s, counted once in `total_est_seconds`); hinges carry the three-beat design (intention tail → transition → 2–3s establishing head); dialogue never straddles a boundary mid-exchange; ~1s non-plot trim handles at each head and tail.
 3. Failures → re-dispatch `scene-splitter` with the specific violations named. Loop until clean (cap 3 attempts, then surface the problem).
 4. **Write + validate** `artifacts/scene_list.json`, checkpoint:
    `write <slug> scene-division --status completed --artifact scene_list=artifacts/scene_list.json`

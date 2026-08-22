@@ -38,7 +38,11 @@
           "est_duration_seconds": { "type": "number", "exclusiveMinimum": 0, "maximum": 30, "description": "<= the active video model's max clip length: 15 for Seedance 2.0 (default), 30 for Seedance 2.5 (d-204, Director-ordered). Stage 3 enforces the per-model ceiling; the schema caps the absolute maximum." },
           "scene_type": { "type": "string", "enum": ["dialogue", "action", "establishing", "montage", "emotional_beat"] },
           "continuity_notes": { "type": "string", "description": "Props/wardrobe/screen-direction facts that must hold." },
-          "transition_out_hint": { "type": "string", "description": "Suggested transition into the next scene." }
+          "transition_out_hint": { "type": "string", "description": "Suggested transition into the next scene." },
+          "boundary_class_out": { "type": "string", "enum": ["continuous", "new_beat", "hinge"], "description": "[SEAM d-211] Class of the boundary INTO the next scene: continuous (action crosses the cut — last resort, requires overlap plan), new_beat (same world, new dramatic unit), hinge (location/time change). Optional for backward compatibility; stage 4 enforces presence when seam_policy.boundary_classes_required is true." },
+          "overlap_from": { "type": "string", "description": "[SEAM d-211] Continuous boundaries only: the predecessor scene_id whose final beat this scene RE-COVERS (overlap generation, d-213)." },
+          "overlap_seconds": { "type": "number", "minimum": 1, "maximum": 6, "description": "[SEAM d-211] Continuous boundaries only: how many seconds of the predecessor's final beat the successor re-generates (3-4 typical). Generated twice, appears once - accounted for in total_est_seconds." },
+          "head_action": { "type": "string", "description": "[SEAM d-211] The motion this scene OPENS with - a new motion beginning (cut on motion onset). Never a settle." }
         },
         "additionalProperties": false
       }
