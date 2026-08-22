@@ -53,6 +53,7 @@
             "additionalProperties": false
           },
           "start_frame": { "type": ["string", "null"], "description": "Path to the selected start frame." },
+          "chain_start_offset_s": { "type": "number", "minimum": 0, "description": "[SEAM d-213] Overlap generation: seconds BEFORE the predecessor's end that the start frame was extracted from (0 = the final frame / not overlap). The visible boundary lives INSIDE this clip at approximately this offset." },
           "end_frame": { "type": ["string", "null"] },
           "params": {
             "type": "object",

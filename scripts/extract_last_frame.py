@@ -32,7 +32,23 @@ def probe(path: Path) -> dict:
     return json.loads(r.stdout)
 
 
-def extract(clip: Path, out: Path) -> bool:
+def extract(clip: Path, out: Path, from_end: float = 0.0) -> bool:
+    # [SEAM d-213] from_end > 0: grab the single frame at (duration - from_end) — the
+    # overlap-generation start frame (sharp, mid-motion) instead of the final frame
+    # (which is the most motion-blurred and most compressed frame of the clip).
+    if from_end > 0:
+        try:
+            dur = float(probe(clip)["format"]["duration"])
+        except Exception as e:
+            print(f"[ERROR] ffprobe failed: {e}", file=sys.stderr)
+            return False
+        t = max(0.0, dur - from_end)
+        r = subprocess.run(
+            ["ffmpeg", "-y", "-v", "error", "-ss", f"{t:.3f}", "-i", str(clip),
+             "-frames:v", "1", "-q:v", "1", str(out)],
+            capture_output=True, text=True,
+        )
+        return r.returncode == 0 and out.exists() and out.stat().st_size > 0
     # Primary: seek from end, write only the last frame.
     r = subprocess.run(
         ["ffmpeg", "-y", "-v", "error", "-sseof", "-0.5", "-i", str(clip),
@@ -59,16 +75,22 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("clip", help="Video file to take the final frame from")
     ap.add_argument("-o", "--output", help="Output PNG path (default: <clip_stem>_lastframe.png beside the clip)")
+    ap.add_argument("--from-end", type=float, default=0.0,
+                    help="[SEAM d-213] Extract the frame this many seconds BEFORE the end instead of the final frame (overlap-generation start frame; e.g. 3.5)")
     args = ap.parse_args()
 
     clip = Path(args.clip)
     if not clip.exists():
         print(f"[ERROR] not found: {clip}", file=sys.stderr)
         return 1
-    out = Path(args.output) if args.output else clip.with_name(f"{clip.stem}_lastframe.png")
+    if args.from_end > 0:
+        default_name = f"{clip.stem}_overlapstart_{args.from_end:g}s.png"
+    else:
+        default_name = f"{clip.stem}_lastframe.png"
+    out = Path(args.output) if args.output else clip.with_name(default_name)
     out.parent.mkdir(parents=True, exist_ok=True)
 
-    if not extract(clip, out):
+    if not extract(clip, out, from_end=args.from_end):
         print(f"[ERROR] could not extract a final frame from {clip}", file=sys.stderr)
         return 1
 
