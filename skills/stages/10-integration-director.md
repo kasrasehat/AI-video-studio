@@ -58,11 +58,19 @@ Author `audio_direction.json` (schema `audio_direction`) — sound is directed l
 
 Before the watch-through QC, walk EVERY clip boundary in the assembled cut and treat it explicitly:
 
-1. **Classify the seam** from scene_direction: `continuous` (same action/location flows across), `new-beat` (same world, new moment), or `hinge` (location/time break). Record the class per boundary in `edit_decisions` notes.
-2. **Motion-match with micro-trims first.** On a continuous seam, trim the outgoing tail (`out_s`) and incoming head (`in_s`) to the frames where the motion states best agree — a limb mid-swing on both sides, or settle-point to settle-point. Frame-step the boundary (extract ±6 frames each side via ffmpeg) and LOOK; never judge a seam from the timeline alone.
-3. **Soft-cut as the fallback, not the default.** If a continuous seam still jumps after trimming (pose or lighting mismatch the trims can't fix), a 2–4 frame micro-crossfade (`xfade`, ≤0.15s) hides the discontinuity without reading as a dissolve. Never on new-beat or hinge seams — those WANT a clean cut; d-161's music dovetails and the score carry them.
-4. **Escalate honestly.** A seam that still reads as a jump after 2 and 3 is a generation problem, not an edit problem — propose the clip-tail regeneration to the Director with the quality case (d-159: cost is never a veto; their call, d-114).
-5. **Watch-through QC scores every seam** (qc-critic brief gains a seam-visibility dimension): each boundary rated invisible / acceptable / visible, with `visible` findings citing timestamp and cause. The film's target is zero `visible` seams.
+**[SEAM d-217] The seam pass is an ENFORCED ESCALATION LADDER — per boundary, in order, stop at the first rung that makes the seam read invisible/acceptable:**
+
+① **Classify** the seam from scene_list `boundary_class_out` (verify against scene_direction and the d-158 hint-target rule — a hint written for a scene that is no longer adjacent is void). Record the class per boundary in `edit_decisions` notes.
+② **Micro-trim to motion match.** Cut on MOTION ONSET (~⅓ into an action; never rest-to-rest). Trim `out_s`/`in_s` to the frames where motion states agree — a limb mid-swing on both sides. Frame-step ±6 frames each side (ffmpeg extraction) and LOOK; never judge a seam from the timeline alone. Distrust the first ~2–12 and last ~12 frames of every generation (AI dead zones) — the edit boundary must never equal the generation boundary; overlap clips (d-213) put the splice inside re-covered footage precisely for this.
+③ **Color-match the incoming clip.** Measure mean Y/U/V of the outgoing last ~12 frames and incoming first ~12 frames; if ΔY>3 or chroma drifts, correct the incoming clip and EASE the correction in over ~12 frames (a stepped correction is its own pop).
+④ **Audio treatment.** J/L-cut via `audio_treatment` (d-216), the continuous music/ambience bed crossing the cut (d-161), and — when the motion match is imperfect — a sourced TRANSIENT (impact/splash/footfall that belongs to the scene) placed ON the cut frame as a masking device. Picture and sound never cut on the same frame.
+⑤ **Micro-crossfade** — 2–4 frames, ≤0.15s, CONTINUOUS seams only (at that length it reads as motion blur; ≥6 frames reads as a time transition). Never on new_beat or hinge seams — those want a clean cut.
+⑥ **Optical-flow bridge** — 3–7 interpolated frames (RIFE/FILM) between the last good outgoing frame and first good incoming frame; local, free, no credits.
+⑦ **Report to the Director:** this seam is a GENERATION problem. Options: overlap regeneration of the successor (d-213, priced, d-114-gated) or the POSTPONED WAN VACE joiner (Director-only unlock). Never bury a rung-7 seam in the render.
+
+**Objective seam gate (flag `seam_metrics_gate` in `config/seam_policy.yaml`):** per boundary record into `clip_qc_report`/`render_report` (assemble.py writes its half into render_report.metadata.seam automatically): tail & head motion energy (rest→rest detector — rest→rest on a `continuous` boundary is an AUTOMATIC finding), frame-0 SSIM (duplicate detector, d-215), ΔY/ΔU/ΔV across the cut, and the qc-critic's invisible/acceptable/visible rating. **The film's target is zero `visible` seams.**
+
+**Hinge checklist (every location/time change):** establishing shot HELD 2–5s after the change before anything tight (audience re-orientation is a measurable cost); J-cut mandatory (incoming ambience 12–24 frames early); dip-to-black/wipe reserved for ACT boundaries only — mark between dramatic units, hide within them.
 
 Root cause note (why this section exists): E01 audiences reported "clear cuts / unnatural transitions." Upstream, d-191 also hardened stage 5 (boundary motion contract: every transition_out names exit motion + absorption) and stage 9 (handoff beat: chained clips settle into describable states; successors continue inherited motion) — this pass is the last line, not the only one.
 

@@ -41,6 +41,8 @@ ffmpeg -y -f concat -safe 0 -i list.txt -c copy joined.mp4
 
 (On Windows/PowerShell write `list.txt` as ASCII/UTF-8 — `>` redirection produces UTF-16, which the concat demuxer cannot read.)
 
+**[SEAM d-217] `-c copy` concat REQUIRES normalized inputs — this is BINDING for every concat in the pipeline, including trailers, spotlights, and dubs.** The bare stream-copy recipe silently breaks on parameter mismatch: a 30fps clip dropped into a 24fps concat plays 25% slow (measured), and untagged color (all Seedance MP4s) pops exposure at joins. Before ANY concat, run every input through the normalizer (the d-214 params): `scale=W:H:force_original_aspect_ratio=decrease:in_range=tv:out_range=tv:in_color_matrix=bt709:out_color_matrix=bt709,pad=W:H:(ow-iw)/2:(oh-ih)/2,setsar=1,fps=24` + encode with `-colorspace bt709 -color_primaries bt709 -color_trc bt709 -color_range tv`. Only identically-normalized files may enter a `-c copy` concat.
+
 ### Resize for platform
 
 ```bash
