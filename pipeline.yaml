@@ -159,6 +159,9 @@ stages:
     produces: [storyboard_set, shot_selection]
     required_artifacts_in: [asset_manifest, scene_direction, lock_descriptors, scene_list]
     checkpoint_required: true
+    optional: true   # d-029: Director may skip straight to video-generation and test clip quality
+                      # from locked sheets + scene_direction text alone, no keyframe conditioning;
+                      # storyboards remain available to run later if clip quality warrants it
     human_approval_default: true   # the Director cherry-picks shots across variants
     parallel: {claude_subagent: storyboard-artist, unit: scene_variant, max_parallel: 2}
     resume_unit: scene_variant
@@ -175,7 +178,11 @@ stages:
     title: Generate scene clips
     skill: skills/stages/09-video-generation-director.md
     produces: [generation_manifest, clip_qc_report]
-    required_artifacts_in: [shot_selection, storyboard_set, lock_descriptors, asset_manifest, scene_list, scene_direction]
+    required_artifacts_in: [lock_descriptors, asset_manifest, scene_list, scene_direction]
+    optional_artifacts_in: [shot_selection, storyboard_set]   # d-029: present + used for keyframe/
+      # start-end-frame conditioning when stage 8 ran; when storyboard was skipped, clip-producer
+      # conditions directly on locked sheets (image_references) + full text prompt (anchors verbatim)
+      # instead of a start_frame/keyframe — see skills/stages/09-video-generation-director.md
     checkpoint_required: true
     human_approval_default: true   # per scene batch
     qa_loop: {agent: clip-evaluator, max_rounds: 3, blocking: false, optional: true}   # d-137: evaluator runs ONLY on Director request; d-114: findings REPORT only — every regen attempt requires the Director to check the clip and explicitly order it; max_rounds bounds Director-ORDERED regens, not autonomous ones

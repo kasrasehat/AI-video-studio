@@ -23,7 +23,7 @@ def test_stages_in_locked_order():
 
 def test_optional_flags():
     optional = {s["name"] for s in STAGES if s.get("optional")}
-    assert optional == {"trend-scan", "character-spotlight", "dub-pass"}, "optional stages: 1b, 12, 13 (d-192/d-196)"
+    assert optional == {"trend-scan", "storyboard", "character-spotlight", "dub-pass"}, "optional stages: 1b, 8, 12, 13 (d-192/d-196/d-029)"
 
 
 def test_orchestration_skill_exists():

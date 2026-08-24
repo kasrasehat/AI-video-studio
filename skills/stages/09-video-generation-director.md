@@ -4,9 +4,11 @@ Turn each scene's picked storyboard into a real ≤15s clip. This stage is the p
 
 **This file is the MAIN AGENT's operating doc (d-137).** Per-clip mechanics live in the producer's chain — `.claude/agents/clip-producer.md` → `prompt-smith.md` → `skills/tech/seedance-prompting` + `skills/tech/higgsfield-mcp` + `skills/meta/consistency-guard.md` — and are deliberately NOT duplicated here. If you are the main agent, do not read those files; if you are the producer, do not read this one.
 
-**Consumes:** `shot_selection`, `storyboard_set`, `lock_descriptors`, `asset_manifest`, `scene_list`, `scene_direction` (all read by the PRODUCER as per-scene slices — never by the main agent).
+**Consumes:** `shot_selection`, `storyboard_set` (OPTIONAL — see below), `lock_descriptors`, `asset_manifest`, `scene_list`, `scene_direction` (all read by the PRODUCER as per-scene slices — never by the main agent).
 **Produces:** `artifacts/generation_manifest.json` (producer-written, main flips final status) + `artifacts/clip_qc_report.json` (evaluator, optional).
 **Gate:** per clip, Director-personal (d-114). **Resume unit:** `clip` (`clip_id` = `S{nn}[A-Z]?_C{nn}`, attempts in `generation_manifest`).
+
+**NO-STORYBOARD PATH (d-029, Director-ordered):** when `checkpoint.py status` shows `storyboard: skipped`, `shot_selection`/`storyboard_set` do not exist — the producer conditions each clip WITHOUT a `start_image`/keyframe. Assemble the reference set instead from: locked character/location sheets (`asset_manifest`, `image_references`, ≤9 images) + the scene's `scene_direction` shot_framing/camera_movement/lighting/blocking/mood text (verbatim into the prompt per the 200–1000 word contract) + `lock_descriptors` identity anchors verbatim. Chaining (d-202) still applies: the predecessor's approved clip's last-3s tail as `video_reference`. This is explicitly a quality experiment — flag drift or degraded consistency at the gate; the Director may order storyboards run retroactively for any scene/range that needs the keyframe anchor.
 
 ## Orchestration (Director order d-137 — the four-part split)
 
