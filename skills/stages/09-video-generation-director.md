@@ -2,13 +2,13 @@
 
 Turn each scene's picked storyboard into a real ≤15s clip. This stage is the pipeline's most expensive per-unit spend by far (10–140 credits/clip) — cost discipline and the regen gate matter more here than anywhere upstream.
 
-**This file is the MAIN AGENT's operating doc (d-137).** Per-clip mechanics live in the producer's chain — `.claude/agents/clip-producer.md` → `prompt-smith.md` → `skills/tech/seedance-prompting` + `skills/tech/higgsfield-mcp` + `skills/meta/consistency-guard.md` — and are deliberately NOT duplicated here. If you are the main agent, do not read those files; if you are the producer, do not read this one.
+**This file is the MAIN AGENT's operating doc (d-137).** Per-clip mechanics live in the producer's chain — `.claude/agents/clip-producer.md` → `prompt-smith.md` → the integrated clean contract in `skills/tech/seedance-prompting` + `higgsfield-mcp` + `consistency-guard`. Conflicting older d-201 prompt grammar is retired. If you are the main agent, do not duplicate producer mechanics; if you are the producer, do not read this file.
 
 **Consumes:** `shot_selection`, `storyboard_set` (OPTIONAL — see below), `lock_descriptors`, `asset_manifest`, `scene_list`, `scene_direction` (all read by the PRODUCER as per-scene slices — never by the main agent).
 **Produces:** `artifacts/generation_manifest.json` (producer-written, main flips final status) + `artifacts/clip_qc_report.json` (evaluator, optional).
 **Gate:** per clip, Director-personal (d-114). **Resume unit:** `clip` (`clip_id` = `S{nn}[A-Z]?_C{nn}`, attempts in `generation_manifest`).
 
-**NO-STORYBOARD PATH (d-029, Director-ordered):** when `checkpoint.py status` shows `storyboard: skipped`, `shot_selection`/`storyboard_set` do not exist — the producer conditions each clip WITHOUT a `start_image`/keyframe. Assemble the reference set instead from: locked character/location sheets (`asset_manifest`, `image_references`, ≤9 images) + the scene's `scene_direction` shot_framing/camera_movement/lighting/blocking/mood text (verbatim into the prompt per the 200–1000 word contract) + `lock_descriptors` identity anchors verbatim. Chaining (d-202) still applies: the predecessor's approved clip's last-3s tail as `video_reference`. This is explicitly a quality experiment — flag drift or degraded consistency at the gate; the Director may order storyboards run retroactively for any scene/range that needs the keyframe anchor.
+**NO-STORYBOARD PATH (d-029, Director-ordered):** when storyboard is skipped, condition from locked character/location sheets + the full clean direction fields (`first_frame`, `location_map`, `format_mode`, `optics`, camera, performance, physics, lighting, positive locks) + verbatim anchors. Chaining still attaches the predecessor tail. No keyframe is invented. Flag drift at the gate; the Director may order storyboards retroactively.
 
 ## Orchestration (Director order d-137 — the four-part split)
 
@@ -22,7 +22,7 @@ Turn each scene's picked storyboard into a real ≤15s clip. This stage is the p
 5. On the verdict: flip the manifest status (`approved`/`qc_failed`, archive → edit → validate), `log-decision` category `gate_approval`, checkpoint `--unit-done` on approval.
 6. Invoke `clip-evaluator` (part 3) and/or `virality-checker` (part 4) ONLY when the Director asks — both optional, both skipped by default.
 
-**Part 2 — `clip-producer`** (one invocation = one attempt): end-to-end generation per its own file — slices the artifacts, builds the d-127 reference map, assembles the prompt (d-124 start-frame naming + bridge; d-112 last-frame chaining vs promoted-frame hinges), preflights against authorized cost, generates, records the manifest through `generated`, extracts chain frame + stills, verifies frame-0, reports. Never regenerates, never gates, never checkpoints.
+**Part 2 — `clip-producer`** (one invocation = one attempt): slices artifacts, builds the actual-load-order `@imageN/@videoN/@audioN` map, writes one clean standalone prompt, preflights authorized cost, generates, records through `generated`, extracts chain material, and reports. Never regenerates, gates, or checkpoints.
 
 **Part 3 — `clip-evaluator`** (OPTIONAL): deep QC per its file — laws arrive in its brief (reads no scene artifacts), native-resolution verification mandatory (the zoom-before-you-accuse law — three false alarms to date, one cost 99cr; the moving clip at full resolution outranks any still), writes `clip_qc_report`, recommendation-only. When skipped, the producer's stills + the Director's viewing ARE the QC.
 

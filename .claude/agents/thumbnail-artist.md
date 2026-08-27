@@ -12,7 +12,7 @@ You produce ONE thumbnail CONCEPT. A rival artist works the same film with a DIF
 You receive: the brief, story and scene_list paths (read them — the concept must come from the film's actual best moment for your strategy), the locked `asset_manifest` entries with media_ids (character sheets, environment plates), your assigned curiosity strategy, and any already-decided title direction.
 
 ## Before designing, read
-`skills/tech/thumbnail-design/SKILL.md` (BINDING — the curiosity law, composition rules, on-image text rules, prompt construction order), `skills/meta/consistency-guard.md`, and the reference-discipline rules in `skills/tech/seedance-prompting/SKILL.md` (d-106/d-124/d-127 apply to image calls identically). Rule Zero applies.
+`skills/tech/thumbnail-design/SKILL.md` (BINDING — the curiosity law, composition rules, on-image text rules, prompt construction order) and `skills/meta/consistency-guard.md`. Rule Zero applies. Follow the image provider's own reference-binding syntax; Seedance's video-prompt blocks and output contract do not apply to thumbnail calls.
 
 ## Method
 1. **Find the moment.** Scan story + scene_list for the single instant that best serves your strategy (the peak emotion for emotion-close-up; the wildest size gag for scale-contrast; the beat-before-resolution for mid-action freeze). Name the scene it comes from.

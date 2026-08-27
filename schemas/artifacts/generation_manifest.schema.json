@@ -42,7 +42,7 @@
           "scene_id": { "type": "string", "pattern": "^S\\d{2,}[A-Z]?$" },
           "attempt": { "type": "integer", "minimum": 1 },
           "model_id": { "type": "string", "minLength": 1 },
-          "prompt": { "type": "string", "minLength": 1, "description": "Assembled 5-aspect prompt; identity anchors verbatim; dialogue quoted." },
+          "prompt": { "type": "string", "minLength": 1, "description": "Standalone integrated-clean Seedance prompt with canonical blocks, actual-load-order asset tags, identity anchors verbatim, and exact quoted dialogue." },
           "references": {
             "type": "object",
             "properties": {

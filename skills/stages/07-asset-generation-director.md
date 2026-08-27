@@ -18,8 +18,8 @@ Read `skills/tech/character-sheets` (the 3-view chain), `skills/tech/higgsfield-
 
 ## Generation rules (binding)
 
-1. **Anchors verbatim** in every image prompt + default outfit + `metadata.render_style`; location prompts carry the location's anchors + lighting_baseline; **maximum detail density** — everything the descriptor knows goes into the sheet prompt.
-2. **Variants are completely distinct DESIGN interpretations** (Director rule 2026-07-17): different silhouette language, proportions, art-direction school — a real creative choice, never texture-level differences or rerolls. State each design school in the prompt and in `generator.params.interpretation`.
+1. **Anchors verbatim** in every image prompt + default outfit + `metadata.render_style`; location prompts carry anchors + lighting baseline. Reference-generation prompts may be dense; downstream Seedance prompts stay minimal around the resulting locked image per the clean contract.
+2. **Variants are genuinely distinct interpretations inside the approved brief style.** Depending on that style, the choice may be casting presence, silhouette/proportion language, production design, materials, or art-direction approach. Never change the rendering medium or inject a house style the brief did not request. Record the distinction in `generator.params.interpretation`.
 3. **Cost discipline:** `get_cost: true` preflight per batch → announce credits in chat BEFORE generating → record actuals per variant (`cost_usd` in credits noted in metadata) and `--cost` on the checkpoint.
 4. **Record provenance** per variant: gateway, model, full prompt, seed/job_id, params. Download/collect files under `assets/{characters,environments,voices}/` with the naming convention `<ID>_<variant>_<view>.<ext>`; record the Higgsfield `media_id`/job_id in `files[].media_id` (references for stages 8–9 need it).
 5. **Self-QC before showing the Director** (per character-sheets skill): every anchor visibly true in every view; views are the SAME person; regenerate a drifted side view from the front — never the reverse. A variant that fails anchors is regenerated, not shown.

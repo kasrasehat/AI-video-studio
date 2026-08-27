@@ -27,7 +27,7 @@ A scene×variant is ONE generated image: a numbered GRID of sequential frames (u
 
 ## Frame prompt template
 
-`<shot size + framing from scene_direction>. <Character(s) via identity_anchors VERBATIM + scene outfit, positions in frame, facing directions>. <Location via its anchors>. <Lighting per direction + time_of_day>. <Palette>. Static composition, no motion blur. Style: <global look>.`
+`<shot size + approved FOV + framing from scene_direction>. <Character(s) via identity_anchors VERBATIM + scene outfit/state, positions, facing and gaze>. <Foreground/midground/background from location_map + locked location anchors>. <Sourced lighting + time_of_day + optional white balance>. <Palette as material + light + role>. Static composition at one visible instant. Style: <approved brief/global look verbatim>.`
 
 - Conditioning references (record in `refs_used`): locked character sheet views (matched to facing direction) + locked environment plate. **Never generate a character or location from text alone.**
 - Element→reference binding in the prompt: `Mira's appearance follows reference image 1 (character sheet). The lane follows reference image 3 (environment plate).`
@@ -36,7 +36,7 @@ A scene×variant is ONE generated image: a numbered GRID of sequential frames (u
 ## Camera economy & continuity across frames
 
 - **State-transition rule (Director rule 2026-07-19):** when a prop or wardrobe item is introduced, removed, or changed MID-SCENE (per `outfit_by_scene` / the object's scenes list), panel 1 must show the BEFORE state — identical to the previous scene's end state — and the change itself must happen in a visible panel. An item may never pop into existence between scenes or between panels. Before boarding any scene, diff its entry state against scene N−1's exit state (wardrobe, props, wet/dry, goggles) and board every difference as an on-screen beat.
-- Reuse camera setups: within a scene, frames should come from as few camera positions as possible; a new angle needs a reason (the direction's move, a reveal).
+- Follow `format_mode`: reuse the same executable path for a continuous shot; introduce only the specified cuts for sequential/timed modes; use b-roll panels as coverage targets rather than an invented cut list. A new angle needs a reason.
 - Respect the 180° axis established by scene_direction blocking; left/right positions must NOT flip between frames — a flipped axis in the storyboard becomes a flipped axis in the film.
 - **Chain-by-reference (Director rule 2026-07-18):** at CHAINED boundaries (same location or continuous action per `transition_out_hint`), scene N's page generation passes scene N−1's PICKED page as an extra `image` reference with the prompt clause "PANEL 1 CONTINUES from the final panel of the reference storyboard page: same axis, same character state, compatible composition" — this requires generating scenes in order, each after the previous pick. At promotion, a chained scene's start frame is re-rendered conditioned on N−1's picked final panel + locked refs, so the cut lands seamlessly. At HARD HINGES (location changes) frame-chaining is impossible — carry state (wet/dry, goggles, bracelet) and motion direction (exit right → enter left) in the prompt instead.
 

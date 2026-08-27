@@ -96,6 +96,7 @@ This is how 25–80 independent stochastic clips become one film. Full details: 
 3. **Reference threading.** Every clip generation passes: locked character sheet views + locked environment plate (≤9 images total), the storyboard start/end frames, and — for every speaking character — their locked voice sample as `reference_audio`.
 4. **Voice lock = Seedance-native.** Dialogue is delivered as quoted lines inside the video prompt; the character's locked voice reference sample conditions the native voice. There is NO external TTS/lipsync path. Dialogue scenes may only run on models whose `config/model_capabilities.yaml` entry satisfies `policy.dialogue_scene_requires`.
 5. **Continuity fields are law.** `scene_list.continuity_notes`, `time_of_day`, and `outfit_by_scene` override anything a prompt would otherwise improvise.
+6. **The integrated clean Seedance contract is law.** Every Seedance prompt reads `skills/tech/seedance-prompting/SKILL.md` and follows its block order, FOV/tagging, format-mode, distributed-style, visible-performance/physics, and positive-lock rules. Where older d-201 prompt instructions conflict, the clean contract wins.
 
 ## Cost announcements
 

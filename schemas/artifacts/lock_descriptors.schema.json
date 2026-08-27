@@ -68,7 +68,7 @@
             },
             "additionalProperties": false
           },
-          "forbidden_drift": { "type": "array", "items": { "type": "string" }, "description": "Known failure modes to negative-prompt / QC against, e.g. 'hair turning blond'." }
+          "forbidden_drift": { "type": "array", "items": { "type": "string" }, "description": "Known failure modes for QC and conversion into desired visible states in Seedance POSITIVE LOCKS; never submitted as a raw negative list." }
         },
         "additionalProperties": false
       }

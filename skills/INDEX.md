@@ -37,7 +37,7 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md â†’ 
 | Skill | Purpose | Status |
 |---|---|---|
 | `higgsfield-mcp/SKILL.md` | The generation gateway: tools, media-id flow, cost preflight, verified model quick-ref | **ready** (audited 2026-07-11) |
-| `seedance-prompting/SKILL.md` | Seedance 2.0 prompt contract, identity+voice lock, anti-drift ladder | **ready** |
+| `seedance-prompting/SKILL.md` | Integrated clean Seedance prompt contract — standalone block output, asset tagging, FOV optics, format modes, visible direction, positive locks, identity/voice continuity | **ready** |
 | `character-sheets/SKILL.md` | 3-view chained character sheets, variants, self-QC | **ready** |
 | `storyboard-design/SKILL.md` | Static-snapshot frames, variation taxonomy, 3-variant discipline | **ready** |
 | `image-editor/SKILL.md` | Interactive image editing: elicit-first protocol, nano_banana_pro default, text-safety boundary | **ready** |
@@ -61,4 +61,3 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md â†’ 
 | `virality-checker.md` | 4 â€” OPTIONAL, informational, out-of-pipeline | â€” |
 | `ai-video-gen/SKILL.md` | Cross-model prompting deltas (Kling/Veo/Wan/â€¦) | **ready** |
 | `flux-bfl/SKILL.md` | FLUX prompting + BFL API (optional) | **ready** |
-

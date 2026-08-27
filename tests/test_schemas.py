@@ -83,3 +83,25 @@ def test_reference_images_capped_at_nine():
     bad = copy.deepcopy(instance)
     bad["clips"][0]["references"]["images"] = [f"img{i}.png" for i in range(10)]
     assert lib.validation_errors(bad, "generation_manifest"), ">9 reference images must fail"
+
+
+def test_scene_direction_requires_clean_seedance_direction_fields():
+    path = Path(__file__).parent / "fixtures" / "sample-project" / "artifacts" / "scene_direction.json"
+    instance = json.loads(path.read_text(encoding="utf-8"))
+
+    for field in (
+        "format_mode",
+        "first_frame",
+        "location_map",
+        "optics",
+        "performance",
+        "physics",
+        "positive_locks",
+    ):
+        bad = copy.deepcopy(instance)
+        bad["scenes"][0].pop(field)
+        assert lib.validation_errors(bad, "scene_direction"), f"missing {field} must fail"
+
+    bad_mode = copy.deepcopy(instance)
+    bad_mode["scenes"][0]["format_mode"] = "automatic_cinematic"
+    assert lib.validation_errors(bad_mode, "scene_direction"), "unknown format mode must fail"

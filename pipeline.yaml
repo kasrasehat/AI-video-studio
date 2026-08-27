@@ -64,7 +64,7 @@ stages:
       - Beats sum to the brief's duration target (±10%)
       - Tone and audience fit the brief
       - Causal chain audit passed — every world/location entry+exit has an ON-SCREEN mechanism beat; naive retell test clean (d-191)
-      - Conversation density at professional-animation level — multi-turn exchanges wherever characters share a beat; silence only as stated choice (d-191)
+      - Conversation density at professional screen-dialogue level — multi-turn exchanges wherever characters share a beat; silence only as a stated dramatic choice (d-191)
     success_criteria:
       - Schema-valid story with beats and per-beat duration estimates
       - estimated_runtime_seconds within duration target ±10%
@@ -112,6 +112,7 @@ stages:
     review_focus:
       - Camera movement executable by a 15s clip model (no impossible multi-move choreography)
       - Palette stated as hexes + name; lighting and mood concrete, not vibes
+      - Clean Seedance direction complete — occupied first frame, layered location map, least-rigid format mode, approved FOV degrees, observable performance/physics, sourced light, positive locks
       - Blocking never contradicts scene_list continuity_notes or the 180° line
       - Boundary motion contract — every transition_out names the exit motion state AND how the next scene's opening absorbs it (d-191, generalizes d-158 to all boundaries)
     success_criteria:
@@ -191,8 +192,9 @@ stages:
     resume_unit: clip
     review_focus:
       - Model chosen via config/model_capabilities.yaml; DIALOGUE SCENES ONLY on models satisfying policy.dialogue_scene_requires
-      - Every prompt embeds identity anchors verbatim, quoted dialogue lines, 200–1000 words (Seedance, d-138)
-      - References threaded — locked sheets/plates (≤9 images), start frame @-named per d-124/d-127, end frames where pinned, locked voice reference_audio for every speaker
+      - Every prompt follows the integrated clean block order, embeds identity anchors verbatim with minimal surrounding appearance text, and preserves exact quoted dialogue inside the model word window
+      - References threaded and tagged by actual load order (`@imageN/@videoN/@audioN`) — locked sheets/plates (≤9 images), start frame, chain tail, and locked voice reference for every speaker
+      - Format mode is deliberate; timed cuts appear only when timing matters; optics use approved FOV degrees, style is distributed, and constraints are positive target states
       - Every generated clip presented at the per-clip Director gate with the producer report; evaluator (when requested) checked identity/continuity/lipsync with native-res verification (d-114)
       - Handoff beat present — each chained clip's final second settles into a describable state, and the successor's 0-2s bridge continues the inherited motion (d-191)
     success_criteria:

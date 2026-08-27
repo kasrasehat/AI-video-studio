@@ -14,7 +14,7 @@ Read `skills/tech/storyboard-design` (frame rules — static snapshots, template
 
 A scene×variant is ONE generated image: a storyboard PAGE containing the scene's sequential frames as a uniform grid, read left-to-right, top-to-bottom. **Default model: `gpt_image_2`** (layout control is the whole job here), quality high, 2k, 16:9.
 
-0b. **Panels board the SHOT PLAN (d-201):** scene_direction now designs scenes as multi-shot cut sequences by default. Every CUT in the shot plan begins a new panel, and the double contrast must be visible across those panels (shot size and camera character both change); beats within one shot may add further panels. Panel 1 remains the start-frame candidate of the FIRST shot (the chaining anchor).
+0b. **Panels board the approved FORMAT MODE:** multishot is not assumed. For `single_continuous`, panels show stations along one executable camera path; for `sequential_cuts` or `timed_multishot`, each specified cut begins a new panel and carries its approved FOV; for `freestyle_b_roll`, panels define coverage targets without inventing exact cuts. Panel 1 matches `first_frame` and remains the chaining anchor.
 1. Classify each scene by **BEAT COUNT** (distinct storyboard-able instants in the scene_direction blocking — shots count as at least one beat each; duration alone never decides):
    - **≤ 4 beats** (one held idea) → **2×2 grid = 4 sequential frames**
    - **5–9 beats** (entrances, reveals, multi-stage blocking) → **3×3 = 9 frames**
@@ -38,7 +38,7 @@ Same direction, same locked refs, same axis, same palette — different visual t
 
 1. **Model default: `nano_banana_pro`** (multi-image refs, strong character adherence, 2k, ~2 cr/frame). `gpt_image_2` is the premium fallback for frames that keep failing anchors.
 2. **Never from text alone.** Every frame passes as `medias` (role `image`): the locked sheet of every present character + the scene's locked location sheet (media_ids from `asset_manifest`). Record their element_ids in `refs_used`.
-3. **Prompt per the template** in storyboard-design: shot framing from scene_direction (verbatim where possible) + characters via identity_anchors VERBATIM + outfit/state for THIS scene (goggle law, wet/dry law, bracelet wrist) + location anchors + relative-position map facts for on-screen geography + lighting per direction + palette hexes + "Static composition, no motion blur. Stylized 3D Pixar-like family film." + explicit element→reference binding ("Gramps follows reference image 1; the cavern follows reference image 3").
+3. **Prompt per the template** in storyboard-design: framing + approved FOV from scene_direction; characters via identity_anchors VERBATIM plus current outfit/state; layered location map and locked geography; sourced lighting/white balance; palette as material + light + role; the brief's approved style verbatim; and explicit element→reference binding. Never inject an unapproved house style or visual medium.
 4. **Freeze it.** No "about to", no mid-air unless the direction freezes mid-air as the composition. State every element's frame position and facing.
 5. **16:9, no borders, no letterboxing, no readable text in frame** (poisons i2v conditioning).
 6. Aspect/cost preflight per batch (`get_cost:true`) → announce → generate. Record model, full prompt, job_id as `media_id`, cost per frame. Files: `assets/storyboards/<frame_id>.png` (`S07_B_F01.png`).

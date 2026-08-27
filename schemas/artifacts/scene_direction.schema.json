@@ -22,7 +22,7 @@
           "additionalProperties": false
         },
         "grade": { "type": "string", "minLength": 1, "description": "Overall grading intent, e.g. 'warm highlights, lifted blacks, soft film grain'." },
-        "lensing": { "type": "string", "minLength": 1, "description": "Lens language, e.g. '35mm feel, shallow DoF on dialogue'." },
+        "lensing": { "type": "string", "minLength": 1, "description": "Optical language using Seedance's approved FOV degree anchors, depth behavior, and motion character; never equipment/lens model names." },
         "movement_grammar": { "type": "string", "minLength": 1, "description": "House rules for camera motion, e.g. 'slow push-ins on emotion, static on tension'." }
       },
       "additionalProperties": false
@@ -32,17 +32,39 @@
       "minItems": 1,
       "items": {
         "type": "object",
-        "required": ["scene_id", "shot_framing", "camera_movement", "lighting", "blocking", "mood"],
+        "required": [
+          "scene_id",
+          "shot_framing",
+          "camera_movement",
+          "format_mode",
+          "first_frame",
+          "location_map",
+          "optics",
+          "performance",
+          "physics",
+          "positive_locks",
+          "lighting",
+          "blocking",
+          "mood"
+        ],
         "properties": {
           "scene_id": { "type": "string", "pattern": "^S\\d{2,}[A-Z]?$" },
           "shot_framing": { "type": "string", "minLength": 1, "description": "The scene's OPENING shot: size, angle, subject placement — e.g. 'medium close-up, eye level, subject frame-left'." },
-          "camera_movement": { "type": "string", "minLength": 1, "description": "The scene's SHOT PLAN (d-201, multi-shot default): archetype + shots in order, each shot ONE clean camera idea (mode + move + end state), cuts obeying double contrast (size AND mode change). A single continuous move is the deliberate exception, stated with its reason." },
+          "camera_movement": { "type": "string", "minLength": 1, "description": "Executable operator plan: height, distance, axis, one motivated movement idea per shot, focus behavior, and end state. Cuts/timing follow format_mode; multishot is not assumed." },
+          "format_mode": { "type": "string", "enum": ["single_continuous", "sequential_cuts", "timed_multishot", "freestyle_b_roll"], "description": "Least rigid Seedance control mode that still lands the scene's required beats." },
+          "first_frame": { "type": "string", "minLength": 1, "description": "Visible initial composition: positions, orientation, gaze, hands/props, and motion from frame one." },
+          "location_map": { "type": "string", "minLength": 1, "description": "Foreground/midground/background, camera position, light origin, and movement paths." },
+          "optics": { "type": "string", "minLength": 1, "description": "Shot size and approved FOV degree per segment plus optical/motion-blur character; never millimeters." },
+          "performance": { "type": "string", "minLength": 1, "description": "Observable acting: muscle behavior, eyelines, pauses, breath, listener reactions, and visible micro-realism." },
+          "physics": { "type": "string", "minLength": 1, "description": "Mass, inertia, contact, fabric/fluid/particle behavior, and environmental interaction required in the shot." },
+          "white_balance_kelvin": { "type": "integer", "minimum": 1000, "maximum": 15000, "description": "Fixed scene white balance when explicitly controlled." },
+          "positive_locks": { "type": "array", "items": { "type": "string", "minLength": 1 }, "description": "Short positive fixers for identity, props, geography, lighting, wardrobe, specified cuts, and continuity." },
           "lighting": { "type": "string", "minLength": 1 },
           "blocking": { "type": "string", "minLength": 1, "description": "Who is where, facing which way; respect the 180-degree line." },
           "mood": { "type": "string", "minLength": 1 },
           "sound_direction": { "type": "string", "description": "Diegetic sound / ambience intent for this scene." },
           "palette_override": { "type": "string", "description": "Only if this scene deviates from the global palette — say why." },
-          "negative_notes": { "type": "string", "description": "What must NOT happen visually in this scene." },
+          "negative_notes": { "type": "string", "description": "Legacy upstream avoidance notes. Prompt assembly must translate them into desired visible states in positive_locks; never submit this text raw." },
           "transition_out": { "type": "string", "enum": ["cut", "xfade", "dip_black", "wipe", "match_cut"], "description": "Directed transition into the next scene — consumed by stage 10." }
         },
         "additionalProperties": false

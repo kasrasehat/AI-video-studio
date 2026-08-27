@@ -46,7 +46,7 @@ The S14 contradiction (sneeze source hidden without justification AND source + t
 ## Stage hunting grounds (moved here from the agent role file, d-194)
 
 - **story (as refiner backup):** logic holes, length math, genre-emotion mismatches; the comprehension and conversation-density audits above (law text canonical in the stage-2 skill, "The room's laws").
-- **directing:** compound camera moves; framing without positions; 180° violations across same-location scenes; palette drift without stated reason; transitions that fight the scene rhythm or lack the boundary motion contract (stage-5 skill §4c); PLUS the trajectory audit above — mandatory.
+- **directing:** missing/empty first frame; unlayered location geography; arbitrary FOV or millimeter lens language; format mode more rigid than the beat needs; timecodes without a clock-critical beat; unspecified model-added cuts; compound camera paths; mood labels without muscle-level performance; missing mass/contact/environment physics; unsourced or mixed lighting; raw negative constraints instead of positive locks; framing without positions; 180° violations; palette drift; broken boundary motion contract; PLUS the mandatory trajectory audit.
 - **lock-descriptors:** anchors that are not verbatim-promptable ("kind eyes" — unpromptable; "large dark-brown eyes" — promptable); static/dynamic misfiling (clothing in static_features is a classic); characters_present in any scene that resolve to no char_id; speakers without voice_spec; missing forbidden_drift for known model failure modes (long hair, palette flips).
 
 ## Running the loop (executive producer)

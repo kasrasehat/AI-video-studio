@@ -7,30 +7,46 @@
       "hexes": ["#D9432C", "#F2A33C", "#2B1E3F", "#F7E7C6"]
     },
     "grade": "warm highlights, deep indigo shadows, soft painterly grain",
-    "lensing": "35mm feel, gentle depth of field on faces, wide for lanes",
-    "movement_grammar": "slow push-ins on emotion; static frames for wonder; never handheld"
+    "lensing": "47-degree neutral perspective for shared action; 29-degree portrait isolation for emotional turns; gentle depth falloff",
+    "movement_grammar": "slow push-ins on emotion; static frames for wonder; stabilized operator behavior throughout"
   },
   "scenes": [
     {
       "scene_id": "S01",
       "shot_framing": "medium two-shot at child eye level, stall glow frame-right",
+      "format_mode": "single_continuous",
+      "first_frame": "Mira center-left holds Kenji's hand while both already move frame-right past the stall; Mira watches the stall and Kenji turns toward the drums",
+      "location_map": "foreground hanging paper charms; Mira and Kenji in the midground lane; food stall background-right; crowd flows deep frame-right; warm key originates at the stall",
+      "optics": "MS two-shot, 47-degree FOV held through the shot",
       "camera_movement": "slow push-in 30cm toward Mira as Kenji slips away",
+      "performance": "Kenji's eyes widen toward the drums and his grip loosens; Mira's gaze snaps from the stall to his hand, jaw tightening",
+      "physics": "their joined hands stretch before separating; sleeves and lantern tassels trail with the crowd movement; feet maintain contact with the wet stones",
+      "white_balance_kelvin": 4000,
       "lighting": "warm lantern key from the stall, cool night rim from frame-left",
       "blocking": "Mira center-left facing the stall; Kenji at her right hand, exits frame-right into crowd; 180 line along the stall front",
       "mood": "festive warmth curdling into alarm",
       "sound_direction": "festival drums and crowd murmur; drums swell as Kenji runs",
       "negative_notes": "no modern signage, no cars, crowd never menacing",
+      "positive_locks": ["all signage remains traditional painted festival boards", "the lane contains pedestrians and wooden stalls", "the background crowd remains festive and calm"],
       "transition_out": "cut"
     },
     {
       "scene_id": "S02",
       "shot_framing": "wide single, Mira small in the empty lane, lantern glow center",
+      "format_mode": "single_continuous",
+      "first_frame": "Mira stands small at frame-left, breathing hard and facing the fox lantern already floating at center; paper edges tremble in its warm light",
+      "location_map": "soft out-of-focus stall curtain foreground-right; Mira and lantern midground; empty lane recedes into indigo background; lantern is the key source",
+      "optics": "WS, 63-degree observational FOV held through the transformation",
       "camera_movement": "static frame; the transformation provides the motion",
+      "performance": "Mira's shoulders stop heaving, eyes lift to the lantern, lips part, and her hands slowly unclench",
+      "physics": "paper folds open along visible creases; warm air lifts the loose corners; the floating form has gentle inertia and casts a stable contact glow on the stones",
+      "white_balance_kelvin": 4000,
       "lighting": "single warm source from the lantern, indigo ambience, paper-glow bloom on unfold",
       "blocking": "Mira center facing camera-left toward the floating lantern; Hoshi materializes at her eye level",
       "mood": "held-breath wonder",
       "sound_direction": "crowd fades to silence; paper rustle; single koto note on the bow",
       "negative_notes": "transformation must feel gentle, not startling",
+      "positive_locks": ["the transformation unfolds slowly with continuous paper motion", "Mira remains planted and attentive", "the lantern glow stays warm amber"],
       "transition_out": "match_cut"
     }
   ],
