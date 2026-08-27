@@ -41,7 +41,7 @@ Higgsfield Cloud is our generation gateway. Account: Ultimate plan, credits-base
 ## Workflow rules (binding)
 
 1. **Route by `config/model_capabilities.yaml`.** Dialogue scenes ONLY on models satisfying `policy.dialogue_scene_requires` (today: `seedance_2_0`, `seedance_2_0_mini`; `wan2_7` pending M6 lipsync verification). Model choice is a Director decision — log it.
-2. **Prompt per the model's skill** (`skill:` field — Seedance → `skills/tech/seedance-prompting`).
+2. **Prompt per the model's routed skill.** Use `skill_by_visual_medium` when present: Seedance live_action/hybrid → `skills/tech/seedance-clean`; animation → `skills/tech/seedance-prompting`. Fall back to `skill:` only for legacy models/briefs and never guess an ambiguous medium.
 3. **Preflight cost** (`get_cost: true`) and announce before every batch; record actual credits in the artifact's cost fields. **CAVEAT (confirmed 2026-07-24): `get_cost` does NOT validate param combinations** — it happily priced `mode: fast` + `1080p` (35cr) that the real generation endpoint then rejected with a 422 ("mode 'fast' supports only 480p/720p"). A preflight price is only proof of cost, not of validity; the capability limits in `config/model_capabilities.yaml` (e.g. "1080p/4k require mode std", mini caps at 720p) remain authoritative, and an unsupported resolution may also be SILENTLY clamped rather than rejected (mini at "1080p" quietly became 720p in the adjustments echo — check `adjustments` on every response).
 4. **Async jobs:** poll via `job_display`; record job_id + params + prompt in the producing artifact. A call that isn't recorded didn't happen.
 5. **Dry-run projects never touch this MCP.**

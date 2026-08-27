@@ -47,7 +47,7 @@ The qa-reviewer runs the retell test independently (comprehension audit); it rea
 
 ## Conversation density law (d-191, audience feedback — BINDING)
 
-The Director's standing order: dialogue like professional animation. Films in this genre are carried by talk — characterful, overlapping, reactive. Concretely:
+The Director's standing order: dialogue at a professional screen standard, independent of visual medium. Dialogue-capable films are carried by characterful, reactive exchanges; live action may use more restraint and subtext, while animation may use greater compression or stylization, but neither defaults to isolated one-line statements. Concretely:
 
 - **Default texture = exchange, not statement.** Wherever two characters share a beat, write a real back-and-forth (≥2 turns EACH, short lines) that plays through the action. One character saying one line while things happen around them is a storyboard note, not a scene.
 - **Reactions are lines too.** The listener answers — with words, an interjection, a comeback. Alternating monologues are not conversation.

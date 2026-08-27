@@ -29,7 +29,11 @@ video_models:
     params: {mode: [std, fast], bitrate_mode: [standard, high], genre: [auto, action, horror, comedy, noir, drama, epic]}
     aspects: ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"]
     prompt_words: [200, 1000]
-    skill: seedance-prompting
+    skill: seedance-prompting             # backward-compatible default for old/animation briefs
+    skill_by_visual_medium:
+      live_action: seedance-clean
+      hybrid: seedance-clean
+      animation: seedance-prompting
     use_for: [dialogue, action, establishing]
 
   seedance_2_5:                      # PARALLEL FLOW (Director order d-204): 30s clips; picked ONLY on explicit Director command
@@ -46,7 +50,11 @@ video_models:
     params: {mode: [std, fast], bitrate_mode: [standard, high], genre: [auto, action, horror, comedy, noir, drama, epic]}
     aspects: ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"]
     prompt_words: [200, 1000]
-    skill: seedance-prompting        # the ENTIRE 2.0 rulebook applies verbatim (d-204)
+    skill: seedance-prompting        # backward-compatible default
+    skill_by_visual_medium:
+      live_action: seedance-clean
+      hybrid: seedance-clean
+      animation: seedance-prompting
     verify: true                     # exact catalog id + params + per-second rate UNCONFIRMED — models_explore + get_cost before the first paid call, Director-gated (d-114)
     use_for: [dialogue, action, establishing, long_takes]
     note: "d-204 A/B protocol: same story stretch as N short 2.0 clips vs one long 2.5 clip (e.g. 3x10s vs 1x30s), both Director-gated, judged side by side; the Director then picks one model or mixes both per scene."
@@ -64,6 +72,10 @@ video_models:
     aspects: ["auto", "16:9", "9:16", "4:3", "3:4", "1:1", "21:9"]
     prompt_words: [200, 1000]
     skill: seedance-prompting
+    skill_by_visual_medium:
+      live_action: seedance-clean
+      hybrid: seedance-clean
+      animation: seedance-prompting
     use_for: [drafts, qc_retries, storyboard_previews]
 
   wan2_7:                            # possible SECOND dialogue model — lipsync quality unverified

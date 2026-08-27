@@ -11,7 +11,8 @@ Turn the user's story idea into a schema-valid `brief` through a real conversati
    - **Audience** — who is this for? (age band, context, what they should feel/take away)
    - **Duration** — target length (system range: 2–7 min; record as min–max seconds)
    - **Language** of dialogue and captions
-   - **Style** — visual look (offer 2–3 concrete options inferred from the idea if they're unsure, e.g. "photoreal cinematic / painterly Ghibli-esque / stylized 3D")
+   - **Visual medium** — explicitly choose `live_action`, `animation`, or `hybrid`. This is not inferred from genre: a fantasy story may be live action, animation, or both. New briefs always write `visual_medium`; the field is optional in the schema only so old productions still resume.
+   - **Style within that medium** — the concrete visual treatment. For live action, resolve realism and photographic intent (for example grounded photoreal, heightened noir, documentary-naturalistic); for animation, resolve the rendering language (for example painterly 2D or stylized 3D). Do not collapse medium and style into one vague answer.
    - **Tone + genre**
    - **Platform(s) + primary aspect ratio** (16:9 / 9:16 / 1:1)
    - **Content boundaries** — what must NOT appear (violence level, scares, brands…)
@@ -24,12 +25,12 @@ Turn the user's story idea into a schema-valid `brief` through a real conversati
 ## Drafting the brief
 
 - Write a `logline` (one dramatic sentence) and read it back — it's the fastest misunderstanding detector.
-- Fill every schema field; `duration_target_seconds` as an honest min–max (not a point); platform list + `aspect_ratio_primary` consistent with each other.
+- Fill every schema field and always include `visual_medium`; `duration_target_seconds` as an honest min–max (not a point); platform list + `aspect_ratio_primary` consistent with each other.
 - Derive nothing about characters/plot here — that's stage 2's job. The brief is about INTENT.
 
 ## Gate presentation
 
-Show: logline, the user's idea (verbatim), audience, duration, language, style/tone/genre, platform+aspect, boundaries, music direction, references, open questions, and which fields were INFERRED vs STATED. Then: approve / correct anything / abort.
+Show: logline, the user's idea (verbatim), audience, duration, language, visual medium, style/tone/genre, platform+aspect, boundaries, music direction, references, open questions, and which fields were INFERRED vs STATED. Then: approve / correct anything / abort.
 
 After approval: `checkpoint.py write <slug> intake --status completed --approved --artifact brief=artifacts/brief.json` and log the approval decision.
 
@@ -38,4 +39,5 @@ After approval: `checkpoint.py write <slug> intake --status completed --approved
 - Interrogation fatigue: >2 questions in one turn kills the creative mood.
 - Paraphrasing the idea into something tidier than the user meant.
 - Accepting "make it good" as a style answer — offer concrete options instead.
+- Treating "cinematic" as a medium or complete style answer — record live-action/animation/hybrid separately, then resolve the visible treatment.
 - Forgetting that audience drives EVERYTHING downstream (vocabulary, pacing, palette, scare level) — it deserves a follow-up question, not a checkbox.

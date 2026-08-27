@@ -25,7 +25,7 @@ Dialogue policy unchanged: talking segments need audio references (voice lock) �
 
 ## Call shape (spotlight talking segment — the d-181 method)
 
-`create_video_task`: model seedance2, mode quality, resolution per Director ruling, duration = audio length + ~1s (int, ≥4), aspect_ratio 16:9, `image_urls` = [locked character sheet URL, locked location plate URL], `audio_urls` = [locked voice sample URL], prompt per `seedance-prompting` skill with the @-map adapted to SJinn naming: **@Image1/@Image2/@Audio1 in URL order** (d-106 discipline unchanged — every attached URL cited in the prompt with a content description). All other film laws apply verbatim: anchors word-for-word, positive phrasing (d-099), state restatement, one static take for talk-show segments.
+`create_video_task`: model seedance2, mode quality, resolution per Director ruling, duration = audio length + ~1s (int, ≥4), aspect_ratio 16:9, `image_urls` = [locked character sheet URL, locked location plate URL], `audio_urls` = [locked voice sample URL]. Route the prompt by the source brief: live_action/hybrid → `seedance-clean`; animation → `seedance-prompting`. Adapt the @-map to SJinn naming: **@Image1/@Image2/@Audio1 in URL order** (every attached URL cited with a content description). All other film laws apply: anchors word-for-word, state restatement, and one deliberately static direct-address take unless the Director approves another format.
 
 Reference URLs: Higgsfield media/results CloudFront URLs are public and stable — pass them directly. Local-only files: `upload_asset` first (or host via Higgsfield `media_upload`, which returns a permanent public URL).
 

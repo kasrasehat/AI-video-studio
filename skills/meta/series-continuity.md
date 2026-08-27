@@ -12,7 +12,7 @@ How episodes of a series share canon without re-arguing or re-buying it. A serie
 
 1. Read the bible FIRST — before any intake question. Also read the previous episode's `episodes[]` entry (`continuity_notes`, `divergences`) and, for writing stages later, its `brief` + `story` artifacts.
 2. `checkpoint.py init <episode-slug>` as usual; then add to the episode's `project.json`: `"series": {"series_id": "<id>", "episode_number": N}`.
-3. Intake is DELTA-ONLY: the bible's `format` pre-fills audience/language/style/tone/platform/aspect/duration; ask the Director only for (a) this episode's story idea, (b) title, (c) any overrides. **An override is legal and Director's right** — log it as a decision AND append it to the bible episode entry's `divergences`. Never silently diverge; never argue against an ordered divergence.
+3. Intake is DELTA-ONLY: the bible's `format` pre-fills audience/language/visual_medium/style/tone/platform/aspect/duration; ask the Director only for (a) this episode's story idea, (b) title, (c) any overrides. **An override is legal and Director's right** — log it as a decision AND append it to the bible episode entry's `divergences`. Never silently diverge; never argue against an ordered divergence. Older bibles without `visual_medium` use the stage-1 backward-compatible style router once, then record the Director's classification in the next episode divergence/canon update.
 4. The episode `brief` is written in full (schema unchanged) — inherited values are copied in, with `metadata.inherited_from_series: true` on the brief.
 5. Register the episode in the bible (`status: in_production`) at init.
 

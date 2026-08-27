@@ -1,9 +1,11 @@
 ---
 name: seedance-prompting
-description: Prompt engineering for Seedance 2.0 — our primary video model (native voice + lipsync + reference conditioning, ≤15s clips, via Higgsfield MCP). Use when assembling any Seedance generation call (stage 9 prompt-smith), regenerating a failed clip, or auditing prompt quality.
+description: Animation and legacy prompt engineering for Seedance 2.0/2.5 with native voice, lipsync, references, multishot grammar, chaining, and anti-drift rules. Use when brief.visual_medium is animation or an existing production is explicitly locked to this profile. Live-action and hybrid projects use seedance-clean.
 ---
 
 # Seedance 2.0 Prompting
+
+**Profile boundary:** this is the animation/legacy profile. New `live_action` and `hybrid` briefs route to `skills/tech/seedance-clean/SKILL.md`. Do not blend the two block grammars inside one prompt. Shared repository laws—locked assets, verbatim identity anchors, exact dialogue, voice/reference threading, continuity, cost gates—bind both profiles.
 
 Seedance 2.0 (ByteDance) is this pipeline's default video model: single-pass native synced audio (speech + SFX + ambience), lipsync from quoted dialogue, multi-shot inside one generation, director-level camera control, and reference conditioning of up to **9 images + 3 video clips + 3 audio clips**. Max clip 15s (our scene unit), 4–15s range, aspects 21:9/16:9/9:16/4:3/1:1. Access is via the Higgsfield MCP (`skills/tech/higgsfield-mcp`); routing/capabilities live in `config/model_capabilities.yaml`.
 

@@ -18,6 +18,7 @@
       "properties": {
         "audience": { "type": "string", "minLength": 1 },
         "language": { "type": "string", "minLength": 1 },
+        "visual_medium": { "type": "string", "enum": ["live_action", "animation", "hybrid"], "description": "Series-wide production medium; copied into episode briefs unless the Director logs an override." },
         "style": { "type": "string", "minLength": 1, "description": "Visual style verbatim from the founding episode's brief — the series look." },
         "palette": { "type": "string" },
         "tone": { "type": "string", "minLength": 1 },

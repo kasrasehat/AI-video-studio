@@ -23,7 +23,7 @@ description: "Cross-model knowledge for AI video generation — model comparison
 
 Switch off the Seedance 2.0 default only for a specific reason: budget, provider preference, or stylistic fit (VEO for photoreal landscape, Kling for a specific anime look). In this repo, model choice must additionally satisfy `config/model_capabilities.yaml` policy (e.g. dialogue scenes only on models meeting `policy.dialogue_scene_requires`) — and swapping models is a Director decision.
 
-For Seedance-specific prompting and parameters, use `skills/tech/seedance-prompting`.
+For Seedance-specific prompting and parameters, route by the approved brief: `live_action`/`hybrid` → `skills/tech/seedance-clean`; `animation` → `skills/tech/seedance-prompting`. Older briefs use seedance-clean's backward-compatible router and stop on ambiguity.
 
 ## Generation options (common across providers)
 

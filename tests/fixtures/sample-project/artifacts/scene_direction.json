@@ -2,6 +2,7 @@
   "version": "1.0",
   "project_id": "sample-project",
   "global": {
+    "visual_medium": "animation",
     "color_palette": {
       "name": "Festival Ember",
       "hexes": ["#D9432C", "#F2A33C", "#2B1E3F", "#F7E7C6"]

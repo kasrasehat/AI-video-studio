@@ -7,6 +7,16 @@ description: "Single-image annotated model sheets for characters AND locations �
 
 A sheet is ONE image that locks an identity: multiple views + detail callouts + text annotations, generated in a single call. Every downstream generation (storyboard frames, clips) conditions on the locked sheet. Method and defaults set by the Director (2026-07-17): **single-image sheets, GPT-Image-2, design-distinct variants.**
 
+## Visual-medium profiles
+
+Read `scene_direction.global.visual_medium` (or the approved brief) before writing.
+
+- **Animation:** keep the established model-sheet and design-variant rules below.
+- **Live action:** create a photoreal casting/reference sheet of one plausible human across all views. Preserve facial geometry, natural asymmetry, skin texture, hairline, body proportions, age, and permanent marks. Use neutral reference lighting with realistic material response and no beauty-filter finish. Variant pairs are distinct casting interpretations inside the same locked identity envelope, not different illustration styles or caricature schools.
+- **Hybrid:** state which elements are live action and which are stylized; never let a single element drift media between views. The locked sheet is authoritative for that element's medium.
+
+For live-action downstream Seedance prompts, the sheet carries most appearance information. Keep prompt text to the locked 3–6 anchors plus age/build/current state/action-critical details per `seedance-clean`; do not repeat the sheet-generation density in the video prompt.
+
 ## Model default (Director decision, binding)
 
 **`gpt_image_2`** (Higgsfield catalog, OpenAI) for ALL character and location sheets — chosen for its layout control, text/annotation rendering, and detail fidelity. `quality: high`, `resolution: 2k`, landscape `16:9` or `3:2` for sheets. Nano Banana Pro remains the fallback and the consistency-edit tool.
@@ -15,7 +25,7 @@ A sheet is ONE image that locks an identity: multiple views + detail callouts + 
 
 1. **Three full-body views side by side of the SAME character**: front, three-quarter left, left profile — consistent height, same neutral standing pose, white/light-neutral background, subtle ground shadow.
 2. **Face detail inset**: large close-up of the face (the identity's core), plus 1–3 small insets for the character's most identity-critical features (e.g. goggles, mustache, distinctive marks, footwear).
-3. **Text annotations**: small clean labels calling out identity anchors and subtle features (hair/fur color names, eye color, distinguishing marks, outfit colors) — professional animation-studio model-sheet typography.
+3. **Text annotations**: small clean labels calling out identity anchors and subtle features (hair/fur color names, eye color, distinguishing marks, outfit colors) — professional model-sheet typography appropriate to the selected medium.
 4. **Maximum prompt detail**: EVERYTHING the descriptor knows goes into the prompt — all identity_anchors verbatim, all static_features (face/body/age/marks), default outfit with palette hexes, height/build ratios, render style. GPT-Image-2 rewards density; a sparse sheet prompt is a wasted generation.
 
 Layout instruction template: "Professional character model sheet, landscape: three full-body turnaround views (front, three-quarter left, left profile) of the same character evenly spaced; large face close-up inset top-right; small detail insets (X, Y); clean small text labels annotating features; white background, studio reference-sheet layout."
@@ -66,12 +76,12 @@ Multi-angle sheets confuse fixture positions across panels unless the prompt pin
 
 ## Variant discipline (Director rule, binding)
 
-The ~2 variants of any sheet must be **completely distinct design interpretations** — different silhouette language, proportions, and art-direction school — such that choosing between them is a real creative decision. "Crisper vs softer texture" of the same design is a FAILED variant pair. Both variants still honor every identity anchor and the film's palette; what changes is the DESIGN (e.g. V1 round/soft-shape classic family-film language vs V2 angular/exaggerated caricature language). State each variant's design school explicitly in its prompt and record it in `generator.params.interpretation`.
+The ~2 variants must create a real Director choice without violating the approved medium. For animation, use completely distinct design interpretations — silhouette, proportions, and art-direction school. For live action, use distinct casting interpretations (facial presence, build within the anchor envelope, natural styling) while retaining photoreal human anatomy and the same required traits. For environments, vary production design/location interpretation rather than rendering medium. "Crisper vs softer texture" of the same choice is a failed pair. Record the interpretation explicitly in `generator.params.interpretation`.
 
 ## Workflow
 
 - One call per variant (`gpt_image_2`, quality high). Record model, full prompt, job_id as media_id, cost per variant in `asset_manifest`; file naming `assets/characters/<char_id>_<variant>_sheet.png` / `assets/environments/<loc_id>_<variant>_sheet.png`.
-- **Self-QC before presenting:** every anchor visibly true in every view/panel; the three views are the SAME design (not siblings); annotations legible and correct (a wrong label on a locked sheet becomes canon — check them); palette respected. Regenerate a failed sheet, never show it.
+- **Self-QC before presenting:** every anchor visibly true in every view/panel; the views are the SAME identity (not siblings); annotations legible and correct (a wrong label on a locked sheet becomes canon — check them); palette respected. Live action additionally checks stable facial geometry, natural skin/hair, plausible joints/hands, fabric response, and consistent age. Regenerate a failed sheet, never show it.
 - After the Director's pick → `locked: true`. For per-scene outfits or expression additions: i2i from the LOCKED sheet (`medias role image`) — "same character as the reference sheet, exact same design, now …".
 - Downstream: the locked sheet is the reference image for storyboard frames and clips (one file carries all views). In every downstream PROMPT the character still appears via anchors verbatim — the sheet locks pixels, anchors lock the text channel (see `skills/meta/consistency-guard.md`).
 
