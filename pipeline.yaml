@@ -28,7 +28,6 @@ stages:
     review_focus:
       - Story idea captured in the user's own words, not paraphrased away
       - Audience, duration, language, style, tone, platform all explicitly asked (one at a time), never assumed
-      - Visual medium explicitly classified as live_action, animation, or hybrid; style describes the treatment inside that medium
       - Open questions listed rather than silently guessed
     success_criteria:
       - Schema-valid brief with all required fields
@@ -65,7 +64,7 @@ stages:
       - Beats sum to the brief's duration target (±10%)
       - Tone and audience fit the brief
       - Causal chain audit passed — every world/location entry+exit has an ON-SCREEN mechanism beat; naive retell test clean (d-191)
-      - Conversation density at professional screen-dialogue level — multi-turn exchanges wherever characters share a beat; silence only as a stated dramatic choice (d-191)
+      - Conversation density at professional-animation level — multi-turn exchanges wherever characters share a beat; silence only as stated choice (d-191)
     success_criteria:
       - Schema-valid story with beats and per-beat duration estimates
       - estimated_runtime_seconds within duration target ±10%
@@ -113,7 +112,6 @@ stages:
     review_focus:
       - Camera movement executable by a 15s clip model (no impossible multi-move choreography)
       - Palette stated as hexes + name; lighting and mood concrete, not vibes
-      - Direction follows the approved visual-medium profile — measured live-action optics/performance/physics for seedance-clean; established animation grammar for seedance-prompting
       - Blocking never contradicts scene_list continuity_notes or the 180° line
       - Boundary motion contract — every transition_out names the exit motion state AND how the next scene's opening absorbs it (d-191, generalizes d-158 to all boundaries)
     success_criteria:
@@ -180,7 +178,7 @@ stages:
     title: Generate scene clips
     skill: skills/stages/09-video-generation-director.md
     produces: [generation_manifest, clip_qc_report]
-    required_artifacts_in: [brief, lock_descriptors, asset_manifest, scene_list, scene_direction]
+    required_artifacts_in: [lock_descriptors, asset_manifest, scene_list, scene_direction]
     optional_artifacts_in: [shot_selection, storyboard_set]   # d-029: present + used for keyframe/
       # start-end-frame conditioning when stage 8 ran; when storyboard was skipped, clip-producer
       # conditions directly on locked sheets (image_references) + full text prompt (anchors verbatim)
@@ -193,7 +191,7 @@ stages:
     resume_unit: clip
     review_focus:
       - Model chosen via config/model_capabilities.yaml; DIALOGUE SCENES ONLY on models satisfying policy.dialogue_scene_requires
-      - Every prompt uses the visual-medium-routed model skill, embeds identity anchors verbatim, and preserves quoted dialogue lines (Seedance prompt window from model capabilities)
+      - Every prompt embeds identity anchors verbatim, quoted dialogue lines, 200–1000 words (Seedance, d-138)
       - References threaded — locked sheets/plates (≤9 images), start frame @-named per d-124/d-127, end frames where pinned, locked voice reference_audio for every speaker
       - Every generated clip presented at the per-clip Director gate with the producer report; evaluator (when requested) checked identity/continuity/lipsync with native-res verification (d-114)
       - Handoff beat present — each chained clip's final second settles into a describable state, and the successor's 0-2s bridge continues the inherited motion (d-191)

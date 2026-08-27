@@ -42,8 +42,7 @@
           "scene_id": { "type": "string", "pattern": "^S\\d{2,}[A-Z]?$" },
           "attempt": { "type": "integer", "minimum": 1 },
           "model_id": { "type": "string", "minLength": 1 },
-          "prompt_profile": { "type": "string", "enum": ["seedance-clean", "seedance-prompting", "ai-video-gen"], "description": "Resolved prompt contract used for this clip. Optional only for backward compatibility; new generation entries record it." },
-          "prompt": { "type": "string", "minLength": 1, "description": "Standalone prompt assembled with prompt_profile; identity anchors verbatim and approved dialogue quoted exactly." },
+          "prompt": { "type": "string", "minLength": 1, "description": "Assembled 5-aspect prompt; identity anchors verbatim; dialogue quoted." },
           "references": {
             "type": "object",
             "properties": {

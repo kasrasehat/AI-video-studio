@@ -30,12 +30,7 @@
       "additionalProperties": false
     },
     "language": { "type": "string", "minLength": 1, "description": "Language of dialogue and captions, e.g. 'en', 'fa'." },
-    "visual_medium": {
-      "type": "string",
-      "enum": ["live_action", "animation", "hybrid"],
-      "description": "First-class production medium. Routes live_action/hybrid Seedance shots through seedance-clean and animation through seedance-prompting. Optional only for backward compatibility; new briefs must set it."
-    },
-    "style": { "type": "string", "minLength": 1, "description": "Visual treatment inside the selected medium, e.g. 'grounded photoreal crime drama' or 'painterly 2D animation'." },
+    "style": { "type": "string", "minLength": 1, "description": "Visual style direction, e.g. 'photoreal cinematic', 'Ghibli-esque 2D'." },
     "tone": { "type": "string", "minLength": 1 },
     "genre": { "type": "string" },
     "platform": { "type": "array", "minItems": 1, "items": { "type": "string", "enum": ["youtube", "instagram", "tiktok", "linkedin", "cinema", "generic"] } },

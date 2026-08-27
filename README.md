@@ -1,8 +1,8 @@
 # full-ai-video-system
 
-An agent-driven film studio: give it a story idea, choose live action, animation, or a hybrid, and direct it through gated production stages. It produces a coherent film with speaking characters from short AI-generated clips (Seedance via Higgsfield, with Kling/Veo and other routed models for suitable non-dialogue scenes).
+An agent-driven film studio: give it a story idea, direct it through 10 gated stages, and it produces a coherent 2–7 minute film with speaking characters — assembled from ≤15-second AI-generated clips (Seedance 2.0 via Higgsfield, with Kling/Veo/Sora for non-dialogue scenes).
 
-You are the **Director**: the agent writes, plans, directs, generates and edits, but every creative stage stops at your approval gate — story, scenes, direction, locked characters/voices, storyboards, clips, final cut. Live-action and hybrid projects use the `seedance-clean` prompt profile; animation retains the established `seedance-prompting` profile.
+You are the **Director**: the agent writes, plans, directs, generates and edits, but every creative stage stops at your approval gate — story, scenes, direction, locked characters/voices, storyboards, clips, final cut.
 
 ## Setup
 

@@ -47,7 +47,6 @@ Cross-cutting: `decision_log` (append-only), `checkpoint_<stage>.json` per stage
 - **Windows host.** Paths inside artifacts are relative to the project directory (`projects/<slug>/`), forward slashes.
 - **IDs:** scenes `S01…`, characters `CH01…`, locations `LOC01…`, objects `OBJ01…`, clips `S01_C01` (scene, attempt-independent), frames `S01_A_F01` (scene, variant, frame), decisions `d-001…`.
 - **Schema versioning:** every artifact carries `version` (schema const) — bump the const + schema together.
-- **Visual-medium routing:** new briefs set `visual_medium`. Live-action/hybrid Seedance prompts use `skills/tech/seedance-clean`; animation uses `skills/tech/seedance-prompting`. Canonical skills remain harness-agnostic and mirror into `.claude/skills/`.
 - **AGPL note:** OpenMontage (reference project) is AGPL; skills here are adapted patterns, and this repo is private/internal.
 
 ## Build status

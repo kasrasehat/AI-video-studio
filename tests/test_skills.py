@@ -85,22 +85,3 @@ def test_capability_matrix_skill_pointers_resolve():
             skill = entry.get("skill")
             if skill:
                 assert skill in names, f"{section}.{model_id} points at missing skill {skill!r}"
-            for medium, routed_skill in entry.get("skill_by_visual_medium", {}).items():
-                assert medium in {"live_action", "animation", "hybrid"}, (
-                    f"{section}.{model_id} has unknown visual medium {medium!r}"
-                )
-                assert routed_skill in names, (
-                    f"{section}.{model_id}.skill_by_visual_medium.{medium} "
-                    f"points at missing skill {routed_skill!r}"
-                )
-
-
-def test_seedance_visual_medium_routes_are_complete():
-    caps = yaml.safe_load((lib.ROOT / "config" / "model_capabilities.yaml").read_text(encoding="utf-8"))
-    for model_id in ["seedance_2_0", "seedance_2_5", "seedance_2_0_mini"]:
-        routes = caps["video_models"][model_id]["skill_by_visual_medium"]
-        assert routes == {
-            "live_action": "seedance-clean",
-            "hybrid": "seedance-clean",
-            "animation": "seedance-prompting",
-        }

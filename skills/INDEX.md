@@ -37,8 +37,7 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md â†’ 
 | Skill | Purpose | Status |
 |---|---|---|
 | `higgsfield-mcp/SKILL.md` | The generation gateway: tools, media-id flow, cost preflight, verified model quick-ref | **ready** (audited 2026-07-11) |
-| `seedance-clean/SKILL.md` | Live-action/hybrid Seedance prompt contract — observable blocking, measured optics/physics, distributed style, positive locks | **ready** |
-| `seedance-prompting/SKILL.md` | Animation/legacy Seedance prompt contract, identity+voice lock, anti-drift ladder | **ready** |
+| `seedance-prompting/SKILL.md` | Seedance 2.0 prompt contract, identity+voice lock, anti-drift ladder | **ready** |
 | `character-sheets/SKILL.md` | 3-view chained character sheets, variants, self-QC | **ready** |
 | `storyboard-design/SKILL.md` | Static-snapshot frames, variation taxonomy, 3-variant discipline | **ready** |
 | `image-editor/SKILL.md` | Interactive image editing: elicit-first protocol, nano_banana_pro default, text-safety boundary | **ready** |
@@ -56,9 +55,10 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md â†’ 
 
 | Role file (`.claude/agents/`) | Part | Reads |
 |---|---|---|
-| `clip-producer.md` | 2 â€” end-to-end clip generation (one invocation = one attempt) | medium-routed Seedance skill (`seedance-clean` live action/hybrid; `seedance-prompting` animation), higgsfield-mcp, prompt-smith, consistency-guard, per-scene slices, model_capabilities |
+| `clip-producer.md` | 2 â€” end-to-end clip generation (one invocation = one attempt) | seedance-prompting, higgsfield-mcp, prompt-smith, consistency-guard, per-scene slices, model_capabilities |
 | `prompt-smith.md` | prompt-assembly contract consumed BY clip-producer (not invoked standalone in the d-137 flow) | â€” |
 | `clip-evaluator.md` | 3 â€” OPTIONAL deep QC, report-only (d-114) | qc-critic.md + the brief's LAWS block |
 | `virality-checker.md` | 4 â€” OPTIONAL, informational, out-of-pipeline | â€” |
 | `ai-video-gen/SKILL.md` | Cross-model prompting deltas (Kling/Veo/Wan/â€¦) | **ready** |
 | `flux-bfl/SKILL.md` | FLUX prompting + BFL API (optional) | **ready** |
+

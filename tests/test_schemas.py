@@ -83,19 +83,3 @@ def test_reference_images_capped_at_nine():
     bad = copy.deepcopy(instance)
     bad["clips"][0]["references"]["images"] = [f"img{i}.png" for i in range(10)]
     assert lib.validation_errors(bad, "generation_manifest"), ">9 reference images must fail"
-
-
-def test_brief_visual_medium_enum_and_backward_compatibility():
-    path = Path(__file__).parent / "fixtures" / "sample-project" / "artifacts" / "brief.json"
-    instance = json.loads(path.read_text(encoding="utf-8"))
-    assert instance["visual_medium"] == "animation"
-    for medium in ["live_action", "animation", "hybrid"]:
-        candidate = copy.deepcopy(instance)
-        candidate["visual_medium"] = medium
-        assert not lib.validation_errors(candidate, "brief")
-    invalid = copy.deepcopy(instance)
-    invalid["visual_medium"] = "cinematic"
-    assert lib.validation_errors(invalid, "brief")
-    legacy = copy.deepcopy(instance)
-    legacy.pop("visual_medium")
-    assert not lib.validation_errors(legacy, "brief"), "old briefs must remain resumable"

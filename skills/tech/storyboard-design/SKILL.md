@@ -27,10 +27,7 @@ A scene×variant is ONE generated image: a numbered GRID of sequential frames (u
 
 ## Frame prompt template
 
-`<shot size + framing/approved FOV from scene_direction>. <Character(s) via identity_anchors VERBATIM + scene outfit/state, positions in frame, facing directions>. <Location via its anchors and foreground/midground/background map>. <Sourced lighting + time_of_day + optional white balance>. <Palette as material + light + role>. Static composition at one visible instant. Medium/style: <brief.visual_medium + approved global look>.`
-
-- **Live-action/hybrid boards:** look like plausible photographed film frames, not animation concept art. Preserve natural facial asymmetry, living skin and eyes, material texture, contact shadows, optical depth, and physically credible environmental interaction. Use the discrete FOV chosen in scene_direction and do not add equipment/director names.
-- **Animation boards:** retain the approved rendering language and established design anchors; do not import live-action skin/optics language unless the hybrid brief explicitly assigns it to that element.
+`<shot size + framing from scene_direction>. <Character(s) via identity_anchors VERBATIM + scene outfit, positions in frame, facing directions>. <Location via its anchors>. <Lighting per direction + time_of_day>. <Palette>. Static composition, no motion blur. Style: <global look>.`
 
 - Conditioning references (record in `refs_used`): locked character sheet views (matched to facing direction) + locked environment plate. **Never generate a character or location from text alone.**
 - Element→reference binding in the prompt: `Mira's appearance follows reference image 1 (character sheet). The lane follows reference image 3 (environment plate).`

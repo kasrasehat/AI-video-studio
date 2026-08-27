@@ -10,7 +10,6 @@
   },
   "duration_target_seconds": { "min": 120, "max": 180 },
   "language": "en",
-  "visual_medium": "animation",
   "style": "Ghibli-esque painterly 2D, warm lantern light",
   "tone": "wondrous, gently suspenseful, heartwarming",
   "genre": "fantasy adventure",

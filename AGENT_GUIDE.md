@@ -2,7 +2,7 @@
 
 The complete operating contract for any AI agent working in this repository. Every rule here is binding regardless of which harness (Claude Code, Cursor, Codex) you run under.
 
-**What this system does:** turns a user's story idea into a coherent multi-minute live-action, animated, or hybrid film with on-screen speaking characters, assembled from AI-generated clips — ≤15s on Seedance 2.0 (the default) or ≤30s on Seedance 2.5 (parallel flow, Director-ordered only, d-204) — via Higgsfield MCP, plus Kling/Veo for non-dialogue scenes. The user is the Director: every creative stage ends at a human approval gate.
+**What this system does:** turns a user's story idea into a coherent multi-minute film with on-screen speaking characters, assembled from AI-generated clips — ≤15s on Seedance 2.0 (the default) or ≤30s on Seedance 2.5 (parallel flow, Director-ordered only, d-204) — via Higgsfield MCP, plus Kling/Veo for non-dialogue scenes. The user is the Director: every creative stage ends at a human approval gate.
 
 ---
 
@@ -96,7 +96,6 @@ This is how 25–80 independent stochastic clips become one film. Full details: 
 3. **Reference threading.** Every clip generation passes: locked character sheet views + locked environment plate (≤9 images total), the storyboard start/end frames, and — for every speaking character — their locked voice sample as `reference_audio`.
 4. **Voice lock = Seedance-native.** Dialogue is delivered as quoted lines inside the video prompt; the character's locked voice reference sample conditions the native voice. There is NO external TTS/lipsync path. Dialogue scenes may only run on models whose `config/model_capabilities.yaml` entry satisfies `policy.dialogue_scene_requires`.
 5. **Continuity fields are law.** `scene_list.continuity_notes`, `time_of_day`, and `outfit_by_scene` override anything a prompt would otherwise improvise.
-6. **Prompt profile follows the approved medium.** `brief.visual_medium` routes Seedance: `live_action`/`hybrid` → `skills/tech/seedance-clean`; `animation` → `skills/tech/seedance-prompting`. For old briefs without the field, use the backward-compatible router in `seedance-clean` and never silently guess an ambiguous style.
 
 ## Cost announcements
 

@@ -13,8 +13,7 @@ Extract the consistency backbone: every character, object and location that must
    - Each anchor passes the two-character test (could two different-looking characters both satisfy it? → sharpen).
    - Static/dynamic filing correct — clothing/props NEVER in static_features.
    - Every character with a dialogue line anywhere has a complete `voice_spec`; voice fits role + story style + the audience (a children's film narrator ≠ a noir voice).
-   - `forbidden_drift` populated per character with the model's predictable failures (hair length/color changes, aging, palette flips, style breaks). For live_action/hybrid, each entry also has an equivalent desired visible state ready for `positive_locks`; do not rely on negative phrasing at stage 9.
-   - For live_action/hybrid, anchors describe one castable human identity: age, build, facial geometry, skin/hair/eye detail, permanent marks, and other stable visible traits. Avoid animation-only shorthand such as shape language, caricature, or generic "photoreal" labels. Include micro-realism only where it is identity-specific; transient flush, sweat, breath, or injury stays dynamic/per-scene.
+   - `forbidden_drift` populated per character with the model's predictable failures (hair length/color changes, aging, palette flips, style breaks).
    - Objects/locations that appear in ≥2 scenes are captured; single-scene props are not (registry bloat dilutes attention).
 4. **QA loop (blocking):** `qa-reviewer` with lock_descriptors + all three upstream artifacts + this stage's `review_focus`. Apply proposed_fixes (re-dispatch the extractor for structural gaps; sharpen anchors yourself for wording). Final round → `artifacts/qa_review_lock_descriptors.json`. Max 3 rounds.
 5. **Write + validate both, attach, gate.**
