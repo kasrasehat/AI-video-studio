@@ -6,6 +6,10 @@ The complete operating contract for any AI agent working in this repository. Eve
 
 ---
 
+## Rule Minus-One — BRANCH LOCK (2026-08-28, Director order)
+
+Series production (micro-explorers episodes) happens ONLY on branch `series`. Skills, schemas and agent docs are read from the WORKING TREE — a checkout of any other branch silently swaps every instruction file under running production (this happened 2026-08-27: a `cinematic_movie` checkout switched the Seedance prompt contract and scene_direction schema mid-episode, unnoticed for three clips). Before ANY stage work: run `git branch --show-current`; if it does not print `series`, STOP and alert the Director — never proceed, never "adapt" to the other branch's files. Parallel work on other branches belongs in a separate `git worktree`, never in this directory.
+
 ## Rule Zero — reading order
 
 Before doing pipeline work, read in this order. Never skip a layer.
