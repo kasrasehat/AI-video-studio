@@ -65,16 +65,26 @@ A scene's clip is a designed shot sequence by default; a single continuous shot 
 6. **Chain edges are exempt from restructuring:** the FIRST shot must begin on the start frame and bridge from its actual composition (d-124); the FINAL shot books the handoff beat (d-191). Cuts live between those two anchors.
 7. **In medias res** is the default entry energy — the scene is already in progress — expressed WITHIN the start-frame bridge, never instead of it.
 
-## Impact moves — the special-effects vocabulary (Director order d-120)
+## Impact moves — the special-effects vocabulary (Director orders d-120, d-085)
 
-Seedance executes in-camera effects well when they're directed as ONE named event, and they hit hardest when they're rare. The proven vocabulary:
-- **Speed ramp** — real-time ramping smoothly into super slow motion for one held close-up, then snapping back HARD and instantly. Always: one ramp, a named subject for the slow beat, an instant (never gradual) return.
+Seedance executes in-camera effects well when they're directed as ONE named event, and they hit hardest when they're rare — but not TOO rare: E01 viewer feedback singled out S05A (the ride) and S05B (the frozen fall) as the most-loved moments, so the density is now planned, not left to chance. Full study, anatomy of the two source clips and prompt patterns: **`skills/meta/impact-moves.md`** (BINDING reference). The vocabulary:
+- **Speed ramp** — real-time ramping smoothly into super slow motion for one held close-up, then snapping back HARD and instantly. Always: one ramp, a named subject for the slow beat, an instant (never gradual) return. Variant: *ramp on a passing thing* (one bubble / ring / butterfly / spark comes to the lens in slow motion, subjects soft beyond it).
 - **Freeze-and-orbit** — time stops mid-action; the camera sweeps a smooth arc around suspended subjects while particles hang crisp and individually readable; then time snaps back. Direct the frozen expressions explicitly.
-- **Masked reframe** — a whiteout/flash/occlusion fills the frame and hides a full camera repositioning inside one continuous shot.
-- **Motivated emotional drift** — the d-118 push-in: the camera eases closer as an emotional beat lands.
-- **Rear chase lock** — the camera rides the subject's tail through an action sequence, world rushing past.
+- **Masked reframe** — a whiteout/flash/occlusion fills the frame and hides a full camera repositioning inside one continuous shot. Variant: **through-the-ring pass** (a diegetic aperture — sound ring, lantern bloom, membrane — wipes the frame).
+- **Motivated emotional drift** — the d-118 push-in: the camera eases closer as an emotional beat lands. Everyday grammar; NOT counted against the budget.
+- **Rear chase lock** — the camera rides the subject's tail through an action sequence, world rushing past; vertical variant for shafts (plunge / rise-through).
+- **Beat-ladder ride** — one continuous take built as 4–6 named physical beats (plunge / skim / swarm / weave / gap / reveal) with the mount in named physics modes, camera position locked (usually rear chase); the ride's single time trick is its ONE impact move, the other beats are physics. The highest-engagement class; ≥2 per episode on the biggest travel scenes.
+- **Near-miss gap** — threading a razor-narrow passage, walls blurring inches from the lens, light dipping (never grey, under 2s) then flooding back.
+- **Burst-reveal** — from a tight passage into a vast space in one crane-back; the whole world opens at once, the subject becomes a speck.
+- **Rack-focus hold** — a foreground particle/object takes the lens and the focus, subjects soften beyond; no time change (the affordable cousin of the slow-mo bubble).
+- **Time-snap hold** — the freeze without the orbit: static camera, particles hang crisp, expressions locked, snap.
+- **Orbit-in-flight** — a real-time orbit around the moving subject, world wheeling behind.
+- **Curved-reflection cameo** — subjects reflected in a bubble/droplet/brass dome, ONLY inside a ramp or rack-focus hold on a curved surface (flat mirrors/puddles stay forbidden).
+- **Pinned micro-bridge** — a 4–5s inserted scene between two chained scenes, start and end frames pinned (Director-ordered end_image exception, the S05B precedent), carrying one impact move.
 
 **The budget rule (BINDING): at most ONE impact move per scene**, reserved for the peak moment, never repeating a neighboring scene's move. Cuts (above) are the everyday grammar; impact moves are the exclamation points. The prompt names exactly one effect and states its boundaries (what starts it, what ends it, what must stay crisp).
+
+**The density rule (BINDING, d-085): one impact move every 3–4 scenes of runtime, never in adjacent scenes, the same move never within 5 scenes** — planned at stage 5 as `scene_direction.metadata.impact_plan` and executed here. Action, journey, reveal and hinge scenes carry them; lesson scenes, tableaux and dialogue-stillness scenes carry none. The producer follows the plan; a proposed deviation (adding, moving or dropping a move) goes to the Director at the gate with the reason — never silently.
 
 ## Age-blind rule (d-201, with the anchors exemption)
 

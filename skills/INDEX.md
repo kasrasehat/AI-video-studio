@@ -31,6 +31,7 @@ Routing table for every skill in this repo. Read order: AGENT_GUIDE.md â†’ 
 | `consistency-guard.md` | Identity anchors, ref threading, chaining, drift checklist â€” BINDING | **ready** |
 | `series-continuity.md` | Series bible, cross-episode canon import/promotion, delta intake â€” BINDING | **ready** |
 | `taste-direction.md` | Taste profile: design read, dials, audience adaptation | **ready** |
+| `impact-moves.md` | Impact-move vocabulary (from E01 S05A/S05B) + the density law: one per 3–4 scenes, never adjacent — BINDING (d-085) | **ready** |
 
 ## Tech (`skills/tech/` â€” canonical; mirrored to `.claude/skills/` by `scripts/sync_skills.py`)
 
