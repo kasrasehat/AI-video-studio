@@ -65,6 +65,31 @@ A scene's clip is a designed shot sequence by default; a single continuous shot 
 6. **Chain edges are exempt from restructuring:** the FIRST shot must begin on the start frame and bridge from its actual composition (d-124); the FINAL shot books the handoff beat (d-191). Cuts live between those two anchors.
 7. **In medias res** is the default entry energy — the scene is already in progress — expressed WITHIN the start-frame bridge, never instead of it.
 
+## The silent performance (BINDING — d-094, extracted from the approved S36 Milo pass)
+
+d-111 already says the listener is directed as deliberately as the speaker. This is the HOW, and it applies hardest to a character who has **no line at all** in the scene: they are not "reacting", they are performing a second, wordless part, and the prompt writes it with the same care as the spoken one. The S36 rule-zero clip is the standard — Milo says nothing for nine seconds and carries half the scene. All five of these, every time:
+
+1. **Give them a named SHARE of the scene, not a reaction beat.** State whose face owns which stretch: *"@milo's face carries the second half."* Screen time that belongs to nobody gets filled with idling.
+2. **Write an ARC of at least three stages with a direction of travel** — never one held state: *"taking it in → the protest draining out of his brows → tender resolve arriving."* One adjective is a pose; three stages is a performance.
+3. **Locate every stage in a named part of the body** (brows, jaw, mouth corner, shoulders, hands) — this is the d-111 micro-expressions law applied per stage, not restated: emotion words without a body part constrain nothing.
+4. **Give them one BORROWED gesture** that echoes the other character: *"his jaw setting the way @gramps's does."* The echo is what makes two people read as related rather than merely co-located — it is the cheapest bond in the vocabulary.
+5. **Let them ANSWER with an action instead of a line, written with its own beats** so it lands where a reply would: *"answers without a word: one soft step in, and his hands come down and close on the handle, settling there."* Give the answer a verb chain, never a single verb — the chain is what makes it read as a decision rather than a movement.
+
+Cost: 60–80 words of prompt. It buys the beat the audience remembers, and it is free of the dialogue budget.
+
+## Practicals aimed at the lens earn atmosphere (BINDING — d-095)
+
+Correct staging will regularly point a practical light source at the camera: a lantern, headlamp or glowing fragment aimed at the subjects is, from the establishing camera of that set, also aimed at the lens (the Whisper-Wing's lantern on the box-site's establishing angle is the standing example). **Do not re-aim the source to avoid it** — that breaks the staging (d-093) and silently re-lights the scene — and do not leave it as a bare bright disc. Direct it as a visible beam with something IN the beam:
+
+- fine dust or motes drifting slowly across the shaft;
+- a soft warm halation ring around the source, blooming and settling;
+- the beam picking out ONE surface it crosses — the lid's engraved letters, a shelf edge, a wing membrane;
+- the source partly occluded by a character or prop, so the shaft breaks and re-forms as they move.
+
+Constraints, all phrased positively per d-099: the beam stays warm and cozy — a lantern in a library, never a searchlight or an interrogation lamp; soft halation only, never streak or anamorphic flare (it reads as artifact); the atmosphere never buys darkness — blacks stay lifted per the grade, and a shaft is not a licence for a dark frame; the source holds steady — no flicker, no strobe (photosensitivity + kids' law).
+
+**Budget:** atmosphere is NOT an impact move. It is continuous texture, it does not count against the one-per-scene d-085 budget, and scenes marked "no impact move" still get it.
+
 ## Impact moves — the special-effects vocabulary (Director orders d-120, d-085)
 
 Seedance executes in-camera effects well when they're directed as ONE named event, and they hit hardest when they're rare — but not TOO rare: E01 viewer feedback singled out S05A (the ride) and S05B (the frozen fall) as the most-loved moments, so the density is now planned, not left to chance. Full study, anatomy of the two source clips and prompt patterns: **`skills/meta/impact-moves.md`** (BINDING reference). The vocabulary:
