@@ -65,6 +65,20 @@ A scene's clip is a designed shot sequence by default; a single continuous shot 
 6. **Chain edges are exempt from restructuring:** the FIRST shot must begin on the start frame and bridge from its actual composition (d-124); the FINAL shot books the handoff beat (d-191). Cuts live between those two anchors.
 7. **In medias res** is the default entry energy — the scene is already in progress — expressed WITHIN the start-frame bridge, never instead of it.
 
+## A reference only covers the angle and the state it shows (BINDING — d-115, Director order 2026-09-07)
+
+d-098 says a sheet-vs-render drift is fixed by a derived sheet rather than by words. This is its limit, and it was learned the hard way across S42-S45, where the Whisper-Wing's cockpit changed shape between clips and the two riders swapped sides from scene to scene while a correct sheet was attached to every one of them.
+
+**A locked reference is authority ONLY over what it actually depicts.** It says nothing about a view it does not contain and nothing about a state it does not show. Two consequences, both binding:
+
+1. **THE ANGLE RULE.** Before writing a shot, ask whether the attached sheet actually shows the subject *from this shot's camera*. A four-view turnaround covers front, side and back; it does NOT cover an over-the-shoulder from behind and above, a low three-quarter from the flank, or a tight interior. **When a scene needs an angle the sheet does not contain, generate a derived sheet at that angle before generating the clip** (gpt-image-2 with the locked sheet as reference, ~100cr — the same cheap route that produced the bare-wrist, rope-tie and loaded-glider sheets, each of which fixed its drift in one attempt). Do not hope the model will extrapolate the view: it will invent one, and it will invent a different one next scene.
+
+2. **THE STATE RULE.** Attach the sheet that matches the character's state **in this scene**, not the character's default sheet. If the goggles are down in the scene, the goggles-DOWN sheet is the reference; if no such sheet exists, either the scene is written to the state that IS locked, or a derived state sheet is generated first. The same holds for any tracked state — wristwear, carried props, clothing changes. Attaching a sheet that contradicts the scene is the reference conflict d-098 exists to prevent, pointed at your own scene instead of at a neighbour.
+
+**The corollary that catches the subtle failures: a fixture with no depicted geometry is not locked.** The craft's descriptor said "open two-seat cockpit" and never said the seats sit side by side, so scene_direction invented "front cockpit / rear cockpit" and three clips were lost. **Where a sheet cannot settle a relationship, the descriptor must state it in words** — which seat is whose, which side of the vehicle a rider occupies, which hand holds the tool. Pin it to the WORLD (the craft, the set, the other character), never to the frame; the screen side is then derived per camera under d-093, and it stops flipping between clips.
+
+**Cost discipline:** a derived sheet is ~100cr against ~4,000-8,000cr for a rejected clip. When in doubt, generate the sheet.
+
 ## The silent performance (BINDING — d-094, extracted from the approved S36 Milo pass)
 
 d-111 already says the listener is directed as deliberately as the speaker. This is the HOW, and it applies hardest to a character who has **no line at all** in the scene: they are not "reacting", they are performing a second, wordless part, and the prompt writes it with the same care as the spoken one. The S36 rule-zero clip is the standard — Milo says nothing for nine seconds and carries half the scene. All five of these, every time:
