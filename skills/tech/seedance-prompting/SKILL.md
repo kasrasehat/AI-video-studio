@@ -65,6 +65,28 @@ A scene's clip is a designed shot sequence by default; a single continuous shot 
 6. **Chain edges are exempt from restructuring:** the FIRST shot must begin on the start frame and bridge from its actual composition (d-124); the FINAL shot books the handoff beat (d-191). Cuts live between those two anchors.
 7. **In medias res** is the default entry energy — the scene is already in progress — expressed WITHIN the start-frame bridge, never instead of it.
 
+## Seating derivation for aboard scenes (BINDING — d-118, Director ruling 2026-09-07)
+
+Two riders on a vehicle swapped screen sides across S43-S46 while a correct sheet was attached every time, and a same-day attempt to pin them chose the wrong side and propagated it into a derived sheet and a rejected clip. The cure is mechanical, so make it mechanical:
+
+**The world fact (Whisper-Wing, this series):** Milo sits on Gramps's RIGHT. Gramps is in the craft's LEFT-hand seat at the control; Milo is in the RIGHT-hand seat with nothing in front of him. This never changes and is never restated as a frame label.
+
+**The derivation table — every aboard brief and every aboard prompt states which case its camera is in and derives the sides from it:**
+
+| camera position | what the frame shows |
+|---|---|
+| AHEAD of the craft (front, three-quarter front, riders facing the lens) | **Milo frame-LEFT, Gramps frame-RIGHT** — the stage-5 "locked cockpit axis" |
+| BEHIND the craft (over the shoulders, looking forward) | Gramps frame-LEFT, Milo frame-RIGHT |
+| on the craft's RIGHT flank (nose points frame-LEFT) | **Milo is the NEAR rider**; Gramps's head shows past his shoulder |
+| on the craft's LEFT flank (nose points frame-RIGHT) | **Gramps is the NEAR rider**; Milo beyond him |
+
+Rules that follow:
+1. **State the case, then the sides.** Write it as a fact of the shot: *"camera ahead of the craft, so @milo is frame-left and @gramps frame-right at the control."* A bare "Milo frame-left" with no camera case is exactly the copy-paste error d-093 forbids.
+2. **A camera that moves between cases inside one shot must say so at the crossing** (a pass from the flank to the front hands the sides over mid-shot; name the beat where it happens).
+3. **A tail from a differently-placed camera carries gaze, light and expression only** — write the @Video1 line so it cannot dictate sides.
+4. **Verify on delivery.** The producer opens the delivered last frame, names the camera case it shows, and reports whether the sides match the table. This is a Director-designated recurring defect and therefore inside the d-036 exception. A mismatch is reported, never silently regenerated.
+5. **Derived sheets inherit the table.** Any cockpit or vehicle sheet generated under d-116 is checked panel by panel against it before it is registered; a sheet that disagrees is never attached, whatever it cost.
+
 ## A reference only covers the angle and the state it shows (BINDING — d-115, Director order 2026-09-07)
 
 d-098 says a sheet-vs-render drift is fixed by a derived sheet rather than by words. This is its limit, and it was learned the hard way across S42-S45, where the Whisper-Wing's cockpit changed shape between clips and the two riders swapped sides from scene to scene while a correct sheet was attached to every one of them.
