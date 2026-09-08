@@ -87,6 +87,20 @@ Rules that follow:
 4. **Verify on delivery.** The producer opens the delivered last frame, names the camera case it shows, and reports whether the sides match the table. This is a Director-designated recurring defect and therefore inside the d-036 exception. A mismatch is reported, never silently regenerated.
 5. **Derived sheets inherit the table.** Any cockpit or vehicle sheet generated under d-116 is checked panel by panel against it before it is registered; a sheet that disagrees is never attached, whatever it cost.
 
+## A generation boundary never sits inside a continuous moment (BINDING — d-124, Director order 2026-09-08)
+
+S48 opened on the exact frame S47 closed on — same two-shot, same state, the breath becoming the shout — and the environment still shifted across the seam, because the second generation had only a 3-second tail to rebuild the world from. The Director's diagnosis: *"s48 starts exactly from the last frame of s47. It is clear mistake that we generate two different scenes."* This is the S18 bug (d-061/d-062) happening again, and it happened because a brief invoked an "authored exception" to d-062 that does not exist. **There is no exception.**
+
+**The rule.** When scene B would open on scene A's closing frame — same subjects, comparable framing, a state that continues — that boundary is never a generation boundary. Resolve it in this order:
+
+1. **PACK** A and B into one generation (d-121) when they fit the window. Packing is now MANDATORY at a continuation boundary, not optional — the seam disappears entirely, which no conditioning method achieves.
+2. **RE-CUT** when they do not fit: B opens on a DIFFERENT composition (d-062 — shot size or angle changes) so that no frame continuity is demanded across generations. The tail may still attach (d-076) to carry vector, light and state; what crosses the cut is momentum, never framing.
+3. **Overlap generation** with a mid-motion start frame (d-213) remains a Director-ordered, case-by-case option only — it was rejected as the standing method at d-061 and nothing here re-enables it.
+
+**The phrase "startable from the chained end frame" is banned from scene_direction.** Its presence marks a boundary that must be packed or re-cut before anything is generated. Stage 5 writes every scene opening as a composition of its own; stage 9 refuses a brief whose opening is a near-match of the predecessor's exit and sends it back for a pack or a re-cut.
+
+**What this does NOT change:** d-062's three resolutions stand, with packing added in front of them; d-076 still governs whether a tail attaches; d-121's eight conditions still govern whether a pack is possible; d-212 boundary classes are unchanged — a `continuous` class boundary is exactly the case this rule targets.
+
 ## Pack whole beats into one window — never split a beat (BINDING — d-121, Director order 2026-09-08)
 
 The seams between generated clips are the hardest part of the film, and every continuity failure in E02's second half happened BETWEEN generations, never inside one — the model held three and four shots together every time. The Director's ruling, verbatim: *"do not divide by window. if two beats can be placed in one window put them. also you need to consider tail video length."*
