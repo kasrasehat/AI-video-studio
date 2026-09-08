@@ -87,6 +87,27 @@ Rules that follow:
 4. **Verify on delivery.** The producer opens the delivered last frame, names the camera case it shows, and reports whether the sides match the table. This is a Director-designated recurring defect and therefore inside the d-036 exception. A mismatch is reported, never silently regenerated.
 5. **Derived sheets inherit the table.** Any cockpit or vehicle sheet generated under d-116 is checked panel by panel against it before it is registered; a sheet that disagrees is never attached, whatever it cost.
 
+## Pack whole beats into one window — never split a beat (BINDING — d-121, Director order 2026-09-08)
+
+The seams between generated clips are the hardest part of the film, and every continuity failure in E02's second half happened BETWEEN generations, never inside one — the model held three and four shots together every time. The Director's ruling, verbatim: *"do not divide by window. if two beats can be placed in one window put them. also you need to consider tail video length."*
+
+**The rule.** Scenes stay whole. Never re-cut a beat to fill a window. But when two CONSECUTIVE scenes fit inside one generation window, they are generated as ONE clip, and the boundary between them becomes an in-clip cut the model manages itself. All of the following must hold, or the scenes stay separate:
+
+1. **Duration:** the sum of both `est_duration_seconds` ≤ 15s on seedance2 (the model's +1-frame overrun is fine; the `params.duration_s` schema cap is 15).
+2. **Dialogue:** combined spoken words ≤ ~30 (the d-201 speakability budget for a full 15s clip). Never cram.
+3. **Impact moves:** at most ONE across the merged pair (d-085 / d-120 apply to the generation, not the label).
+4. **References — and this is where the tail length matters:** the set stays ≤9 INCLUDING the previous clip's 3s tail and every voice the merged pair needs; and the combined reference MEDIA — tail seconds + every voice clip — stays under the d-054 audio/video reference cap of 15.2s. Two 4.5s voices + a 3s tail = 12s, fine. A third speaker forces a choice: drop the tail (d-076 omit) or trim a voice. The tail is CONDITIONING — it does not consume output duration — but it does consume a reference slot and reference seconds.
+5. **Prompt:** the merged shot list must still fit 200–1000 words (d-138/d-201) with every anchor verbatim. If it cannot, do not merge.
+6. **Boundaries:** the internal boundary keeps its d-062 double contrast and its d-212 class, written as a cut inside the clip; no tail is attached at an internal boundary. The merged unit's OUTER boundaries are handled exactly as before (d-076 tail decision at the head, tail extraction at the foot).
+7. **Laws travel:** every law of BOTH scenes applies across the whole clip — kids' law, zero-foreshadowing, seating (d-118), silent passes (d-094), atmosphere (d-095).
+8. **Location:** a location change inside a merge is allowed only when the direction authors the transition on camera (the S43 garden-to-boulevard fold is the precedent); otherwise both scenes share a location.
+
+**Recording (schema-safe — the manifest allows ONE scene_id per clip and no extra fields):** the generation is recorded under the FIRST scene's id (`S64_C01`) with the full prompt, references and cost. The SECOND scene gets its own entry with the same `output_path`, the same `attempt`, `cost_usd` 0, and `params.notes` stating "produced inside S64_C01 attempt N (d-121 pack)". Both entries take the same status at the gate — one Director verdict, and a rejection rejects both. The tail is extracted once, from the merged file.
+
+**Gate:** cost is stated for the full merged duration (d-114). A rejected 15s clip costs more than a rejected 6s one; that exposure is the price of fewer seams, and the Director has accepted it.
+
+**Stage 3 / 4 for future episodes:** divide by beat exactly as before, with the 15s ceiling. Then stage 4's recheck runs a PACKING PASS: every consecutive pair that satisfies conditions 1–8 is tagged in both scenes' `continuity_notes` as `PACK WITH <id> (d-121)`, and stage 9 generates tagged pairs as one clip. The tag is text because the scene_list schema admits no new fields.
+
 ## A reference only covers the angle and the state it shows (BINDING — d-115, Director order 2026-09-07)
 
 d-098 says a sheet-vs-render drift is fixed by a derived sheet rather than by words. This is its limit, and it was learned the hard way across S42-S45, where the Whisper-Wing's cockpit changed shape between clips and the two riders swapped sides from scene to scene while a correct sheet was attached to every one of them.

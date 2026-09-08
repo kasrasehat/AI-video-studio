@@ -22,6 +22,7 @@ Split the approved story into scene units — the atomic clips of production —
 
 ## Pitfalls
 
+- Dividing by window instead of by beat (d-121): a beat is never cut to fill 15s; consecutive whole beats that fit one window are PACKED later, by stage 4's tag and stage 9's single generation.
 - Squeezing a 20-second moment into 15 by shaving reaction time — split it into two scenes with a designed join instead.
 - Duration optimism on dialogue: spoken lines + a look + a beat of silence is SLOWER than word count suggests.
 - Scene summaries that restate the story instead of naming the scene's single dramatic job.

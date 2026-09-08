@@ -23,5 +23,5 @@ The rechecker must NOT be the stage-3 context. Dispatch a NEW `scene-splitter` i
 ## Pitfalls
 
 - Letting the rechecker "improve" scenes stylistically — its job is structure and continuity, not taste (taste is stage 5).
-- Merging scenes past 15 seconds to reduce count.
+- Merging scenes past 15 seconds to reduce count. (Packing two WHOLE beats that fit INSIDE 15s is the opposite case and is required — d-121: tag both scenes' continuity_notes `PACK WITH <id> (d-121)` when the eight conditions in `seedance-prompting` hold; stage 9 generates them as one clip.)
 - Accepting a recheck that only praised the input — demand the audit, not the compliment.
