@@ -77,8 +77,10 @@ Two riders on a vehicle swapped screen sides across S43-S46 while a correct shee
 |---|---|
 | AHEAD of the craft (front, three-quarter front, riders facing the lens) | **Milo frame-LEFT, Gramps frame-RIGHT** — the stage-5 "locked cockpit axis" |
 | BEHIND the craft (over the shoulders, looking forward) | Gramps frame-LEFT, Milo frame-RIGHT |
-| on the craft's RIGHT flank (nose points frame-LEFT) | **Milo is the NEAR rider**; Gramps's head shows past his shoulder |
-| on the craft's LEFT flank (nose points frame-RIGHT) | **Gramps is the NEAR rider**; Milo beyond him |
+| on the craft's RIGHT flank (nose points frame-RIGHT) | **Milo is the NEAR rider**; Gramps's head shows past his shoulder |
+| on the craft's LEFT flank (nose points frame-LEFT) | **Gramps is the NEAR rider**; Milo beyond him |
+
+*(Corrected 2026-09-08, d-125: the flank rows originally paired RIGHT flank with nose frame-LEFT. Side-view geometry: standing on someone's RIGHT and facing them, their nose points to YOUR right — so a nose-RIGHT view is the right flank and its near rider is the right-seat rider, Milo. The AHEAD and BEHIND rows were always correct. Cockpit sheet v2's two FLANK panels were drawn to the wrong rows and are MIRRORED — never cite them; cite only its FROM BEHIND and THREE-QUARTER FRONT panels until a v3 exists.)*
 
 Rules that follow:
 1. **State the case, then the sides.** Write it as a fact of the shot: *"camera ahead of the craft, so @milo is frame-left and @gramps frame-right at the control."* A bare "Milo frame-left" with no camera case is exactly the copy-paste error d-093 forbids.
