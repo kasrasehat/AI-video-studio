@@ -80,6 +80,8 @@ Two riders on a vehicle swapped screen sides across S43-S46 while a correct shee
 | on the craft's RIGHT flank (nose points frame-RIGHT) | **Milo is the NEAR rider**; Gramps's head shows past his shoulder |
 | on the craft's LEFT flank (nose points frame-LEFT) | **Gramps is the NEAR rider**; Milo beyond him |
 
+*(Control ruled 2026-09-11, d-133: the single control is a WOODEN WHEEL at Gramps's hands - a small brass-hubbed ship's wheel on the left-seat side of the dash, as rendered S50-S53. Write 'the wooden wheel'; never a stick, yoke or lever.)*
+
 *(Corrected 2026-09-08, d-125: the flank rows originally paired RIGHT flank with nose frame-LEFT. Side-view geometry: standing on someone's RIGHT and facing them, their nose points to YOUR right — so a nose-RIGHT view is the right flank and its near rider is the right-seat rider, Milo. The AHEAD and BEHIND rows were always correct. Cockpit sheet v2's two FLANK panels were drawn to the wrong rows and are MIRRORED — never cite them; cite only its FROM BEHIND and THREE-QUARTER FRONT panels until a v3 exists.)*
 
 Rules that follow:
