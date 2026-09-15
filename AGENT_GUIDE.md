@@ -15,7 +15,7 @@ Series production (micro-explorers episodes) happens ONLY on branch `series`. Sk
 Before doing pipeline work, read in this order. Never skip a layer.
 
 1. **This file** — the contract.
-2. **`pipeline.yaml`** — the 12-stage manifest: stage order, artifacts, gates, QA loops, parallelism.
+2. **`pipeline.yaml`** — the 13-stage manifest (stage 5b sound-direction added d-164): stage order, artifacts, gates, QA loops, parallelism.
 3. **The stage-director skill** for the current stage (`skills/stages/NN-<stage>-director.md`) — how to execute the stage.
 4. **The tech skill** for any generation tool you are about to use (`skills/tech/<name>/SKILL.md`) — provider-specific prompting and API contracts. The intelligence is in the skills; do not improvise prompts or parameters.
 

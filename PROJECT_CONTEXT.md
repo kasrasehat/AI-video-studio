@@ -8,7 +8,7 @@ One-page orientation for agents and humans. The binding rules live in [`AGENT_GU
 ┌─ Harness entry points ──────────────────────────────────────────────┐
 │ CLAUDE.md · CURSOR.md · CODEX.md · AGENTS.md → all point to AGENT_GUIDE.md
 ├─ Contract ──────────────────────────────────────────────────────────┤
-│ AGENT_GUIDE.md (rules) · pipeline.yaml (10-stage manifest)          │
+│ AGENT_GUIDE.md (rules) · pipeline.yaml (13-stage manifest)          │
 ├─ Intelligence (markdown, harness-agnostic) ─────────────────────────┤
 │ skills/stages/  — one director skill per pipeline stage             │
 │ skills/meta/    — checkpoint protocol, QA reviewer, consistency     │

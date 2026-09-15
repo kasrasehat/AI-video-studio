@@ -53,3 +53,7 @@ The Director may insert new scenes at any point. Scene ids take a letter suffix 
 - Treating a skipped evaluator as "no QC happened" — the Director's personal check IS the QC of record (d-036: stills/frame-sweep passes run only on explicit Director request).
 - Re-arguing a Director ruling recorded at a previous gate (accepted deviations are rulings, not defects to re-fix).
 - Forgetting the d-202/d-203 chaining set on a chained scene: previous clip's last-3s tail as a video reference + the scene's Soul keyframe as a STYLE reference (never start_image, d-203) + reference sheets + storyboard page. Two open Director evaluations run at E02's first chained scenes: keyframe-vs-page adherence, and start_variant none vs last_frame (`start_variant:last_frame` in the brief attaches the predecessor's last frame as start_image) — both variants Director-gated and reported side by side; the Director picks the standing method.
+
+## Sound plan contract (BINDING - d-164, stage 5b)
+
+When `artifacts/sound_plan.json` exists, each clip's Audio block is `sound_plan.scenes[<scene_id>].baked.audio_block` pasted VERBATIM (plus the quoted dialogue lines it names), the scene's `register` sets every delivery word, and the block's closing no-music clause is mandatory - a prompt without it is invalid. Scored intentions were translated at stage 5b; the producer never translates `sound_direction` on the fly again. If the file is absent, STOP and report to the Director before generating: run stage 5b or obtain an explicit skip ruling.

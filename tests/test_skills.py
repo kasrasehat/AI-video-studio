@@ -11,7 +11,7 @@ TECH_DIR = lib.ROOT / "skills" / "tech"
 AGENTS_DIR = lib.ROOT / ".claude" / "agents"
 
 EXPECTED_AGENTS = {
-    "writer", "refiner", "scene-splitter", "director", "qa-reviewer",
+    "writer", "refiner", "scene-splitter", "sound-director", "director", "qa-reviewer",
     "descriptor-extractor", "storyboard-artist", "prompt-smith", "qc-critic",
     "thumbnail-artist", "youtube-strategist", "spotlight-writer",
     "clip-producer", "clip-evaluator", "virality-checker",

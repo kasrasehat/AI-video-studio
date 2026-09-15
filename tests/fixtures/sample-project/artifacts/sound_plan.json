@@ -1,0 +1,68 @@
+{
+  "version": "1.0",
+  "project_id": "sample-project",
+  "global": {
+    "vocal_register_map": [
+      {"scene_span": "S01-S02", "register": "whisper", "note": "Night bedroom; the whisper ceiling holds until the wake-up."},
+      {"scene_span": "S03", "register": "full_voice", "note": "Luna wakes — the lift is the design event."}
+    ],
+    "baked_sound_classes": ["dialogue", "foley", "room ambience", "diegetic motifs (the bedside clock tick)", "hinge J-cut ambience seeds"],
+    "post_sound_classes": ["score cues", "protected silences", "non-diegetic motif answers", "exception SFX (locked assets laid by post)"],
+    "voice_references": [
+      {"character_id": "CH01", "asset_ref": "CH01_voice/CH01_canon", "note": "One reference film-wide."},
+      {"character_id": "CH02", "asset_ref": "CH02_voice/CH02_canon"}
+    ],
+    "no_music_clause": "No music.",
+    "integrity_rules": [
+      "Every generation Audio block ends with the no-music clause.",
+      "A sound class lives in exactly one half; diegetic motifs are prompted with an identical string wherever they recur.",
+      "Register changes are story events."
+    ],
+    "score_intent": "A nocturne for the sleeping house (celeste, music box) that blooms into warm strings inside the dream and returns in a morning voice."
+  },
+  "scenes": [
+    {
+      "scene_id": "S01",
+      "register": "whisper",
+      "baked": {
+        "audio_block": "Audio: a hushed night bedroom — curtain breath, the house settling; a bedside clock ticks, regular and metronomic; Milo whispers, close-miked and conspiratorial: \"Gramps, if she's asleep, what is she looking at?\"; Luna's slow sleep-breathing beneath. No music.",
+        "dialogue": ["Milo: \"Gramps, if she's asleep, what is she looking at?\""],
+        "foley": ["curtain breath", "house settling"],
+        "ambience": "hushed night bedroom",
+        "diegetic_motifs": ["the bedside clock tick — regular, metronomic"],
+        "translations": ["'No score (stage 10)' kept as written — nothing to translate."]
+      },
+      "post": {
+        "score": "bed",
+        "cue_intent": "A barely-there nocturne bed under the whisper.",
+        "theme_hint": "TM01 nocturne",
+        "gain_hint_db": -18,
+        "duck_windows": ["Gramps, if she's asleep, what is she looking at?"]
+      },
+      "boundary_out": {"treatment": "hard_cut", "note": "new_beat; the whisper ends, cut on the camera's drift back."}
+    },
+    {
+      "scene_id": "S02",
+      "register": "whisper",
+      "baked": {
+        "audio_block": "Audio: the clock tick continues, now placed at the bedside; one soft floorboard creak under Gramps's arrival; the faint china clink of two mugs; Gramps at a musing murmur: \"Perhaps her eyes are resting while her brain is telling a story.\"; the canal's cavernous resonance arrives under the last second. No music.",
+        "jcut_seed_in": "the ear canal's cavernous resonance",
+        "translations": ["'No score' kept."]
+      },
+      "post": {"score": "bed", "cue_intent": "The bed continues and dies into the dip.", "duck_windows": ["Perhaps her eyes are resting while her brain is telling a story."]},
+      "boundary_out": {"treatment": "j_cut", "lead_frames": 18, "note": "hinge into the ear canal; the incoming resonance leads by 18 frames."}
+    },
+    {
+      "scene_id": "S03",
+      "register": "full_voice",
+      "baked": {
+        "audio_block": "Audio: morning holds the room — birdsong, soft house sounds, sheets shifting; Luna wakes with a soft delighted gasp, then says, sleepy and glowing, at full daytime voice: \"I had an incredible dream.\"; nobody speaks over her. No music.",
+        "translations": ["'a single warm celeste phrase' -> moved to post.cue_intent (no object on screen makes it)."]
+      },
+      "post": {"score": "cue", "cue_intent": "One warm celeste phrase for the glance — the score's first morning word.", "theme_hint": "TM01 morning voice", "duck_windows": ["I had an incredible dream."]},
+      "boundary_out": {"treatment": "hard_cut"}
+    }
+  ],
+  "qa": {"rounds": 1, "verdict": "pass"},
+  "metadata": {"note": "Fixture for schema tests (d-164)."}
+}

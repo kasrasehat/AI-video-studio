@@ -6,7 +6,7 @@ name: film
 version: "1.0"
 description: >
   Story idea → 2–7 minute film with on-screen speaking characters, assembled from
-  ≤15-second AI clips. Twelve stages (stage 12 optional), full Director gates,
+  ≤15-second AI clips. Thirteen stages plus stage 5b sound-direction (d-164), full Director gates,
   consistency enforced via locked descriptors + reference assets threaded through
   every generation call.
 
@@ -118,6 +118,27 @@ stages:
       - Schema-valid scene_direction covering every scene
       - Blocking qa_review verdict == pass within 3 rounds
 
+  - name: sound-direction
+    title: Sound direction (baked vs post, vocal integrity)
+    skill: skills/stages/05b-sound-direction-director.md
+    produces: [sound_plan]
+    required_artifacts_in: [scene_direction, scene_list, brief]
+    optional_artifacts_in: [asset_manifest]   # locked voices when the stage runs retroactively (d-164)
+    checkpoint_required: true
+    human_approval_default: true
+    optional: true                 # d-164: runs by default on every production; skipping is a Director ruling. optional=true only so productions that predate the stage (E01) are never blocked by it
+    qa_loop: {agent: qa-reviewer, max_rounds: 2, blocking: true}
+    parallel: {claude_subagent: sound-director, unit: scene, max_parallel: 3}
+    resume_unit: scene
+    review_focus:
+      - Every sound class lives in exactly one half (baked by the video model / added by post) - no scored noun survives in any audio_block, every block ends with the no-music clause (d-103/d-164)
+      - Vocal register map contiguous; register changes are story events; one voice reference per speaker film-wide
+      - Every hinge names its J-cut seed on BOTH sides; boundary treatments match scene_list boundary_class_out
+      - Protected silences deliberate and stated; post cue intents carry every scored intention the direction wrote
+    success_criteria:
+      - Schema-valid sound_plan covering every scene
+      - qa_review verdict == pass within 2 rounds
+
   - name: lock-descriptors
     title: Extract consistency lock descriptors
     skill: skills/stages/06-lock-descriptors-director.md
@@ -179,7 +200,7 @@ stages:
     skill: skills/stages/09-video-generation-director.md
     produces: [generation_manifest, clip_qc_report]
     required_artifacts_in: [lock_descriptors, asset_manifest, scene_list, scene_direction]
-    optional_artifacts_in: [shot_selection, storyboard_set]   # d-029: present + used for keyframe/
+    optional_artifacts_in: [shot_selection, storyboard_set, sound_plan]   # d-164: sound_plan.baked.audio_block is pasted verbatim (STOP and report if absent); d-029: present + used for keyframe/
       # start-end-frame conditioning when stage 8 ran; when storyboard was skipped, clip-producer
       # conditions directly on locked sheets (image_references) + full text prompt (anchors verbatim)
       # instead of a start_frame/keyframe — see skills/stages/09-video-generation-director.md
@@ -204,6 +225,7 @@ stages:
     skill: skills/stages/10-integration-director.md
     produces: [edit_decisions, audio_direction, render_report]
     required_artifacts_in: [generation_manifest, clip_qc_report, scene_direction, scene_list, brief]
+    optional_artifacts_in: [sound_plan]   # d-164: Phase 2 derives audio_direction from sound_plan.global.score_intent + scenes[].post
     checkpoint_required: true
     human_approval_default: true   # approve final cut before rendering deliverables
     qa_loop: {agent: qc-critic, max_rounds: 2, blocking: true}   # watch-through of assembled cut

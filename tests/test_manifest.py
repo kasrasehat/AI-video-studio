@@ -16,14 +16,14 @@ def test_manifest_validates_against_schema():
 
 def test_stages_in_locked_order():
     expected = ["intake", "trend-scan", "story", "scene-division", "scene-recheck", "directing",
-                "lock-descriptors", "asset-generation", "storyboard", "video-generation", "integration",
+                "sound-direction", "lock-descriptors", "asset-generation", "storyboard", "video-generation", "integration",
                 "publishing", "character-spotlight", "dub-pass"]
     assert [s["name"] for s in STAGES] == expected
 
 
 def test_optional_flags():
     optional = {s["name"] for s in STAGES if s.get("optional")}
-    assert optional == {"trend-scan", "storyboard", "character-spotlight", "dub-pass"}, "optional stages: 1b, 8, 12, 13 (d-192/d-196/d-029)"
+    assert optional == {"trend-scan", "sound-direction", "storyboard", "character-spotlight", "dub-pass"}, "optional stages: 1b, 5b (d-164: default-run, legacy-safe), 8, 12, 13 (d-192/d-196/d-029)"
 
 
 def test_orchestration_skill_exists():
@@ -52,7 +52,7 @@ def test_required_inputs_are_produced_upstream():
 
 def test_gates_match_locked_design():
     gated = {s["name"] for s in STAGES if s["human_approval_default"]}
-    assert gated == {"intake", "trend-scan", "story", "scene-recheck", "directing", "lock-descriptors",
+    assert gated == {"intake", "trend-scan", "story", "scene-recheck", "directing", "sound-direction", "lock-descriptors",
                      "asset-generation", "storyboard", "video-generation", "integration", "publishing",
                      "character-spotlight", "dub-pass"}
     ungated = {s["name"] for s in STAGES if not s["human_approval_default"]}
@@ -61,7 +61,7 @@ def test_gates_match_locked_design():
 
 def test_mandatory_qa_loops_present():
     by_name = {s["name"]: s for s in STAGES}
-    for stage_name in ["story", "directing", "lock-descriptors", "integration"]:
+    for stage_name in ["story", "directing", "sound-direction", "lock-descriptors", "integration"]:
         assert "qa_loop" in by_name[stage_name], f"{stage_name} must declare its QA loop"
         assert by_name[stage_name]["qa_loop"]["blocking"] is True
     # d-137 + d-114: stage 9's loop is the OPTIONAL, NON-blocking clip-evaluator â€”

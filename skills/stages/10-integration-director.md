@@ -27,6 +27,8 @@ Author `edit_decisions.json`:
 
 ## Phase 2 — Audio direction (free, on paper — the Sound Direction design)
 
+**Source (d-164):** when `artifacts/sound_plan.json` exists, Phase 2 is DERIVED from it - `global.score_intent` seeds the score architecture, every scene's `post` half (score mode, cue_intent, theme_hint, gain_hint_db, duck_windows, motif_placements, exception_sfx) becomes the cue sheet, `post.score == protected_silence` is the protected-silences list, and `boundary_out` fills `edit_decisions.timeline[].audio_treatment`. Cue in/out timecodes still come from the ASSEMBLED CUT (d-159), never from scene estimates.
+
 Author `audio_direction.json` (schema `audio_direction`) — sound is directed like scenes:
 1. **Score architecture first:** theme(s) with dramatic meaning + instrumentation + tempo/key; the emotional arc mapped scene-span by scene-span; **protected silences** carried over from scene_direction rhythm (a silence the direction protected stays protected in the score); continuity notes so adjacent cues share tempo/key families and never clash at cuts.
 2. **Cue sheets with timecodes:** every music cue (`MC..`) gets timeline in/out points derived from the Phase-1 cut. Complete generation prompts saved per cue, instrumental by default.

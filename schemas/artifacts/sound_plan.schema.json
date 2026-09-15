@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "full-ai-video-system/artifacts/sound_plan",
+  "title": "Sound Plan",
+  "description": "Produced by stage 5b (sound-direction). The film's audio design split into what the VIDEO MODEL bakes (dialogue, foley, ambience, diegetic motifs) and what POST adds (score, protected silences, seam treatment). d-164: the two halves never overlap — a sound class lives in exactly one of them.",
+  "type": "object",
+  "required": ["version", "project_id", "global", "scenes", "qa"],
+  "properties": {
+    "version": { "type": "string", "const": "1.0" },
+    "project_id": { "type": "string", "minLength": 1 },
+    "global": {
+      "type": "object",
+      "required": ["vocal_register_map", "baked_sound_classes", "post_sound_classes", "voice_references", "no_music_clause", "integrity_rules"],
+      "properties": {
+        "vocal_register_map": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "required": ["scene_span", "register", "note"],
+            "properties": {
+              "scene_span": { "type": "string", "minLength": 1 },
+              "register": { "type": "string", "enum": ["whisper", "hushed", "conversational", "full_voice", "shouted", "wordless"] },
+              "note": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "baked_sound_classes": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "description": "Sound classes the video model generates (dialogue, foley, ambience, diegetic motifs, J-cut ambience seeds)." },
+        "post_sound_classes": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "description": "Sound classes stage 10 adds (score cues, non-diegetic motifs, exception SFX)." },
+        "voice_references": {
+          "type": "array",
+          "items": {
+            "type": "object", "required": ["character_id", "asset_ref"],
+            "properties": {
+              "character_id": { "type": "string", "minLength": 1 },
+              "asset_ref": { "type": "string", "minLength": 1, "description": "asset_manifest element/variant that is the ONE voice reference for this character film-wide." },
+              "note": { "type": "string" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "no_music_clause": { "type": "string", "minLength": 1, "description": "The literal clause every generation Audio block ends with (e.g. 'No music.')." },
+        "integrity_rules": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "score_intent": { "type": "string", "description": "One paragraph: the score's architecture as intent (themes, arc) for stage 10 to design against." }
+      },
+      "additionalProperties": false
+    },
+    "scenes": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["scene_id", "register", "baked", "post", "boundary_out"],
+        "properties": {
+          "scene_id": { "type": "string", "pattern": "^S\\d{2,3}[A-Z]?$" },
+          "register": { "type": "string", "enum": ["whisper", "hushed", "conversational", "full_voice", "shouted", "wordless"] },
+          "baked": {
+            "type": "object",
+            "required": ["audio_block"],
+            "properties": {
+              "audio_block": { "type": "string", "minLength": 20, "description": "The exact Audio block stage 9 pastes into the generation prompt; ends with global.no_music_clause." },
+              "dialogue": { "type": "array", "items": { "type": "string" } },
+              "foley": { "type": "array", "items": { "type": "string" } },
+              "ambience": { "type": "string" },
+              "diegetic_motifs": { "type": "array", "items": { "type": "string" } },
+              "jcut_seed_in": { "type": "string", "description": "Ambience of THIS scene that the previous scene's tail must already carry (hinge J-cut)." },
+              "translations": { "type": "array", "items": { "type": "string" }, "description": "Each scored intention from scene_direction.sound_direction and the physical sound it became." }
+            },
+            "additionalProperties": false
+          },
+          "post": {
+            "type": "object",
+            "required": ["score"],
+            "properties": {
+              "score": { "type": "string", "enum": ["none", "protected_silence", "bed", "cue", "cue_exit_event"], "description": "none = no score; protected_silence = must stay music-free; bed = quiet texture; cue = a directed cue; cue_exit_event = the cue ends as a directed event on this scene." },
+              "cue_intent": { "type": "string" },
+              "theme_hint": { "type": "string" },
+              "gain_hint_db": { "type": "number" },
+              "duck_windows": { "type": "array", "items": { "type": "string" }, "description": "Dialogue lines under which the score must sit sparse with a deep duck." },
+              "motif_placements": { "type": "array", "items": { "type": "string" } },
+              "exception_sfx": { "type": "array", "items": { "type": "string" }, "description": "d-160 exceptions only: sounds that cannot exist in any clip, or a locked asset laid by post." }
+            },
+            "additionalProperties": false
+          },
+          "boundary_out": {
+            "type": "object",
+            "required": ["treatment"],
+            "properties": {
+              "treatment": { "type": "string", "enum": ["hard_cut", "j_cut", "l_cut", "crossfade_bed", "transient_mask", "cue_continuous"] },
+              "lead_frames": { "type": "integer", "minimum": 0, "maximum": 48 },
+              "note": { "type": "string" }
+            },
+            "additionalProperties": false
+          },
+          "notes": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "qa": {
+      "type": "object",
+      "required": ["rounds"],
+      "properties": {
+        "rounds": { "type": "integer", "minimum": 0 },
+        "verdict": { "type": "string", "enum": ["pass", "fix"] },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": false
+}
