@@ -336,6 +336,70 @@ def join_timeline(mezz: list[dict], work: Path, fps: int, dry: bool) -> Path:
     return left
 
 
+def _bed_filter(m: dict, project: Path, dry: bool, is_sfx: bool = False) -> str:
+    """Filter chain for one bed: slot trim, fades, delay, gain (shared by both mix paths)."""
+    delay = int(float(m["at_s" if is_sfx else "in_s"]) * 1000)
+    if is_sfx:
+        return f"adelay={delay}|{delay},volume={m['gain_db']}dB"
+    fades = ""
+    fdur = probe_duration(project / m["path"]) if not dry else 20.0
+    if m.get("out_s") is not None:
+        slot = max(float(m["out_s"]) - float(m["in_s"]), 0.0)
+        if slot < fdur:
+            fades += f",atrim=0:{slot:.3f},asetpts=PTS-STARTPTS"
+            fdur = slot
+    if m.get("fade_in_s"):
+        fades += f",afade=t=in:d={m['fade_in_s']}"
+    if m.get("fade_out_s"):
+        st = max(fdur - float(m["fade_out_s"]), 0)
+        fades += f",afade=t=out:st={st}:d={m['fade_out_s']}"
+    return f"anull{fades},adelay={delay}|{delay},volume={m['gain_db']}dB"
+
+
+def mix_audio_incremental(cut: Path, music: list, sfx: list, project: Path, work: Path, target_lufs: float, dry: bool) -> Path:
+    """Low-memory mix for many beds: every adelay buffers its whole offset in RAM, so one graph with
+    dozens of beds delayed by minutes exhausts memory (night-journey: 24 cues -> 'Cannot allocate memory').
+    Beds are folded one at a time into two streamed stems (ducked / dry) over silence the length of the
+    cut, then the clip audio keys ONE sidechain compressor over the ducked stem. Same sound as the
+    one-graph path; all-duck cues are equivalent under a single key."""
+    cut_dur = probe_duration(cut) if not dry else 100.0
+    stems = {}
+    for name, beds in (("duck", [(m, False) for m in music if m.get("duck")]),
+                       ("dry", [(m, False) for m in music if not m.get("duck")] + [(s_, True) for s_ in sfx])):
+        if not beds:
+            continue
+        stem = work / f"stem_{name}_00.mkv"
+        run([FFMPEG, "-y", "-f", "lavfi", "-i", f"anullsrc=r=48000:cl=stereo", "-t", f"{cut_dur:.3f}",
+             "-c:a", "pcm_s16le", stem], dry)
+        for k, (bed, is_sfx) in enumerate(beds, 1):
+            nxt = work / f"stem_{name}_{k:02d}.mkv"
+            fc = f"[1:a]{_bed_filter(bed, project, dry, is_sfx)}[b];[0:a][b]amix=inputs=2:duration=first:normalize=0[a]"
+            run([FFMPEG, "-y", "-i", stem, "-i", project / bed["path"], "-filter_complex", fc,
+                 "-map", "[a]", "-c:a", "pcm_s16le", nxt], dry)
+            if not dry and k > 1:
+                stem.unlink(missing_ok=True)
+            stem = nxt
+        stems[name] = stem
+    cmd = [FFMPEG, "-y", "-i", cut]
+    parts, mix_inputs, idx = [], [], 1
+    if "duck" in stems:
+        cmd += ["-i", stems["duck"]]
+        parts.append("[0:a]asplit=2[dlg][key]")
+        parts.append(f"[{idx}:a][key]sidechaincompress=threshold=0.05:ratio=8:attack=20:release=400[md]")
+        mix_inputs.append("[md]"); idx += 1
+    else:
+        parts.append("[0:a]anull[dlg]")
+    if "dry" in stems:
+        cmd += ["-i", stems["dry"]]
+        mix_inputs.append(f"[{idx}:a]"); idx += 1
+    parts.append(f"[dlg]{''.join(mix_inputs)}amix=inputs={1 + len(mix_inputs)}:duration=first:normalize=0[aout]")
+    premix = work / "premix.mkv"
+    cmd += ["-filter_complex", ";".join(parts), "-map", "0:v", "-map", "[aout]", "-c:v", "copy", "-c:a", "pcm_s16le", premix]
+    run(cmd, dry)
+    out = work / "mixed.mkv"
+    return loudnorm_two_pass(premix, out, target_lufs, dry)
+
+
 def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry: bool) -> Path:
     """Overlay music beds (optionally sidechain-ducked under clip audio) and SFX; loudnorm."""
     target_lufs = audio.get("mix", {}).get("target_lufs", -14)
@@ -350,6 +414,10 @@ def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry
         premix = work / "premix.mkv"
         run([FFMPEG, "-y", "-i", cut, "-c", "copy", premix], dry)
         return loudnorm_two_pass(premix, out, target_lufs, dry)
+
+    if len(music) + len(sfx) > 8:
+        print(f"  [MIX] {len(music)} music + {len(sfx)} sfx beds -> incremental low-memory mix")
+        return mix_audio_incremental(cut, music, sfx, project, work, target_lufs, dry)
 
     cmd = [FFMPEG, "-y", "-i", cut]
     for m in music:
