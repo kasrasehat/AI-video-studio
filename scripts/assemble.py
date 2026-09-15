@@ -368,10 +368,17 @@ def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry
         lbl = f"mus{idx}"
         delay = int(float(m["in_s"]) * 1000)
         fades = ""
+        fdur = probe_duration(project / m["path"]) if not dry else 20.0
+        # out_s bounds the cue to its slot (a generated file may be longer than the slot — the API's
+        # 10s minimum, or a composition that overran): trim FIRST so the fade-out lands at the slot end.
+        if m.get("out_s") is not None:
+            slot = max(float(m["out_s"]) - float(m["in_s"]), 0.0)
+            if slot < fdur:
+                fades += f",atrim=0:{slot:.3f},asetpts=PTS-STARTPTS"
+                fdur = slot
         if m.get("fade_in_s"):
             fades += f",afade=t=in:d={m['fade_in_s']}"
         if m.get("fade_out_s"):
-            fdur = probe_duration(project / m["path"]) if not dry else 20.0
             st = max(fdur - float(m["fade_out_s"]), 0)
             fades += f",afade=t=out:st={st}:d={m['fade_out_s']}"
         parts.append(f"[{idx}:a]anull{fades},adelay={delay}|{delay},volume={m['gain_db']}dB[{lbl}pre]")
