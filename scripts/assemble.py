@@ -479,7 +479,7 @@ def main(argv=None) -> int:
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args(argv)
 
-    project = lib.ROOT / "projects" / args.slug
+    project = lib.project_dir(args.slug)  # series episodes live under projects/_series/<series>/episodes/<slug>
     ed = lib.read_json(project / "artifacts" / "edit_decisions.json")
     manifest = lib.read_json(project / "artifacts" / "generation_manifest.json")
     presets = yaml.safe_load((lib.ROOT / "config" / "delivery_presets.yaml").read_text(encoding="utf-8"))["presets"]
