@@ -285,7 +285,9 @@ def join_timeline(mezz: list[dict], work: Path, fps: int, dry: bool) -> Path:
             fades.append(tr)
             runs.append([])
     # iris_out on the LAST clip fades into black after the film — handled post-join
-    closing = mezz[-1]["transition_out"] if mezz[-1]["transition_out"]["type"] == "iris_out" else None
+    last_tr = mezz[-1]["transition_out"]
+    # closing treatment: iris_out (circle-close into black) or a hard cut with a black hold (hold_s > 0)
+    closing = last_tr if last_tr["type"] == "iris_out" or (last_tr["type"] == "cut" and float(last_tr.get("hold_s") or 0) > 0) else None
 
     left = concat_run([r["path"] for r in runs[0]], work / "run00.mkv")
     left_dur = sum(r["duration"] for r in runs[0])
@@ -314,12 +316,19 @@ def join_timeline(mezz: list[dict], work: Path, fps: int, dry: bool) -> Path:
         info = ffprobe_json(left) if not dry else {}
         vs = next((s for s in info.get("streams", []) if s.get("codec_type") == "video"), {})
         w, h = vs.get("width", 1920), vs.get("height", 1080)
-        fc = (
-            f"color=c=black:s={w}x{h}:r={fps}:d={d + hold},settb=AVTB[blk];"
-            f"[0:v]settb=AVTB[v0];"
-            f"[v0][blk]xfade=transition=circleclose:duration={d}:offset={offset}[v];"
-            f"[0:a]apad=pad_dur={hold}[a]"
-        )
+        if closing["type"] == "cut":
+            # hard cut to black, then `hold` seconds of black; audio padded so a cue tail can ring into the black
+            fc = (
+                f"[0:v]tpad=stop_mode=add:stop_duration={hold}:color=black[v];"
+                f"[0:a]apad=pad_dur={hold}[a]"
+            )
+        else:
+            fc = (
+                f"color=c=black:s={w}x{h}:r={fps}:d={d + hold},settb=AVTB[blk];"
+                f"[0:v]settb=AVTB[v0];"
+                f"[v0][blk]xfade=transition=circleclose:duration={d}:offset={offset}[v];"
+                f"[0:a]apad=pad_dur={hold}[a]"
+            )
         run([FFMPEG, "-y", "-i", left, "-filter_complex", fc, "-map", "[v]", "-map", "[a]",
              "-c:v", "libx264", "-crf", "12", "-preset", "fast", "-pix_fmt", "yuv420p",
              "-c:a", "pcm_s16le", out], dry)
