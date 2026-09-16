@@ -322,6 +322,24 @@ def join_timeline(mezz: list[dict], work: Path, fps: int, dry: bool) -> Path:
                 f"[0:v]tpad=stop_mode=add:stop_duration={hold}:color=black[v];"
                 f"[0:a]apad=pad_dur={hold}[a]"
             )
+        elif closing.get("iris_center"):
+            # d-169: an iris that closes ON a chosen point (E02 ends on the O of ILON; E01's circleclose is frame-centred).
+            # Only the last `d` seconds pass through geq (per-pixel, slow): split, iris the tail, concat, then black hold.
+            cx = float(closing["iris_center"]["x"]) * w
+            cy = float(closing["iris_center"]["y"]) * h
+            r0 = (max(cx, w - cx) ** 2 + max(cy, h - cy) ** 2) ** 0.5 + 8  # radius that covers the whole frame
+            feather = 14.0
+            radius = f"({r0:.1f}*max(0,1-T/{d}))"
+            lum = f"lum(X,Y)*clip(({radius}-hypot(X-{cx:.1f},Y-{cy:.1f}))/{feather},0,1)+16*(1-clip(({radius}-hypot(X-{cx:.1f},Y-{cy:.1f}))/{feather},0,1))"
+            cb = f"cb(X,Y)*clip(({radius}-hypot(2*X-{cx:.1f},2*Y-{cy:.1f}))/{feather},0,1)+128*(1-clip(({radius}-hypot(2*X-{cx:.1f},2*Y-{cy:.1f}))/{feather},0,1))"
+            cr = cb.replace("cb(X,Y)", "cr(X,Y)")
+            fc = (
+                f"[0:v]split[va][vb];"
+                f"[va]trim=0:{offset:.3f},setpts=PTS-STARTPTS[head];"
+                f"[vb]trim={offset:.3f},setpts=PTS-STARTPTS,geq=lum='{lum}':cb='{cb}':cr='{cr}'[tail];"
+                f"[head][tail]concat=n=2:v=1:a=0,tpad=stop_mode=add:stop_duration={hold}:color=black[v];"
+                f"[0:a]apad=pad_dur={hold}[a]"
+            )
         else:
             fc = (
                 f"color=c=black:s={w}x{h}:r={fps}:d={d + hold},settb=AVTB[blk];"

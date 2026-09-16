@@ -36,6 +36,8 @@
               "type": { "type": "string", "enum": ["cut", "xfade", "dip_black", "wipe", "match_cut", "iris_out"] },
               "duration_s": { "type": "number", "minimum": 0 },
               "hold_s": { "type": "number", "minimum": 0, "description": "iris_out only: extra black hold after the close (for an audio button under black)." },
+              "iris_center": { "type": "object", "required": ["x", "y"], "additionalProperties": false, "description": "iris_out only (d-169): the point the iris closes ON, normalized 0-1 of frame width/height (E02 ends on the O of ILON; omit for a centred circle-close).",
+                "properties": { "x": { "type": "number", "minimum": 0, "maximum": 1 }, "y": { "type": "number", "minimum": 0, "maximum": 1 } } },
               "source": { "type": "string", "description": "scene_direction ref justifying this transition." }
             },
             "additionalProperties": false
