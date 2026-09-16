@@ -384,8 +384,11 @@ def mix_audio_incremental(cut: Path, music: list, sfx: list, project: Path, work
     parts, mix_inputs, idx = [], [], 1
     if "duck" in stems:
         cmd += ["-i", stems["duck"]]
-        parts.append("[0:a]asplit=2[dlg][key]")
-        parts.append(f"[{idx}:a][key]sidechaincompress=threshold=0.05:ratio=8:attack=20:release=400[md]")
+        parts.append("[0:a]asplit=2[dlg][key0]")
+        # d-168: key the duck on the DIALOGUE band only (250-3500 Hz) so loud baked SFX/ambience never pump the score;
+        # gentler ratio and a slower release so a duck reads as the score stepping back, not dropping out.
+        parts.append("[key0]highpass=f=250,lowpass=f=3500[key]")
+        parts.append(f"[{idx}:a][key]sidechaincompress=threshold=0.08:ratio=6:attack=30:release=700[md]")
         mix_inputs.append("[md]"); idx += 1
     else:
         parts.append("[0:a]anull[dlg]")
@@ -451,8 +454,10 @@ def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry
             fades += f",afade=t=out:st={st}:d={m['fade_out_s']}"
         parts.append(f"[{idx}:a]anull{fades},adelay={delay}|{delay},volume={m['gain_db']}dB[{lbl}pre]")
         if m.get("duck"):
-            parts.append(f"[{lbl}pre]{next(key_iter)}"
-                         f"sidechaincompress=threshold=0.05:ratio=8:attack=20:release=400[{lbl}]")
+            k = next(key_iter)
+            parts.append(f"{k}highpass=f=250,lowpass=f=3500[{lbl}key]")  # d-168 dialogue-band key
+            parts.append(f"[{lbl}pre][{lbl}key]"
+                         f"sidechaincompress=threshold=0.08:ratio=6:attack=30:release=700[{lbl}]")
         else:
             parts.append(f"[{lbl}pre]anull[{lbl}]")
         mix_inputs.append(f"[{lbl}]")
