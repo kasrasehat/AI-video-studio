@@ -349,10 +349,10 @@ def _bed_filter(m: dict, project: Path, dry: bool, is_sfx: bool = False) -> str:
             fades += f",atrim=0:{slot:.3f},asetpts=PTS-STARTPTS"
             fdur = slot
     if m.get("fade_in_s"):
-        fades += f",afade=t=in:d={m['fade_in_s']}"
+        fades += f",afade=t=in:d={m['fade_in_s']}:curve=qsin"
     if m.get("fade_out_s"):
         st = max(fdur - float(m["fade_out_s"]), 0)
-        fades += f",afade=t=out:st={st}:d={m['fade_out_s']}"
+        fades += f",afade=t=out:st={st}:d={m['fade_out_s']}:curve=qsin"
     return f"anull{fades},adelay={delay}|{delay},volume={m['gain_db']}dB"
 
 
@@ -448,10 +448,10 @@ def mix_audio(cut: Path, audio: dict, project: Path, work: Path, skip: bool, dry
                 fades += f",atrim=0:{slot:.3f},asetpts=PTS-STARTPTS"
                 fdur = slot
         if m.get("fade_in_s"):
-            fades += f",afade=t=in:d={m['fade_in_s']}"
+            fades += f",afade=t=in:d={m['fade_in_s']}:curve=qsin"
         if m.get("fade_out_s"):
             st = max(fdur - float(m["fade_out_s"]), 0)
-            fades += f",afade=t=out:st={st}:d={m['fade_out_s']}"
+            fades += f",afade=t=out:st={st}:d={m['fade_out_s']}:curve=qsin"
         parts.append(f"[{idx}:a]anull{fades},adelay={delay}|{delay},volume={m['gain_db']}dB[{lbl}pre]")
         if m.get("duck"):
             k = next(key_iter)
