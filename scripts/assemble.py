@@ -513,6 +513,22 @@ def loudnorm_two_pass(premix: Path, out: Path, target_lufs: float, dry: bool) ->
           f"measured_I={m['input_i']}:measured_TP={m['input_tp']}:"
           f"measured_LRA={m['input_lra']}:measured_thresh={m['input_thresh']}")
     run([FFMPEG, "-y", "-i", premix, "-c:v", "copy", "-af", af, "-c:a", "pcm_s16le", out], dry)
+    # d-177 (E02 QC r1: -15.7 LUFS after the linear pass — linear mode trades target for the TP ceiling): measure again and,
+    # if still short by > 0.4 LU, apply makeup gain under a true-peak limiter so the programme reaches the target.
+    proc2 = subprocess.run([FFMPEG, "-i", str(out), "-af", f"loudnorm=I={target_lufs}:TP=-1.5:LRA=11:print_format=json", "-f", "null", "-"],
+                           capture_output=True, text=True, encoding="utf-8", errors="replace")
+    tail2 = (proc2.stderr or "")[proc2.stderr.rfind("{"):]
+    try:
+        got = float(json.loads(tail2[:tail2.rfind("}") + 1])["input_i"])
+    except Exception:
+        got = target_lufs
+    short = target_lufs - got
+    if short > 0.4:
+        fixed = out.with_name(out.stem + "_lim.mkv")
+        run([FFMPEG, "-y", "-i", out, "-c:v", "copy", "-af", f"volume={short:.2f}dB,alimiter=limit=0.8413:attack=5:release=60:level=false",
+             "-c:a", "pcm_s16le", fixed], dry)
+        print(f"  [LOUDNESS] linear pass landed at {got:.1f} LUFS; +{short:.1f} dB makeup under a -1.5 dBTP limiter")
+        return fixed
     return out
 
 
