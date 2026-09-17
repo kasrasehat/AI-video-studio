@@ -108,3 +108,7 @@ Smoothness between cues, and between music and silence, is a first-class quality
 5. **Level-matched handoffs:** adjacent cues sit within ~2dB of each other at the splice (set per-cue `gain_db` accordingly); the master two-pass loudnorm is not a substitute for cue-level balance.
 
 Mix-side ramps live in `edit_decisions.audio.music[].fade_in_s/fade_out_s` (assemble.py applies them); composition-side gradients live in the cue prompts. Both are used together.
+
+## Cue fitting (BINDING — d-170/d-172, E02 seam review)
+
+The Music API composes an ENDING on every file — a 3.5–8 s fade-out — and often a soft 1.5–4 s head, whatever the prompt says ("no fade-out", "excerpt from the middle", "hold full energy" were all ignored across two full regenerations). Therefore: generate every cue at slot + 3 s; never rely on the file's own edges; before mixing, MEASURE the usable body (level ≥ body − 6 dB) and FIT the cue — extend the body by repeating its last phrase under 1.0 s equal-power splices to reach slot_end + 4 s, start it `usable_start` early — and let the mix make every entrance and exit (equal-power 1.0 s in / 3.0 s out). Never ask a cue for "near-silence": the model renders true digital silence (E02 MC14 v3). A directed internal event ("the chase drops at nine seconds") is not reliably placed; splice the cue's own sections at the picture cut instead of paying for another take.

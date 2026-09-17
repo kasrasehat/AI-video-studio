@@ -22,7 +22,9 @@ Pipeline per preset:
   3. Join with transitions: cut/match_cut = concat; xfade/dip_black/wipe/iris_out via the
      ffmpeg xfade filter (iris_out = circleclose into black — the S17 ending).
   4. Mix audio: concatenated clip audio (dialogue — untouchable) + music beds (sidechain-
-     ducked under clip audio when duck=true) + SFX one-shots; loudnorm to target_lufs.
+     ducked under clip audio when duck=true; key = dialogue band 250-3500 Hz, d-168) + SFX
+     one-shots; loudnorm to target_lufs. Beds are FITTED files (d-172): bodies extended past
+     their slots so every seam is a real overlap; fades are equal-power (qsin).
   5. Captions: srt sidecar copied next to the output, or burned via subtitles filter.
   6. ffprobe-verify each output into render_report.json.
 

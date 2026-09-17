@@ -57,3 +57,7 @@ Run the stage against the approved direction, then audit the approved clips: any
 - Writing audio blocks longer than the picture prompt can afford (≤120 words; the block is one paragraph).
 - Register changes that are not events (a whisper scene followed by a conversational one with no story reason).
 - Treating a locked asset (an alarm melody) as baked: it is laid by post, and the clip carries only its physical placeholder (E02 S64: "a soft twangy hum from the phone's tiny speaker").
+
+## Seam laws the plan must anticipate (d-168 … d-174)
+
+Write `boundary_out` knowing how stage 10 executes it: post cues overlap ≥ 4 s of real music across every cue seam, centred after the picture cut (never on it); a directed in-cue transition is planned as ONE cue in `post.cue_intent`; a `protected_silence` after a cue means the cue's body must still reach the boundary (the generator's own fade is not the silence); the closing cue ends on the last picture frame; an unmatched hinge is noted so stage 10 can crossfade it; a diegetic asset (`exception_sfx`) is given the full span of its beat. Never write "near-silence" into a cue intent — write the quiet bed you actually want to hear.
