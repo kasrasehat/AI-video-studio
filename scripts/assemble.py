@@ -525,9 +525,9 @@ def loudnorm_two_pass(premix: Path, out: Path, target_lufs: float, dry: bool) ->
     short = target_lufs - got
     if short > 0.4:
         fixed = out.with_name(out.stem + "_lim.mkv")
-        run([FFMPEG, "-y", "-i", out, "-c:v", "copy", "-af", f"volume={short:.2f}dB,alimiter=limit=0.8413:attack=5:release=60:level=false",
+        run([FFMPEG, "-y", "-i", out, "-c:v", "copy", "-af", f"volume={short:.2f}dB,alimiter=limit=0.7943:attack=5:release=60:level=false"  # -2.0 dBTP pre-encode: AAC overshoots ~0.4 dB (QC r2),
              "-c:a", "pcm_s16le", fixed], dry)
-        print(f"  [LOUDNESS] linear pass landed at {got:.1f} LUFS; +{short:.1f} dB makeup under a -1.5 dBTP limiter")
+        print(f"  [LOUDNESS] linear pass landed at {got:.1f} LUFS; +{short:.1f} dB makeup under a -2.0 dBTP limiter (encode headroom)")
         return fixed
     return out
 
