@@ -47,7 +47,7 @@
       "required": ["curiosity_hook", "target_runtime_s", "beats", "title_card", "status"],
       "properties": {
         "curiosity_hook": { "type": "string", "minLength": 10, "description": "The unanswered question the trailer opens — same gap as the thumbnail, still unresolved at the card." },
-        "target_runtime_s": { "type": "number", "minimum": 10, "maximum": 45 },
+        "target_runtime_s": { "type": "number", "minimum": 10, "maximum": 60, "description": "Standing guidance is 15-30s; up to 60s is allowed on explicit Director order (e.g. d-184: 45-50s joyful cut)." },
         "beats": {
           "type": "array",
           "minItems": 3,
